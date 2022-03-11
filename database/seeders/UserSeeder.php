@@ -18,18 +18,22 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+        User::insert([
+            'login' => 'admin',
+            'email' => 'admin@mail.ru',
+            'master_password' => Hash::make('admin'),
+            'is_admin' => true,
+            'is_blocked' => false,
+        ]);
+
         for ($i = 0; $i < 10; $i++) {
             $randomLength = rand(2, 20);
 
             User::insert([
-                'role_id' => Role::where('access', 3)->get()->first()->id,
                 'login' => Str::random($randomLength),
-                'first_name' => '4343434.234234',
-                'middle_name' => Str::random($randomLength),
-                'last_name' => Str::random($randomLength),
                 'email' => Str::random(8) . '@mail.ru',
                 'master_password' => Hash::make('test'),
-                'is_admin' => true,
+                'is_admin' => false,
                 'is_blocked' => false,
             ]);
         }
