@@ -1,33 +1,40 @@
 <template>
   <div class="site-login">
 
-    <p class="app-name">Password Manager</p>
+    <div class="head-login">
+      <i class="fas fa-lock"></i>
+      <p class="app-name">Password Manager</p>
+    </div>
 
     <div class="container-login">
-
-      <form class="form-login" @submit.prevent>
+      <form class="form-login" @submit.prevent novalidate>
 
         <div class="element-form">
           <label for="email">Адрес Email</label>
-          <LoginInput :type-input="form.types.email" v-model.trim="form.login" class="input-login" id="email"/>
+          <LoginInput :type-input="form.types[0]" v-model.trim="form.details.email" class="input-login" id="email"/>
         </div>
 
 
         <div class="element-form">
           <label for="master-password">Мастер-пароль</label>
-          <LoginInput :type-input="form.types.password" v-model.trim="form.password" class="input-login" id="master-password"/>
+
+          <div class="flex">
+            <LoginInput :type-input="form.types[1]" v-model.trim="form.details.password" class="input-login password"
+                        id="master-password"/>
+
+            <i class="fas fa-eye"></i>
+          </div>
         </div>
 
-        <BaseButton>Войти</BaseButton>
+        <BaseButton @click="login">Войти</BaseButton>
       </form>
     </div>
-
   </div>
-
 </template>
 
 <script>
 import LoginInput from "@/components/LoginPage/LoginInput";
+import {mapActions, mapState} from "vuex";
 
 export default {
   name: "Login",
@@ -38,62 +45,115 @@ export default {
 
   data() {
     return {
-
       form: {
-        types: {
-          email: 'email',
-          password: 'password',
-        },
+        types: [
+          'email',
+          'password',
+        ],
 
-        login: '',
-        password: '',
+        details: {
+          email: '',
+          password: '',
+        }
       },
     }
-  }
+  },
+
+  computed: {
+    ...mapState(['errors']),
+  },
+
+  methods: {
+    ...mapActions({
+      sendLoginRequest: 'auth/sendLoginRequest',
+    }),
+
+    login() {
+      this.sendLoginRequest(this.form.details);
+    },
+  },
 }
 </script>
 
-<style scoped>
-.app-name {
-  font-size: 42px;
-  text-align: center;
-}
-
+<style lang="scss" scoped>
 .site-login {
   width: 100%;
   padding-top: 60px;
-  background-color: #2683E0;
-}
 
-.container-login {
-  display: flex;
-  justify-content: center;
-}
+  .head-login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-.form-login {
-  width: 480px;
-  margin: 40px auto;
-  padding: 25px;
-  background-color: #4EA1F4;
-  border-radius: 10px;
-}
+    .app-name {
+      font-size: 46px;
+      text-align: center;
+    }
 
-.form-login .element-form {
-  display: flex;
-  flex-direction: column;
-  padding-top: 25px;
-}
+    .fa-lock {
+      padding-right: 15px;
+      text-align: center;
+      font-size: 74px;
+    }
+  }
 
-.form-login .input-login {
-  margin-top: 8px;
-}
+  .container-login {
+    display: flex;
+    justify-content: center;
 
-.form-login .element-form:first-child {
-  padding-top: 0;
-}
+    .flex {
+      display: flex;
+      align-items: center;
+    }
 
-.form-login .base-button {
-  margin-top: 40px;
+    .form-login {
+      width: 490px;
+      margin: 40px auto;
+      padding: 25px;
+      background-color: #4EA1F4;
+      border-radius: 10px;
+    }
+
+    .form-login .element-form {
+      display: flex;
+      flex-direction: column;
+      padding-top: 25px;
+
+      label {
+        margin-bottom: 8px;
+      }
+    }
+
+    .form-login .input-login {
+      width: 100%;
+      display: flex;
+      padding-top: 8px;
+    }
+
+    .form-login .fa-eye {
+      padding: 0 10px;
+      cursor: pointer;
+      font-size: 18px;
+      transition: color $transTime;
+
+      &:hover {
+        color: #ccc;
+      }
+    }
+
+    .form-login .element-form:first-child {
+      padding-top: 0;
+    }
+
+    .form-login .base-button {
+      margin-top: 25px;
+      transition: background-color $transTime;
+
+      &:hover {
+        background-color: rgba(38, 131, 224, .75);
+      }
+    }
+  }
 }
 
 </style>

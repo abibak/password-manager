@@ -24,8 +24,9 @@ export default {
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
+/* old version input */
 /*.input-login {
   width: auto;
   padding: 10px 0 10px;
@@ -39,13 +40,18 @@ export default {
 
 .input-login {
   width: auto;
-  padding: 8px 5px;
+  padding: 8px 8px;
   color: #000;
   border: 1px solid #fff;
   border-radius: 10px;
   outline: none;
   line-height: normal;
   background-color: #fff;
+  transition: box-shadow .2s;
+
+  &:focus {
+    box-shadow: 0 0 0 3px rgba(38, 131, 224, .7);
+  }
 }
 
 </style>

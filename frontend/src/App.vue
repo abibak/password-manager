@@ -1,15 +1,12 @@
 <template>
-
   <div class="app">
     <router-view></router-view>
   </div>
-
 </template>
 
 <script>
-
 import 'normalize.css'
-import {mapGetters, mapState} from "vuex";
+import {mapActions} from "vuex";
 
 export default {
   data() {
@@ -17,53 +14,20 @@ export default {
   },
 
   mounted() {
-    this.login();
-  },
-
-  computed: {
-    ...mapState([
-      'userData',
-      'isAdmin',
-      'isBlocked',
-    ]),
-
-    ...mapGetters([
-      'getFolderById',
-    ])
+    if (localStorage.getItem('authToken')) {
+      this.getUserData();
+    }
   },
 
   methods: {
-    getFolder() {
-      console.log(process.env.VUE_APP_API_URL);
-      return this.getFolderById(2);
-    },
-
-    login() {
-      /*try {
-        axios.post('/api/login', {
-          'email': '0y4peKfV@mail.ru',
-        }).then((response) => {
-          console.log(
-            'Your name: ' + this.userData.name,
-            '\nyour status admin: ' + this.isAdmin,
-            '\nsystem blocked: ' + this.isBlocked
-          );
-
-          console.log('your folder id:', this.getFolder().name);
-
-          if (this.isBlocked) {
-            console.log('Your account blocked, account actions not accessible');
-          }
-        });
-      } catch (e) {
-        console.log(e);
-      }*/
-    }
-  }
+    ...mapActions({
+      'getUserData': 'auth/getUserData',
+    }),
+  },
 }
 </script>
 
-<style>
+<style lang="scss">
 * {
   padding: 0;
   margin: 0;
@@ -75,7 +39,7 @@ export default {
   font-size: 16px;
   font-weight: 500;
   color: #fff;
-  background-color: #2683E0;
+  background-color: $backgroundColor;
   height: 100vh;
 }
 

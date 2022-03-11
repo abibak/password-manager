@@ -13,9 +13,10 @@ export default {
 <style scoped>
 
 .base-button {
-  width: 150px;
+  width: 160px;
   height: 45px;
   border: none;
+  text-transform: uppercase;
   border-radius: 10px;
   background-color: #2683E0;
   color: #fff;
