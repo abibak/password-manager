@@ -3,15 +3,15 @@ import auth from "@/store/auth";
 
 export default createStore({
   state: () => ({
-    errors: [],
+    errors: '',
   }),
 
-  getters: {
-
-  },
+  getters: {},
 
   mutations: {
-
+    setErrors(state, data) {
+      state.errors = data;
+    },
   },
 
   actions: {

@@ -1,6 +1,8 @@
 <template>
   <div class="site-login">
 
+    {{this.errors}}
+
     <div class="head-login">
       <i class="fas fa-lock"></i>
       <p class="app-name">Password Manager</p>
@@ -11,16 +13,22 @@
 
         <div class="element-form">
           <label for="email">Адрес Email</label>
-          <LoginInput :type-input="form.types[0]" v-model.trim="form.details.email" class="input-login" id="email"/>
+          <LoginInput
+            :type-input="form.types[0]"
+            v-model.trim="form.details.email"
+            class="input-login"
+            id="email"/>
         </div>
-
 
         <div class="element-form">
           <label for="master-password">Мастер-пароль</label>
 
           <div class="flex">
-            <LoginInput :type-input="form.types[1]" v-model.trim="form.details.password" class="input-login password"
-                        id="master-password"/>
+            <LoginInput
+              :type-input="form.types[1]"
+              v-model.trim="form.details.password"
+              class="input-login password"
+              id="master-password"/>
 
             <i class="fas fa-eye"></i>
           </div>
@@ -47,7 +55,7 @@ export default {
     return {
       form: {
         types: [
-          'email',
+          'text',
           'password',
         ],
 

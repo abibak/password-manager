@@ -1,4 +1,12 @@
 import axios from "axios";
+import router from "@/router";
+
+if (!localStorage.getItem('authToken')) {
+  localStorage.setItem('authToken', '');
+}
+
+const instance = axios.create();
+instance.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('authToken');
 
 export default {
   namespaced: true,
@@ -16,35 +24,34 @@ export default {
   },
 
   actions: {
-    async getUserData() {
-      await axios.get(process.env.VUE_APP_API_URL + 'getUser')
+    async getUserData({commit}) {
+      await instance.get(process.env.VUE_APP_API_URL + 'getAuth')
         .then(response => {
-          console.log(response);
+          commit('setUserData', response.data);
         }).catch(error => {
           console.log(error);
-        }).then(() => {
-          console.log('запрос выполнен')
         });
     },
 
-    async sendLoginRequest({commit}, data) {
-      try {
-        let response = await axios.post(process.env.VUE_APP_API_URL + 'login', {
+    async sendLoginRequest({state, commit}, data) {
+        await instance.post(process.env.VUE_APP_API_URL + 'login', {
           email: data.email,
           password: data.password,
+        }).then(response => {
+          if (state.userData !== null || state.userData !== {}) {
+            commit('setUserData', response.data.user);
+            localStorage.setItem('authToken', response.data['access_token'] ?? '');
+            router.push('/');
+          }
+        }).catch(error => {
+            if (error.response?.status === 401) {
+              commit('setErrors', error.response.data.messages, {root: true});
+            }
         });
-
-        if (state.userData !== null || state.userData !== {}) {
-          commit('setUserData', response.data.user);
-          localStorage.setItem('authToken', response.data['access_token']);
-        }
-      } catch (e) {
-        console.log('error');
-      }
     },
 
     async logout({commit}) {
-      await axios.get(process.env.VUE_APP_API_URL + 'logout').then(() => {
+      await instance.get(process.env.VUE_APP_API_URL + 'logout').then(() => {
         commit('setUserData', null);
         localStorage.removeItem('authToken');
       });

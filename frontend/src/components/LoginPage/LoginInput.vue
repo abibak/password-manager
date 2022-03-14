@@ -1,5 +1,12 @@
 <template>
-  <input :type="typeInput" class="input-login" :value="modelValue" @input="updateValue">
+  <input
+    class="input-login"
+    :type="typeInput"
+    :value="modelValue"
+    :style="{boxShadow: error}"
+    @input="updateValue"
+    @focusin="focusIn"
+    @blur="focusOut">
 </template>
 
 <script>
@@ -15,10 +22,22 @@ export default {
     }
   },
 
+  data() {
+    return {
+      error: '',
+    }
+  },
+
   methods: {
     updateValue(event) {
       this.$emit('update:modelValue', event.target.value);
-    }
+    },
+
+    focusIn() {
+    },
+
+    focusOut() {
+    },
   }
 }
 
