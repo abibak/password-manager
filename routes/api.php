@@ -17,6 +17,6 @@ Route::get('/login', ['App\Http\Controllers\Auth\LoginController', 'login'])->na
 Route::post('/login', ['App\Http\Controllers\Auth\LoginController', 'login']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::get('/getUsers', ['App\Http\Controllers\Controller', 'test']);
+    Route::get('/getAuth', ['App\Http\Controllers\Auth\AuthController', 'sendUserData']);
     Route::get('logout', ['App\Http\Controllers\Controller', 'logout']);
 });

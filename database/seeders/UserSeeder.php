@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
         User::insert([
             'login' => 'admin',
             'email' => 'admin@mail.ru',
-            'master_password' => Hash::make('admin'),
+            'password' => Hash::make('admin'),
             'is_admin' => true,
             'is_blocked' => false,
         ]);
@@ -32,7 +32,7 @@ class UserSeeder extends Seeder
             User::insert([
                 'login' => Str::random($randomLength),
                 'email' => Str::random(8) . '@mail.ru',
-                'master_password' => Hash::make('test'),
+                'password' => Hash::make('test'),
                 'is_admin' => false,
                 'is_blocked' => false,
             ]);

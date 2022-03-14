@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    public function sendUserData(): ?\Illuminate\Contracts\Auth\Authenticatable
+    public function sendUserData()
     {
         return auth()->user();
     }
