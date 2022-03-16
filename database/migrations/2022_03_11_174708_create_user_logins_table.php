@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('user_folder_id')->constrained();
             $table->string('name', 100);
             $table->string('login', 150);
-            $table->string('password', 100);
+            $table->string('password');
             $table->string('url', 300);
             $table->string('tag', 100);
             $table->string('note', 1000);
