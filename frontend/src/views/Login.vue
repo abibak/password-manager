@@ -1,8 +1,5 @@
 <template>
   <div class="site-login">
-
-    {{this.errors}}
-
     <div class="head-login">
       <i class="fas fa-lock"></i>
       <p class="app-name">Password Manager</p>
@@ -18,20 +15,21 @@
             v-model.trim="form.details.email"
             class="input-login"
             id="email"/>
+          <span class="error" v-if="this.errors.email">{{this.errors.email[0]}}</span>
         </div>
 
         <div class="element-form">
           <label for="master-password">Мастер-пароль</label>
 
-          <div class="flex">
+          <div class="group-login">
             <LoginInput
               :type-input="form.types[1]"
               v-model.trim="form.details.password"
               class="input-login password"
               id="master-password"/>
-
-            <i class="fas fa-eye"></i>
+            <i class="bi bi-eye"></i>
           </div>
+          <span class="error" v-if="this.errors.password">{{this.errors.password[0]}}</span>
         </div>
 
         <BaseButton @click="login">Войти</BaseButton>
@@ -109,7 +107,15 @@ export default {
     display: flex;
     justify-content: center;
 
-    .flex {
+    .error {
+      color: red;
+      font-size: 14px;
+      position: absolute;
+      bottom: -20px;
+      left: 0;
+    }
+
+    .group-login {
       display: flex;
       align-items: center;
     }
@@ -126,6 +132,7 @@ export default {
       display: flex;
       flex-direction: column;
       padding-top: 25px;
+      position: relative;
 
       label {
         margin-bottom: 8px;
@@ -138,10 +145,10 @@ export default {
       padding-top: 8px;
     }
 
-    .form-login .fa-eye {
+    .form-login .bi-eye {
       padding: 0 10px;
       cursor: pointer;
-      font-size: 18px;
+      font-size: 20px;
       transition: color $transTime;
 
       &:hover {

@@ -38,17 +38,14 @@
             </div>
           </div>
 
-          <div class="user-section">
-            <div class="info-user-section">
+          <div class="section-user">
+            <div class="info-section-user">
               <p>Личный раздел</p>
               <i class="bi bi-plus-circle"></i>
             </div>
 
             <div class="user-folders">
-              <p class="user-folder">Пароли компании</p>
-              <p class="user-folder">Пользователи</p>
-              <p class="user-folder">Клиенты</p>
-              <p class="user-folder">IT</p>
+              <FolderList :folders="this.dataFolders.data"></FolderList>
             </div>
           </div>
         </div>
@@ -59,14 +56,33 @@
 </template>
 
 <script>
+import FolderList from "@/components/UserFolders/FolderList";
+import {mapActions, mapState} from "vuex";
+
 export default {
   name: "Main",
+
+  components: {
+    FolderList,
+  },
 
   data() {
     return {}
   },
 
+  mounted() {
+    this.sendRequestGetFolders();
+  },
+
+  computed: {
+    ...mapState('userData', ['dataFolders']),
+  },
+
   methods: {
+    ...mapActions({
+      sendRequestGetFolders: 'userData/sendRequestGetFolders',
+    }),
+
     userData() {
       return Object.create(this.$store.state.auth.userData);
     },
@@ -200,16 +216,16 @@ export default {
           }
         }
 
-        .section-organization, .user-section {
+        .section-organization, .section-user {
           padding: 15px 0;
           border-bottom: 1px solid #a3a3a3;
 
-          .info-org-section, .info-user-section p:first-child {
+          .info-org-section, .info-section-user p:first-child {
             color: #000;
           }
         }
 
-        .info-org-section, .info-user-section {
+        .info-org-section, .info-section-user {
           display: flex;
           justify-content: space-between;
 
@@ -224,21 +240,8 @@ export default {
             }
           }
         }
-
-        .organization-folders, .user-folders {
-          .org-folder, .user-folder {
-            margin-top: 8px;
-            cursor: pointer;
-
-            &:hover {
-              opacity: .8;
-            }
-          }
-        }
       }
-
     }
   }
-
 }
 </style>

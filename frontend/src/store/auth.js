@@ -1,12 +1,10 @@
 import axios from "axios";
+import {instance} from '@/store/index';
 import router from "@/router";
 
 if (!localStorage.getItem('authToken')) {
   localStorage.setItem('authToken', '');
 }
-
-const instance = axios.create();
-instance.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('authToken');
 
 export default {
   namespaced: true,
