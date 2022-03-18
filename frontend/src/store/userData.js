@@ -1,6 +1,7 @@
 import {instance} from '@/store/index';
 
 export default {
+  namespaced: true,
 
   state: () => ({
     dataFolders: ['cyeta', 'cye1'],
@@ -20,10 +21,7 @@ export default {
         headers: {'Authorization': 'Bearer ' + localStorage.getItem('authToken')}
       }).then(response => {
           commit('setDataFolders', response.data);
-          console.log(response.data);
         })
     },
   },
-
-  namespaced: true,
 }

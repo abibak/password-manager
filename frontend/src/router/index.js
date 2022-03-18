@@ -1,5 +1,6 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import store from '@/store/index';
+import {createRouter, createWebHistory} from 'vue-router';
+import {instance} from "@/store";
+import {store} from '@/store/index';
 import Login from "@/views/Login";
 import Main from "@/views/Main";
 
@@ -25,16 +26,16 @@ const router = createRouter({
 })
 
 function checkAuth() {
-  return !store.state.auth.userData && !localStorage.getItem('authToken');
+  return localStorage.getItem('authToken');
 }
 
-router.beforeEach(async (to) => {
-  if (to.name !== 'login' && checkAuth()) {
-    await router.push('login');
+router.beforeEach((to) => {
+  if (to.name === 'login' && checkAuth()) {
+    router.push('/');
   }
 
-  if (to.name === 'login' && !checkAuth()) {
-    await router.push({name: 'main'});
+  if (to.name !== 'login' && !checkAuth()) {
+    router.push('login');
   }
 });
 

@@ -15,7 +15,7 @@
             v-model.trim="form.details.email"
             class="input-login"
             id="email"/>
-          <span class="error" v-if="this.errors.email">{{this.errors.email[0]}}</span>
+          <span class="error-message" v-if="this.errors.email">{{this.errors.email[0]}}</span>
         </div>
 
         <div class="element-form">
@@ -29,7 +29,7 @@
               id="master-password"/>
             <i class="bi bi-eye"></i>
           </div>
-          <span class="error" v-if="this.errors.password">{{this.errors.password[0]}}</span>
+          <span class="error-message" v-if="this.errors.password">{{this.errors.password[0]}}</span>
         </div>
 
         <BaseButton @click="login">Войти</BaseButton>
@@ -106,14 +106,6 @@ export default {
   .container-login {
     display: flex;
     justify-content: center;
-
-    .error {
-      color: red;
-      font-size: 14px;
-      position: absolute;
-      bottom: -20px;
-      left: 0;
-    }
 
     .group-login {
       display: flex;

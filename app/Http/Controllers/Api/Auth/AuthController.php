@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Client\Request;
+use Mockery\Exception;
 
 class AuthController extends Controller
 {

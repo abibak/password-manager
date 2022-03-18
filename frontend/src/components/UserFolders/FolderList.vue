@@ -1,5 +1,5 @@
 <template>
-  <div v-for="(item) of folders" :key="item.id">
+  <div class="block-folder" v-for="(item) of folders" :key="item.id">
     <FolderItem :folder="item"></FolderItem>
   </div>
 </template>

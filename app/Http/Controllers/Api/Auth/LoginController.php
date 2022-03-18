@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
+use App\Exceptions\UserNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
@@ -19,7 +20,7 @@ class LoginController extends Controller
         $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
-            return response()->json(['messages' => $validator->errors()], 401);
+            return response()->json(['messages' => $validator->errors()], 400);
         }
 
         $user = $userRepository->getUserByEmail($request->email ?? '');
@@ -31,6 +32,8 @@ class LoginController extends Controller
             ], 200);
         }
 
-        return response()->json(['messages' => 'User not found'], 401);
+        throw new UserNotFoundException();
+
+        //return response()->json(['messages' => 'User not found'], 401);
     }
 }

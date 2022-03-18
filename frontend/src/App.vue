@@ -6,13 +6,9 @@
 
 <script>
 import 'normalize.css'
-import {mapActions, mapState} from "vuex";
+import {mapActions} from "vuex";
 
 export default {
-  data() {
-    return {}
-  },
-
   mounted() {
     if (localStorage.getItem('authToken')) {
       this.getUserData();
@@ -40,7 +36,14 @@ export default {
   font-weight: 500;
   color: #fff;
   background-color: $backgroundColor;
-  height: 100vh;
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  position: absolute;
+  bottom: -20px;
+  left: 0;
 }
 
 </style>

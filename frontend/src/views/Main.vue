@@ -13,6 +13,12 @@
       </div>
     </div>
 
+    <!--  Form create folder  -->
+    <BaseModal v-bind:show="showForm">
+      <CreateFolderForm @closeForm="closeForm"></CreateFolderForm>
+    </BaseModal>
+    <!--  end form  -->
+
     <div class="main-section">
       <div class="container-main">
         <div class="left-section">
@@ -41,11 +47,17 @@
           <div class="section-user">
             <div class="info-section-user">
               <p>Личный раздел</p>
-              <i class="bi bi-plus-circle"></i>
+              <i class="bi bi-plus-circle" @click="showFormCreateFolder"></i>
             </div>
 
             <div class="user-folders">
               <FolderList :folders="this.dataFolders.data"></FolderList>
+            </div>
+
+
+            <div class="favorite-passwords">
+              <i class="bi bi-star"></i>
+              <span>Избранные пароли</span>
             </div>
           </div>
         </div>
@@ -57,6 +69,8 @@
 
 <script>
 import FolderList from "@/components/UserFolders/FolderList";
+import CreateFolderForm from "@/components/Folder/CreateFolderForm";
+import BaseModal from "@/components/UI/BaseModal";
 import {mapActions, mapState} from "vuex";
 
 export default {
@@ -64,10 +78,14 @@ export default {
 
   components: {
     FolderList,
+    CreateFolderForm,
+    BaseModal,
   },
 
   data() {
-    return {}
+    return {
+      showForm: false,
+    }
   },
 
   mounted() {
@@ -85,6 +103,14 @@ export default {
 
     userData() {
       return Object.create(this.$store.state.auth.userData);
+    },
+
+    showFormCreateFolder() {
+      this.showForm = true;
+    },
+
+    closeForm(val) {
+      this.showForm = val;
     },
   },
 }
@@ -168,30 +194,29 @@ export default {
 
   .main-section {
     width: 100%;
-    height: 100vh;
     background-color: #fff;
     margin-top: 15px;
-    padding: 20px 20px;
+    padding: 0 20px 20px 20px;
     font-weight: 500;
     border-radius: 10px;
     color: #948383;
 
     .container-main {
-      display: inline-block;
-
       .left-section {
-        width: 300px;
+        width: 360px;
+        padding: 20px 20px 0 0;
+        border-right: 1px solid #a3a3a3;
 
         .search-panel {
           display: flex;
           align-items: center;
-          position: relative;
           border-bottom: 1px solid #A3A3A3;
 
           form {
             width: 100%;
 
             .search {
+              width: 100%;
               padding: 5px 0 5px 28px;
               outline: none;
               border: none;
@@ -216,12 +241,35 @@ export default {
           }
         }
 
-        .section-organization, .section-user {
+        .section-organization {
           padding: 15px 0;
           border-bottom: 1px solid #a3a3a3;
+        }
 
+        .section-organization, .section-user {
           .info-org-section, .info-section-user p:first-child {
             color: #000;
+          }
+        }
+
+        .section-user, .favorite-passwords {
+          padding-top: 15px;
+
+          .user-folders {
+            padding-bottom: 15px;
+            border-bottom: 1px solid #a3a3a3;
+          }
+
+          .favorite-passwords {
+            span {
+              padding-left: 5px;
+              cursor: pointer;
+              transform: color, $transTime;
+
+              &:hover {
+                color: #a3a3a3;
+              }
+            }
           }
         }
 
@@ -232,6 +280,7 @@ export default {
           .bi-plus-circle {
             color: #a3a3a3;
             font-size: 22px;
+            z-index: 1;
             cursor: pointer;
             transition: opacity $transTime;
 

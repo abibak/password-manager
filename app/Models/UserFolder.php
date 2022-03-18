@@ -9,7 +9,7 @@ class UserFolder extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['user_id', 'name'];
 
     public function logins()
     {

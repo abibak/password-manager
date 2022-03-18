@@ -21,4 +21,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('user/folders/', 'App\Http\Controllers\Api\UserFolderController');
     Route::get('/getAuth', ['App\Http\Controllers\Api\Auth\AuthController', 'sendUserData']);
     Route::get('logout', ['App\Http\Controllers\Api\Auth\AuthController', 'logout']);
+
+
+    Route::get('/testadmin', function () {
+        return 'aye';
+    })->middleware('admin');
 });

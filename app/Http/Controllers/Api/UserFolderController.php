@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\UserFolderCollection;
 use App\Http\Resources\UserFolderResource;
 use App\Models\UserFolder;
 use App\Repositories\UserFolderRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class UserFolderController extends Controller
 {
@@ -32,11 +32,29 @@ class UserFolderController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
+        $validation = Validator::make($request->all(), [
+            'name' => 'required'
+        ]);
 
+        if (!$validation->fails()) {
+            $folder = UserFolder::create([
+                'user_id' => auth()->user()->id,
+                'name' => $request->name,
+            ]);
+
+            if ($folder) {
+                return response()->json([
+                    'data' => $folder,
+                    'message' => 'Created folder'
+                ], 201);
+            }
+        }
+
+        return response()->json($validation->errors(), 400);
     }
 
     /**
