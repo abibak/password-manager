@@ -1,8 +1,10 @@
 <template>
-    <p class="folder">{{this.folder.name}}</p>
+  <p class="folder" @click="openFolder(this.folder.id)">{{ this.folder.name }}</p>
 </template>
 
 <script>
+import {mapMutations} from "vuex";
+
 export default {
   name: "FolderItem",
 
@@ -12,6 +14,18 @@ export default {
       required: true,
     }
   },
+
+  methods: {
+    ...mapMutations('userFolderData', {
+      setShowSectionSelectedFolder: 'setShowSectionSelectedFolder',
+      setSelectedFolderId: 'setSelectedFolderId',
+    }),
+
+    openFolder(id) {
+      this.setSelectedFolderId(id);
+      this.setShowSectionSelectedFolder(true);
+    },
+  },
 }
 </script>
 
@@ -19,8 +33,8 @@ export default {
 
 .folder {
   word-wrap: break-word;
-  margin-top: 8px;
-  font-weight: 400;
+  margin-top: 5px;
+  color: #a3a3a3;
   cursor: pointer;
 
   &:hover {

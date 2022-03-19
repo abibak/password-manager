@@ -9,7 +9,7 @@ class UserLogin extends Model
 {
     use HasFactory;
 
-    public function userFolder(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function folder()
     {
         return $this->belongsTo(UserFolder::class);
     }

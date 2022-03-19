@@ -18,18 +18,30 @@ class UserLoginSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 0; $i < 10; $i++) {
-            $tags = ['socials', 'admins', 'work'];
+        $tags = ['socials', 'admins', 'work'];
 
+        for ($i = 0; $i < 5; $i++) {
             UserLogin::insert([
-                'user_folder_id' => UserFolder::all()->random()->id,
+                'user_folder_id' => UserFolder::where('user_id', 1)->get()->random()->id,
                 'name' => Str::random(10),
                 'login' => Str::random(6),
                 'password' => Crypt::encryptString(Str::random(10)),
                 'url' => 'example.com',
                 'tag' => collect($tags)->random(),
-                'note' => Str::random(50),
-        ]);
+                'note' => Crypt::encryptString(Str::random(50)),
+            ]);
+        }
+
+        for ($i = 0; $i < 10; $i++) {
+            UserLogin::insert([
+                'user_folder_id' => UserFolder::where('user_id', '!=', 1)->get()->random()->id,
+                'name' => Str::random(10),
+                'login' => Str::random(6),
+                'password' => Crypt::encryptString(Str::random(10)),
+                'url' => 'example.com',
+                'tag' => collect($tags)->random(),
+                'note' => Crypt::encryptString(Str::random(50)),
+            ]);
         }
     }
 }

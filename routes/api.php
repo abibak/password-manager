@@ -17,13 +17,15 @@ Route::get('/login', ['App\Http\Controllers\Api\Auth\LoginController', 'login'])
 Route::post('/login', ['App\Http\Controllers\Api\Auth\LoginController', 'login']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    /* api resource routes */
-    Route::apiResource('user/folders/', 'App\Http\Controllers\Api\UserFolderController');
     Route::get('/getAuth', ['App\Http\Controllers\Api\Auth\AuthController', 'sendUserData']);
     Route::get('logout', ['App\Http\Controllers\Api\Auth\AuthController', 'logout']);
 
+    /* api resource routes */
+    Route::apiResource('user/folder', 'App\Http\Controllers\Api\UserFolderController');
+    Route::apiResource('user/login', 'App\Http\Controllers\Api\UserLoginDataController');
 
-    Route::get('/testadmin', function () {
+
+    /*Route::get('/testadmin', function () {
         return 'aye';
-    })->middleware('admin');
+    })->middleware('admin');*/
 });

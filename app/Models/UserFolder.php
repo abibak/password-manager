@@ -15,4 +15,9 @@ class UserFolder extends Model
     {
         return $this->hasMany(UserLogin::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

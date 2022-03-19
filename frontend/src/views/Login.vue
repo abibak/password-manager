@@ -1,7 +1,7 @@
 <template>
   <div class="site-login">
     <div class="head-login">
-      <i class="fas fa-lock"></i>
+      <i class="bi bi-shield"></i>
       <p class="app-name">Password Manager</p>
     </div>
 
@@ -84,6 +84,7 @@ export default {
 <style lang="scss" scoped>
 .site-login {
   width: 100%;
+  height: 100vh;
   padding-top: 60px;
 
   .head-login {
@@ -96,7 +97,7 @@ export default {
       text-align: center;
     }
 
-    .fa-lock {
+    .bi-shield {
       padding-right: 15px;
       text-align: center;
       font-size: 74px;

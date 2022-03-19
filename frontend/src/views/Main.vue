@@ -51,15 +51,20 @@
             </div>
 
             <div class="user-folders">
+              <!-- Список пользовательских папок -->
               <FolderList :folders="this.dataFolders.data"></FolderList>
             </div>
-
 
             <div class="favorite-passwords">
               <i class="bi bi-star"></i>
               <span>Избранные пароли</span>
             </div>
           </div>
+        </div>
+
+        <div class="right-folder-section">
+          <!-- Отображение секции с открытой папкой -->
+          <SelectedFolderSection v-if="showSectionSelectedFolder"></SelectedFolderSection>
         </div>
       </div>
 
@@ -71,6 +76,7 @@
 import FolderList from "@/components/UserFolders/FolderList";
 import CreateFolderForm from "@/components/Folder/CreateFolderForm";
 import BaseModal from "@/components/UI/BaseModal";
+import SelectedFolderSection from "@/components/UserFolders/SelectedFolderSection";
 import {mapActions, mapState} from "vuex";
 
 export default {
@@ -80,6 +86,7 @@ export default {
     FolderList,
     CreateFolderForm,
     BaseModal,
+    SelectedFolderSection,
   },
 
   data() {
@@ -93,12 +100,12 @@ export default {
   },
 
   computed: {
-    ...mapState('userData', ['dataFolders']),
+    ...mapState('userFolderData', ['dataFolders', 'showSectionSelectedFolder']),
   },
 
   methods: {
     ...mapActions({
-      sendRequestGetFolders: 'userData/sendRequestGetFolders',
+      sendRequestGetFolders: 'userFolderData/sendRequestGetFolders',
     }),
 
     userData() {
@@ -196,21 +203,24 @@ export default {
     width: 100%;
     background-color: #fff;
     margin-top: 15px;
-    padding: 0 20px 20px 20px;
+    padding: 0 0 0 20px;
     font-weight: 500;
     border-radius: 10px;
     color: #948383;
 
     .container-main {
+      display: flex;
+
       .left-section {
-        width: 360px;
-        padding: 20px 20px 0 0;
+        width: 20%;
+        min-height: 800px;
+        padding: 20px 20px 20px 0;
         border-right: 1px solid #a3a3a3;
 
         .search-panel {
           display: flex;
           align-items: center;
-          border-bottom: 1px solid #A3A3A3;
+          border-bottom: 1px solid #a3a3a3;
 
           form {
             width: 100%;
@@ -289,6 +299,10 @@ export default {
             }
           }
         }
+      }
+
+      .right-folder-section {
+        width: 80%;
       }
     }
   }

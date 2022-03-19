@@ -11,14 +11,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .base-button {
-  width: 160px;
-  height: 36px;
+  width: 170px;
+  height: 40px;
   border: none;
   font-size: 16px;
-  text-transform: uppercase;
-  border-radius: 12px;
+  border-radius: 14px;
   background-color: #2683E0;
   color: #fff;
   cursor: pointer;
@@ -28,5 +26,4 @@ export default {
       background-color: rgba(38, 131, 224, .85);
     }
 }
-
 </style>

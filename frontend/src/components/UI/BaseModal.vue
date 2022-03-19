@@ -1,7 +1,9 @@
 <template>
   <transition name="animationForm">
     <div class="modal" v-if="show">
-      <slot></slot>
+      <div class="modal-shadow">
+        <slot></slot>
+      </div>
     </div>
   </transition>
 </template>
@@ -19,6 +21,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.modal-shadow {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  background: rgba(0, 0, 0, .39);
+}
+
 .animationForm-enter-active, .animationForm-leave-active {
   transition: all $transTime;
 }

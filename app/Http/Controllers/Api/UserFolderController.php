@@ -61,11 +61,12 @@ class UserFolderController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function show(int $id)
     {
-        //
+        $folder = UserFolderResource::collection($this->userFolderRepository->getFolderById($id));
+        return response()->json($folder);
     }
 
     /**

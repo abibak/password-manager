@@ -31,6 +31,7 @@ export default {
 }
 
 #app {
+  height: 100vh;
   font-family: 'Manrope', sans-serif;
   font-size: 16px;
   font-weight: 500;
