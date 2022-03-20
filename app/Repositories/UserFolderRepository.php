@@ -20,5 +20,4 @@ class UserFolderRepository extends BaseRepository
     {
         return $this->startCondition()->where(['id' => $id, 'user_id' => auth()->user()->id])->get();
     }
-
 }

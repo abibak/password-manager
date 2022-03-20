@@ -49,6 +49,18 @@ export default {
       }).then(response => {
         commit('setDataLogins', response.data.data);
       })
+    },
+
+    async sendRequestDeleteFolder({commit}, idFolder) {
+      await instance.get(process.env.VUE_APP_API_URL + 'user/folder/' + idFolder, {
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('authToken'),
+        },
+      }).then(response => {
+        console.log(response.data + response.status);
+      }).catch(error => {
+        console.log(error);
+      })
     }
   },
 }

@@ -9,7 +9,7 @@
       <div class="block-info-user">
         <i class="bi bi-bell"></i>
         <span class="user-login">{{ this.userData().login }}</span>
-        <span class="avatar-user">А</span>
+        <span class="avatar-user">t</span>
       </div>
     </div>
 

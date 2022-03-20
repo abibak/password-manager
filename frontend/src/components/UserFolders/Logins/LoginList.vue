@@ -8,9 +8,7 @@
     </div>
 
     <div class="login">
-      <div v-for="(item) of folderData[0].logins">
-        <LoginItem :login="item"></LoginItem>
-      </div>
+      <LoginItem :login="item" v-for="(item) of folderData[0].logins" :key="item.login_id"></LoginItem>
     </div>
   </div>
 </template>
@@ -33,9 +31,14 @@ export default {
 <style lang="scss" scoped>
 .list-login {
   padding: 25px 0 0 20px;
+  font-size: 16px;
 
   .headlines, .login {
     width: 70%;
+  }
+
+  .login {
+    margin-top: 10px;
   }
 
   .headlines {
@@ -47,7 +50,6 @@ export default {
 
     div {
       width: 100%;
-      font-size: 18px;
       text-align: left;
     }
   }

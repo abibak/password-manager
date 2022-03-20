@@ -33,8 +33,12 @@ export default {
   cursor: pointer;
   transition: background-color .18s;
 
+  &:first-child {
+    margin-top: 0;
+  }
+
   &:hover {
-    background-color: rgba(163, 163, 163, .080);
+    background-color: rgba(38, 131, 224, .080);
   }
 
   p {
@@ -51,7 +55,8 @@ export default {
       height: 25px;
       line-height: 25px;
       padding: 0 5px;
-      margin-right: 8px;
+      margin-right: 10px;
+      text-transform: uppercase;
       text-align: center;
       color: #fff;
       border-radius: 6px;

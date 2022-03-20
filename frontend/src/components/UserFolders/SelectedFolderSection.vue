@@ -2,11 +2,13 @@
   <div class="selected-folder-section">
     <div class="container-folder-section">
       <div class="header-info-folder">
-        <p class="name-folder">{{this.getLogins[0].name}}</p>
+        <p class="name-folder">{{ this.getLogins[0].name }}</p>
 
         <div class="unit-folder-control">
-          <div class="icon-control">
+          <div class="icon-control" @click="showSettings = !showSettings">
             <i class="bi bi-three-dots"></i>
+
+            <SettingsFolder v-model:show="showSettings"></SettingsFolder>
           </div>
 
           <BaseButton>Добавить пароль</BaseButton>
@@ -19,13 +21,20 @@
 </template>
 
 <script>
+import {mapActions, mapGetters, mapState} from "vuex";
 import BaseButton from "@/components/UI/BaseButton";
 import LoginList from "@/components/UserFolders/Logins/LoginList";
-import {mapActions, mapGetters, mapState} from "vuex";
+import SettingsFolder from "@/components/Folder/SettingsFolder";
+import BaseModal from "@/components/UI/BaseModal";
 
 export default {
   name: "SelectedFolderSection",
-  components: {BaseButton, LoginList},
+  components: {
+    BaseButton,
+    LoginList,
+    SettingsFolder,
+    BaseModal,
+  },
 
   created() {
     this.sendRequestGetLogins(this.selectedFolderId);
@@ -38,11 +47,19 @@ export default {
 
   data() {
     return {
-      ...mapActions({
-        sendRequestGetLogins: 'userFolderData/sendRequestGetLogins',
-      })
+      showSettings: false,
     }
   },
+
+  methods: {
+    ...mapActions({
+      sendRequestGetLogins: 'userFolderData/sendRequestGetLogins',
+    }),
+
+    closeFolder() {
+      console.log('close');
+    },
+  }
 }
 </script>
 
@@ -75,6 +92,7 @@ export default {
         border-radius: 50%;
         border: 1px solid #2683e0;
         cursor: pointer;
+        position: relative;
       }
 
       .bi-three-dots {
