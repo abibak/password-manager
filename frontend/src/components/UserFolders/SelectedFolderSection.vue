@@ -8,7 +8,7 @@
           <div class="icon-control" @click="showSettings = !showSettings">
             <i class="bi bi-three-dots"></i>
 
-            <SettingsFolder v-model:show="showSettings"></SettingsFolder>
+            <SettingsFolder v-model:show="showSettings" :id-folder="getLogins[0].id"></SettingsFolder>
           </div>
 
           <BaseButton>Добавить пароль</BaseButton>

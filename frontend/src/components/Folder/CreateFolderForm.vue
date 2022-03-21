@@ -7,7 +7,6 @@
       <div class="element-form">
         <label for="name-folder">Имя папки</label>
         <BaseInput id="name-folder" v-model.trim="nameFolder" :style="{borderBottomColor: errorInput}"></BaseInput>
-        <span class="error-message" v-if="errors">{{ this.errors.name[0] }}</span>
       </div>
 
       <BaseButton @click="addFolder">Создать папку</BaseButton>
@@ -16,7 +15,6 @@
 </template>
 
 <script>
-import {instance} from '@/store';
 import {mapActions, mapState} from "vuex";
 import BaseInput from "@/components/UI/BaseInput";
 
@@ -33,36 +31,18 @@ export default {
     }
   },
 
-  computed: {
-    ...mapState(['errors']),
-  },
-
   methods: {
     ...mapActions({
-      sendRequestGetFolders: 'userFolderData/sendRequestGetFolders',
+      sendRequestCreateFolder: 'userFolderData/sendRequestCreateFolder',
     }),
 
-    async addFolder() {
+    addFolder() {
       if (this.nameFolder === '') {
         return this.errorInput = 'red';
       }
 
-      await instance.post(process.env.VUE_APP_API_URL + 'user/folder', {
-        name: this.nameFolder,
-      }, {
-        headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem('authToken'),
-        }
-      }).then(response => {
-        if (response.status === 201) {
-          this.closeForm();
-          this.sendRequestGetFolders();
-        }
-      }).catch(error => {
-        if (error.response?.status === 400) {
-          this.errorInput = 'red';
-        }
-      });
+      this.closeForm();
+      this.sendRequestCreateFolder(this.nameFolder);
     },
 
     closeForm() {
@@ -125,5 +105,4 @@ export default {
     }
   }
 }
-
 </style>

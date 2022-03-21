@@ -27,6 +27,12 @@ export default {
   props: {
     show: {
       type: Boolean,
+      required: true,
+    },
+
+    idFolder: {
+      type: Number,
+      required: true,
     }
   },
 
@@ -35,10 +41,8 @@ export default {
       sendRequestDeleteFolder: 'sendRequestDeleteFolder',
     }),
 
-
     deleteFolder() {
-      return console.log('delete');
-      this.sendRequestDeleteFolder(1);
+      this.sendRequestDeleteFolder(this.idFolder);
     },
   }
 }

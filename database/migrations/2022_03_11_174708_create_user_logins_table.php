@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('user_logins', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_folder_id')->constrained();
+            $table->foreignId('user_folder_id')->constrained()->onDelete('CASCADE');
             $table->string('name', 100);
             $table->string('login', 150);
             $table->string('password');

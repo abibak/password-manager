@@ -51,13 +51,29 @@ export default {
       })
     },
 
-    async sendRequestDeleteFolder({commit}, idFolder) {
-      await instance.get(process.env.VUE_APP_API_URL + 'user/folder/' + idFolder, {
+    async sendRequestCreateFolder({dispatch}, nameFolder) {
+      await instance.post(process.env.VUE_APP_API_URL + 'user/folder', {
+        name: nameFolder,
+      }, {
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('authToken'),
+        }
+      }).then(response => {
+        if (response.status === 201) {
+          dispatch('sendRequestGetFolders');
+        }
+      });
+    },
+
+    async sendRequestDeleteFolder({commit, dispatch}, idFolder) {
+      await instance.delete(process.env.VUE_APP_API_URL + 'user/folder/' + idFolder, {
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('authToken'),
         },
       }).then(response => {
-        console.log(response.data + response.status);
+        commit('setShowSectionSelectedFolder', false);
+        dispatch('sendRequestGetFolders');
+        console.log(response.data, response.status);
       }).catch(error => {
         console.log(error);
       })

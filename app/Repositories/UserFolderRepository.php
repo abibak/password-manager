@@ -20,4 +20,9 @@ class UserFolderRepository extends BaseRepository
     {
         return $this->startCondition()->where(['id' => $id, 'user_id' => auth()->user()->id])->get();
     }
+
+    public function getFolderDelete(int $id)
+    {
+        return $this->startCondition()->where('user_id', auth()->user()->id)->where('id', $id)->delete();
+    }
 }

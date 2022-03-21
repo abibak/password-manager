@@ -8,6 +8,7 @@ use App\Models\UserFolder;
 use App\Repositories\UserFolderRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Mockery\Exception;
 
 class UserFolderController extends Controller
 {
@@ -31,7 +32,7 @@ class UserFolderController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
@@ -60,7 +61,7 @@ class UserFolderController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(int $id)
@@ -72,8 +73,8 @@ class UserFolderController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -84,11 +85,20 @@ class UserFolderController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
+        try {
+            $result = $this->userFolderRepository->getFolderDelete($id);
 
+            if (!$result) {
+                throw new Exception('Error delete');
+            }
+            return response()->json(['message' => 'Deleted'], 200);
+        } catch (Exception $exception) {
+            return response()->json(['message' => $exception->getMessage()], 400);
+        }
     }
 }
