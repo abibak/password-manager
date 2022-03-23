@@ -43,8 +43,8 @@ export default {
       state.showModalRenameFolder = val;
     },
 
-    setNameFolderFromList(state, index, newName) {
-      state.dataFolders.data[index].name = newName;
+    setNameFolderFromList(state, values) {
+      state.dataFolders.data[values[0]].name = values[1];
     },
   },
 
@@ -92,8 +92,7 @@ export default {
 
           for (let i = 0; i < obj.length; i++) {
             if (obj[i].id === state.selectedFolderId) {
-              console.log(response);
-              return commit('setNameFolderFromList', i, val);
+              return commit('setNameFolderFromList', [i, val]);
             }
           }
         }
