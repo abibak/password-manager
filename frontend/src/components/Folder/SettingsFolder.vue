@@ -6,12 +6,12 @@
       <div class="list-settings">
         <div class="action">
           <i class="bi bi-pencil-square"></i>
-          <span>Переименовать</span>
+          <span @click="setShowModalRenameFolder(true)">Переименовать</span>
         </div>
 
-        <div class="action" @click="deleteFolder">
+        <div class="action">
           <i class="bi bi-trash3"></i>
-          <span class="delete-folder">Удалить</span>
+          <span class="delete-folder" @click="setShowModalConfirmDelete(true)">Удалить</span>
         </div>
       </div>
     </div>
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import {mapActions} from "vuex";
+import {mapMutations} from "vuex";
 
 export default {
   name: "SettingsFolder",
@@ -29,21 +29,13 @@ export default {
       type: Boolean,
       required: true,
     },
-
-    idFolder: {
-      type: Number,
-      required: true,
-    }
   },
 
   methods: {
-    ...mapActions('userFolderData', {
-      sendRequestDeleteFolder: 'sendRequestDeleteFolder',
+    ...mapMutations('userFolderData', {
+      setShowModalConfirmDelete: 'setShowModalConfirmDelete',
+      setShowModalRenameFolder: 'setShowModalRenameFolder',
     }),
-
-    deleteFolder() {
-      this.sendRequestDeleteFolder(this.idFolder);
-    },
   }
 }
 </script>

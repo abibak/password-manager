@@ -1,6 +1,7 @@
 <template>
   <div class="create-folder">
-    <i class="bi bi-x" @click="closeForm"></i>
+    <BaseCloseModal @closeModal="closeForm"></BaseCloseModal>
+<!--    <i class="bi bi-x" @click="closeForm"></i>-->
     <p class="name-action">Создать папку</p>
 
     <form @submit.prevent>
@@ -9,13 +10,13 @@
         <BaseInput id="name-folder" v-model.trim="nameFolder" :style="{borderBottomColor: errorInput}"></BaseInput>
       </div>
 
-      <BaseButton @click="addFolder">Создать папку</BaseButton>
+      <BaseButton @click="addFolder">Сохранить</BaseButton>
     </form>
   </div>
 </template>
 
 <script>
-import {mapActions, mapState} from "vuex";
+import {mapActions} from "vuex";
 import BaseInput from "@/components/UI/BaseInput";
 
 export default {
@@ -46,7 +47,7 @@ export default {
     },
 
     closeForm() {
-      this.$emit('closeForm', false);
+      this.$emit('closeForm');
     }
   }
 }
@@ -63,18 +64,6 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-
-  .bi-x {
-    font-size: 34px;
-    cursor: pointer;
-    position: absolute;
-    top: 0;
-    right: 0;
-
-    &:hover {
-      color: #a3a3a3;
-    }
-  }
 
   .name-action {
     font-size: 22px;

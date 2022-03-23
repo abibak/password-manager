@@ -7,33 +7,45 @@
         <div class="unit-folder-control">
           <div class="icon-control" @click="showSettings = !showSettings">
             <i class="bi bi-three-dots"></i>
-
-            <SettingsFolder v-model:show="showSettings" :id-folder="getLogins[0].id"></SettingsFolder>
+            <SettingsFolder v-model:show="showSettings"></SettingsFolder>
           </div>
 
           <BaseButton>Добавить пароль</BaseButton>
         </div>
       </div>
 
+      <!--   Form rename folder   -->
+      <BaseModal :show="showModalRenameFolder">
+        <RenameFolderForm :name-folder="this.getLogins[0].name"></RenameFolderForm>
+      </BaseModal>
+
+      <!--   Confirm delete   -->
+      <BaseModal v-model:show="showModalConfirmDelete">
+        <ConfirmDeleteFolder
+          :name-folder="getLogins[0].name">
+        </ConfirmDeleteFolder>
+      </BaseModal>
+
+      <!--  List logins    -->
       <LoginList :folder-data="this.getLogins"></LoginList>
     </div>
   </div>
 </template>
 
 <script>
-import {mapActions, mapGetters, mapState} from "vuex";
-import BaseButton from "@/components/UI/BaseButton";
+import {mapActions, mapGetters, mapMutations, mapState} from "vuex";
 import LoginList from "@/components/UserFolders/Logins/LoginList";
 import SettingsFolder from "@/components/Folder/SettingsFolder";
-import BaseModal from "@/components/UI/BaseModal";
+import ConfirmDeleteFolder from "@/components/Folder/ConfirmDeleteFolder";
+import RenameFolderForm from "@/components/Folder/RenameFolderForm";
 
 export default {
   name: "SelectedFolderSection",
   components: {
-    BaseButton,
     LoginList,
     SettingsFolder,
-    BaseModal,
+    ConfirmDeleteFolder,
+    RenameFolderForm,
   },
 
   created() {
@@ -41,7 +53,7 @@ export default {
   },
 
   computed: {
-    ...mapState('userFolderData', ['logins', 'selectedFolderId']),
+    ...mapState('userFolderData', ['logins', 'selectedFolderId', 'showModalConfirmDelete', 'showModalRenameFolder']),
     ...mapGetters('userFolderData', ['getLogins']),
   },
 
@@ -55,9 +67,13 @@ export default {
     ...mapActions({
       sendRequestGetLogins: 'userFolderData/sendRequestGetLogins',
     }),
+    ...mapMutations('userFolderData', {
+      setShowModalConfirmDelete: 'setShowModalConfirmDelete',
+      setShowModalRenameFolder: 'setShowModalRenameFolder',
+    }),
 
-    closeFolder() {
-      console.log('close');
+    closeFormRenameFolder() {
+      this.setShowModalRenameFolder(false);
     },
   }
 }

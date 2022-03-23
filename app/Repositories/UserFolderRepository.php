@@ -11,18 +11,28 @@ class UserFolderRepository extends BaseRepository
         return Model::class;
     }
 
+    public function checkPermissions()
+    {
+        return $this->startCondition()->where('user_id', auth()->user()->id);
+    }
+
     public function getDataFoldersWithLogins()
     {
-        return $this->startCondition()->where('user_id', auth()->user()->id)->get();
+        return $this->checkPermissions()->get();
     }
 
     public function getFolderById(int $id)
     {
-        return $this->startCondition()->where(['id' => $id, 'user_id' => auth()->user()->id])->get();
+        return $this->checkPermissions()->where('id', $id)->get();
+    }
+
+    public function getFolderEdit($request, int $id)
+    {
+        return $this->checkPermissions()->where('id', $id)->update(['name' => $request->newName]);
     }
 
     public function getFolderDelete(int $id)
     {
-        return $this->startCondition()->where('user_id', auth()->user()->id)->where('id', $id)->delete();
+        return $this->checkPermissions()->where('id', $id)->delete();
     }
 }

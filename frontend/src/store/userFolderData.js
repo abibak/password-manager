@@ -8,6 +8,8 @@ export default {
     logins: null,
     selectedFolderId: null,
     showSectionSelectedFolder: false,
+    showModalConfirmDelete: false,
+    showModalRenameFolder: false,
   }),
 
   getters: {
@@ -31,7 +33,19 @@ export default {
 
     setShowSectionSelectedFolder(state, val) {
       state.showSectionSelectedFolder = val;
-    }
+    },
+
+    setShowModalConfirmDelete(state, val) {
+      state.showModalConfirmDelete = val;
+    },
+
+    setShowModalRenameFolder(state, val) {
+      state.showModalRenameFolder = val;
+    },
+
+    setNameFolderFromList(state, index, newName) {
+      state.dataFolders.data[index].name = newName;
+    },
   },
 
   actions: {
@@ -40,15 +54,15 @@ export default {
         headers: {'Authorization': 'Bearer ' + localStorage.getItem('authToken')}
       }).then(response => {
         commit('setDataFolders', response.data);
-      })
+      });
     },
 
-    async sendRequestGetLogins({commit}, idFolder) {
-      await instance.get(process.env.VUE_APP_API_URL + 'user/login/' + idFolder, {
+    async sendRequestGetLogins({state, commit}) {
+      await instance.get(process.env.VUE_APP_API_URL + 'user/login/' + state.selectedFolderId, {
         headers: {'Authorization': 'Bearer ' + localStorage.getItem('authToken')}
       }).then(response => {
         commit('setDataLogins', response.data.data);
-      })
+      });
     },
 
     async sendRequestCreateFolder({dispatch}, nameFolder) {
@@ -65,18 +79,36 @@ export default {
       });
     },
 
-    async sendRequestDeleteFolder({commit, dispatch}, idFolder) {
-      await instance.delete(process.env.VUE_APP_API_URL + 'user/folder/' + idFolder, {
+    async sendRequestRenameFolder({commit, state}, val) {
+      await instance.put(process.env.VUE_APP_API_URL + 'user/folder/' + state.selectedFolderId, {
+        newName: val,
+      }, {
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('authToken'),
+        }
+      }).then(response => {
+        if (response.status === 200) {
+          const obj = state.dataFolders.data;
+
+          for (let i = 0; i < obj.length; i++) {
+            if (obj[i].id === state.selectedFolderId) {
+              console.log(response);
+              return commit('setNameFolderFromList', i, val);
+            }
+          }
+        }
+      });
+    },
+
+    async sendRequestDeleteFolder({state, commit, dispatch}) {
+      await instance.delete(process.env.VUE_APP_API_URL + 'user/folder/' + state.selectedFolderId, {
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('authToken'),
         },
-      }).then(response => {
+      }).then(() => {
         commit('setShowSectionSelectedFolder', false);
         dispatch('sendRequestGetFolders');
-        console.log(response.data, response.status);
-      }).catch(error => {
-        console.log(error);
-      })
+      });
     }
   },
 }

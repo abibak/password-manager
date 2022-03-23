@@ -15,7 +15,7 @@
 
     <!--  Form create folder  -->
     <BaseModal v-bind:show="showForm">
-      <CreateFolderForm @closeForm="closeForm"></CreateFolderForm>
+      <CreateFolderForm @closeForm="closeFormCreateFolder"></CreateFolderForm>
     </BaseModal>
     <!--  end form  -->
 
@@ -64,7 +64,7 @@
 
         <div class="right-folder-section">
           <!-- Отображение секции с открытой папкой -->
-          <SelectedFolderSection v-if="showSectionSelectedFolder"></SelectedFolderSection>
+          <SelectedFolderSection v-if="this.showSectionSelectedFolder"></SelectedFolderSection>
         </div>
       </div>
 
@@ -116,8 +116,8 @@ export default {
       this.showForm = true;
     },
 
-    closeForm(val) {
-      this.showForm = val;
+    closeFormCreateFolder() {
+      this.showForm = false;
     },
   },
 }

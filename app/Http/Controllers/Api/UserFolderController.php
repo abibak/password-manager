@@ -75,11 +75,21 @@ class UserFolderController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
-        //
+        try {
+            $folderEdit = $this->userFolderRepository->getFolderEdit($request, $id);
+
+            if (!$folderEdit) {
+                throw new Exception('Error update');
+            }
+
+            return response()->json(['message' => 'Success update'], 200);
+        } catch (Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 400);
+        }
     }
 
     /**
@@ -91,9 +101,9 @@ class UserFolderController extends Controller
     public function destroy($id)
     {
         try {
-            $result = $this->userFolderRepository->getFolderDelete($id);
+            $folderDestroy = $this->userFolderRepository->getFolderDelete($id);
 
-            if (!$result) {
+            if (!$folderDestroy) {
                 throw new Exception('Error delete');
             }
             return response()->json(['message' => 'Deleted'], 200);
