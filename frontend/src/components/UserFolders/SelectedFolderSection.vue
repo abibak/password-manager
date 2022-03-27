@@ -10,12 +10,16 @@
             <SettingsFolder v-model:show="showSettings"></SettingsFolder>
           </div>
 
-          <BaseButton>Добавить пароль</BaseButton>
+          <BaseButton @click="setShowModalAddingPassword(true)">Добавить пароль</BaseButton>
         </div>
       </div>
 
+      <BaseModal v-model:show="showModalAddingPassword">
+        <AddingPasswordForm></AddingPasswordForm>
+      </BaseModal>
+
       <!--   Form rename folder   -->
-      <BaseModal :show="showModalRenameFolder">
+      <BaseModal v-model:show="showModalRenameFolder">
         <RenameFolderForm :name-folder="this.getLogins[0].name"></RenameFolderForm>
       </BaseModal>
 
@@ -38,6 +42,7 @@ import LoginList from "@/components/UserFolders/Logins/LoginList";
 import SettingsFolder from "@/components/Folder/SettingsFolder";
 import ConfirmDeleteFolder from "@/components/Folder/ConfirmDeleteFolder";
 import RenameFolderForm from "@/components/Folder/RenameFolderForm";
+import AddingPasswordForm from "@/components/Folder/AddingPasswordForm";
 
 export default {
   name: "SelectedFolderSection",
@@ -46,6 +51,7 @@ export default {
     SettingsFolder,
     ConfirmDeleteFolder,
     RenameFolderForm,
+    AddingPasswordForm,
   },
 
   created() {
@@ -53,7 +59,13 @@ export default {
   },
 
   computed: {
-    ...mapState('userFolderData', ['logins', 'selectedFolderId', 'showModalConfirmDelete', 'showModalRenameFolder']),
+    ...mapState('userFolderData', [
+      'logins',
+      'selectedFolderId',
+      'showModalConfirmDelete',
+      'showModalRenameFolder',
+      'showModalAddingPassword'
+    ]),
     ...mapGetters('userFolderData', ['getLogins']),
   },
 
@@ -70,6 +82,7 @@ export default {
     ...mapMutations('userFolderData', {
       setShowModalConfirmDelete: 'setShowModalConfirmDelete',
       setShowModalRenameFolder: 'setShowModalRenameFolder',
+      setShowModalAddingPassword: 'setShowModalAddingPassword',
     }),
 
     closeFormRenameFolder() {

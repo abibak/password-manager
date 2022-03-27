@@ -1,7 +1,6 @@
 <template>
   <div class="create-folder">
     <BaseCloseModal @closeModal="closeForm"></BaseCloseModal>
-<!--    <i class="bi bi-x" @click="closeForm"></i>-->
     <p class="name-action">Создать папку</p>
 
     <form @submit.prevent>
@@ -55,11 +54,10 @@ export default {
 
 <style lang="scss" scoped>
 .create-folder {
-  display: inline-block;
   color: #000;
   background-color: #fff;
   border-radius: 10px;
-  padding: 15px;
+  padding: 20px;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -87,8 +85,9 @@ export default {
     }
 
     .base-input {
-      width: 390px;
+      width: 420px;
       padding: 5px 0;
+      background-color: transparent;
       font-size: 16px;
       transition: border-bottom-color $transTime;
     }

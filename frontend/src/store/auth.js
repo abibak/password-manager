@@ -9,7 +9,7 @@ export default {
   namespaced: true,
 
   state: () => ({
-    userData: null,
+    userData: '',
   }),
 
   getters: {},

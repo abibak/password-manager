@@ -26,7 +26,7 @@ class UserFolderRepository extends BaseRepository
         return $this->checkPermissions()->where('id', $id)->get();
     }
 
-    public function getFolderEdit($request, int $id)
+    public function getFolderUpdate($request, int $id)
     {
         return $this->checkPermissions()->where('id', $id)->update(['name' => $request->newName]);
     }

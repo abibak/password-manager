@@ -33,8 +33,8 @@ export default {
 
 .folder {
   word-wrap: break-word;
-  margin-top: 5px;
   color: #a3a3a3;
+  font-weight: 400;
   cursor: pointer;
 
   &:hover {

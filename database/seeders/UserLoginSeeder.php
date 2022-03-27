@@ -28,7 +28,7 @@ class UserLoginSeeder extends Seeder
                 'password' => Crypt::encryptString(Str::random(10)),
                 'url' => 'example.com',
                 'tag' => collect($tags)->random(),
-                'note' => Crypt::encryptString(Str::random(50)),
+                'note' => Crypt::encryptString('test_note' . $i),
             ]);
         }
 
@@ -40,7 +40,7 @@ class UserLoginSeeder extends Seeder
                 'password' => Crypt::encryptString(Str::random(10)),
                 'url' => 'example.com',
                 'tag' => collect($tags)->random(),
-                'note' => Crypt::encryptString(Str::random(50)),
+                'note' => Crypt::encryptString('test_note' . $i),
             ]);
         }
     }

@@ -1,5 +1,5 @@
 <template>
-  <input type="text" class="base-input" @input="updateValue" :value="modelValue" autocomplete="off">
+  <input :type="type" class="base-input" @input="updateValue" :value="modelValue" autocomplete="off">
 </template>
 
 <script>
@@ -9,7 +9,11 @@ export default {
   props: {
     modelValue: {
       type: String,
-    }
+    },
+
+    type: {
+      type: String,
+    },
   },
 
   methods: {
@@ -28,6 +32,11 @@ export default {
   border: none;
   background-color: transparent;
   border-bottom: 1px solid #a3a3a3;
+  transition: border-bottom-color $transTime;
+
+  &:focus {
+    border-bottom-color: $backgroundColor;
+  }
 }
 
 </style>

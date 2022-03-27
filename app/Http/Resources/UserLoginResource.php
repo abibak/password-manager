@@ -16,14 +16,13 @@ class UserLoginResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'login_id' => $this->login_id ?? $this->id,
-            'user_folder_id' => $this->user_folder_id,
-            'name_folder' => $this->name_folder,
+            'id' => (int)$this->id,
+            'user_folder_id' => (int)$this->user_folder_id,
             'name' => $this->name_login ?? $this->name,
             'login' => $this->login,
             'url' => $this->url,
             'tag' => $this->tag,
-            //'note' => Crypt::decryptString($this->note),
+            'note' => Crypt::decryptString($this->note),
             'password' => Crypt::decryptString($this->password),
         ];
     }

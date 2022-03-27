@@ -18,6 +18,12 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.block-folder {
+  margin-top: 5px;
 
+  &:first-child {
+    margin-top: 0;
+  }
+}
 </style>

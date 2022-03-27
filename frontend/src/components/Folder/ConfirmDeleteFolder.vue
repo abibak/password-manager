@@ -56,7 +56,7 @@ export default {
   transform: translate(-50%, -50%);
 
   .container-confirm {
-    padding: 15px;
+    padding: 20px;
     position: relative;
 
     .confirm {

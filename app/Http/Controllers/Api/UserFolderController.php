@@ -26,7 +26,9 @@ class UserFolderController extends Controller
      */
     public function index()
     {
-        return UserFolderResource::collection($this->userFolderRepository->getDataFoldersWithLogins());
+        return UserFolderResource::collection(
+            $this->userFolderRepository->getDataFoldersWithLogins()
+        );
     }
 
     /**
@@ -66,7 +68,10 @@ class UserFolderController extends Controller
      */
     public function show(int $id)
     {
-        $folder = UserFolderResource::collection($this->userFolderRepository->getFolderById($id));
+        $folder = UserFolderResource::collection(
+            $this->userFolderRepository->getFolderById($id)
+        );
+
         return response()->json($folder);
     }
 
@@ -80,7 +85,7 @@ class UserFolderController extends Controller
     public function update(Request $request, int $id)
     {
         try {
-            $folderEdit = $this->userFolderRepository->getFolderEdit($request, $id);
+            $folderEdit = $this->userFolderRepository->getFolderUpdate($request, $id);
 
             if (!$folderEdit) {
                 throw new Exception('Error update');

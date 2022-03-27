@@ -5,11 +5,11 @@ export default {
 
   state: () => ({
     dataFolders: [],
-    logins: null,
     selectedFolderId: null,
     showSectionSelectedFolder: false,
     showModalConfirmDelete: false,
     showModalRenameFolder: false,
+    showModalAddingPassword: false,
   }),
 
   getters: {
@@ -46,6 +46,14 @@ export default {
     setNameFolderFromList(state, values) {
       state.dataFolders.data[values[0]].name = values[1];
     },
+
+    setShowModalAddingPassword(state, val) {
+      state.showModalAddingPassword = val;
+    },
+
+    setPasswordInDataFolder(state, values) {
+      state.dataFolders.data[values.id].logins.push(values.login);
+    },
   },
 
   actions: {
@@ -53,6 +61,7 @@ export default {
       await instance.get(process.env.VUE_APP_API_URL + 'user/folder', {
         headers: {'Authorization': 'Bearer ' + localStorage.getItem('authToken')}
       }).then(response => {
+        console.log(response.data);
         commit('setDataFolders', response.data);
       });
     },
@@ -63,6 +72,42 @@ export default {
       }).then(response => {
         commit('setDataLogins', response.data.data);
       });
+    },
+
+    async sendRequestCreatePassword({state, dispatch, commit}, data) {
+      await instance.post(process.env.VUE_APP_API_URL + 'user/login', {
+        user_folder_id: state.selectedFolderId,
+        name: data.name,
+        login: data.login,
+        password: data.password,
+        url: data.url,
+        note: data.note,
+        tag: data.tags,
+      }, {
+        headers: {'Authorization': 'Bearer ' + localStorage.getItem('authToken')}
+      }).then(response => {
+        if (response.status === 201) {
+          dispatch('searchFolderById').then(data => {
+            return commit('setPasswordInDataFolder', {
+              id: data,
+              login: response.data.data[0],
+            });
+          });
+        }
+      }).catch(error => {
+        console.log(error);
+      })
+    },
+
+    searchFolderById({state}) {
+      const obj = state.dataFolders.data;
+
+      /* поиск папки */
+      for (let i = 0; i < obj.length; i++) {
+        if (obj[i].id === state.selectedFolderId) {
+          return i; // идентификатор по списку объектов dataFolder
+        }
+      }
     },
 
     async sendRequestCreateFolder({dispatch}, nameFolder) {
@@ -79,7 +124,7 @@ export default {
       });
     },
 
-    async sendRequestRenameFolder({commit, state}, val) {
+    async sendRequestRenameFolder({state, dispatch, commit}, val) {
       await instance.put(process.env.VUE_APP_API_URL + 'user/folder/' + state.selectedFolderId, {
         newName: val,
       }, {
@@ -88,13 +133,9 @@ export default {
         }
       }).then(response => {
         if (response.status === 200) {
-          const obj = state.dataFolders.data;
-
-          for (let i = 0; i < obj.length; i++) {
-            if (obj[i].id === state.selectedFolderId) {
-              return commit('setNameFolderFromList', [i, val]);
-            }
-          }
+          dispatch('searchFolderById').then(data => {
+            return commit('setNameFolderFromList', [data, val])
+          });
         }
       });
     },

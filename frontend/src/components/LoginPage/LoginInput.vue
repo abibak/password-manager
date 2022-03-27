@@ -32,12 +32,6 @@ export default {
     updateValue(event) {
       this.$emit('update:modelValue', event.target.value);
     },
-
-    focusIn() {
-    },
-
-    focusOut() {
-    },
   }
 }
 

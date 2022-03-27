@@ -19,9 +19,9 @@ return new class extends Migration
             $table->string('name', 100);
             $table->string('login', 150);
             $table->string('password');
-            $table->string('url', 300);
-            $table->string('tag', 100);
-            $table->string('note', 1000);
+            $table->string('url', 200);
+            $table->string('tag', 50);
+            $table->string('note', 500);
             $table->timestamps();
         });
     }

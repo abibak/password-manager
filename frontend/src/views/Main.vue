@@ -8,8 +8,8 @@
 
       <div class="block-info-user">
         <i class="bi bi-bell"></i>
-        <span class="user-login">{{ this.userData().login }}</span>
-        <span class="avatar-user">t</span>
+        <span class="user-login">{{ userData.login }}</span>
+        <span class="avatar-user">A</span>
       </div>
     </div>
 
@@ -95,11 +95,12 @@ export default {
     }
   },
 
-  mounted() {
+  created() {
     this.sendRequestGetFolders();
   },
 
   computed: {
+    ...mapState('auth', ['userData']),
     ...mapState('userFolderData', ['dataFolders', 'showSectionSelectedFolder']),
   },
 
@@ -107,10 +108,6 @@ export default {
     ...mapActions({
       sendRequestGetFolders: 'userFolderData/sendRequestGetFolders',
     }),
-
-    userData() {
-      return Object.create(this.$store.state.auth.userData);
-    },
 
     showFormCreateFolder() {
       this.showForm = true;
