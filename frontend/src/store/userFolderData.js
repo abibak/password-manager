@@ -6,6 +6,7 @@ export default {
   state: () => ({
     dataFolders: [],
     selectedFolderId: null,
+    selectedLoginId: null,
     showSectionSelectedFolder: false,
     showModalConfirmDelete: false,
     showModalRenameFolder: false,
@@ -14,8 +15,18 @@ export default {
 
   getters: {
     getLogins(state) {
-      return state.dataFolders.data.filter(item => item.id === state.selectedFolderId);
-    }
+      return state.dataFolders.data.filter(folder => folder.id === state.selectedFolderId);
+    },
+
+    getDataOpenLogin(state) {
+      const folder = state.dataFolders.data;
+
+      for (let i = 0; i < folder.length; i++) {
+        if (folder[i].id === state.selectedFolderId) {
+          return folder[i].logins.filter(login => login.id === state.selectedLoginId)[0];
+        }
+      }
+    },
   },
 
   mutations: {
@@ -29,6 +40,10 @@ export default {
 
     setSelectedFolderId(state, id) {
       state.selectedFolderId = id;
+    },
+
+    setSelectedLoginId(state, val) {
+      state.selectedLoginId = val;
     },
 
     setShowSectionSelectedFolder(state, val) {
@@ -61,7 +76,6 @@ export default {
       await instance.get(process.env.VUE_APP_API_URL + 'user/folder', {
         headers: {'Authorization': 'Bearer ' + localStorage.getItem('authToken')}
       }).then(response => {
-        console.log(response.data);
         commit('setDataFolders', response.data);
       });
     },
@@ -84,7 +98,7 @@ export default {
         note: data.note,
         tag: data.tags,
       }, {
-        headers: {'Authorization': 'Bearer ' + localStorage.getItem('authToken')}
+        headers: {'Authorization': 'Bearer ' + localStorage.getItem('authToken'),}
       }).then(response => {
         if (response.status === 201) {
           dispatch('searchFolderById').then(data => {
@@ -95,7 +109,7 @@ export default {
           });
         }
       }).catch(error => {
-        console.log(error);
+        console.log(error.response);
       })
     },
 

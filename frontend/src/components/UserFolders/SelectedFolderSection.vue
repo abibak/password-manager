@@ -18,47 +18,72 @@
         <AddingPasswordForm></AddingPasswordForm>
       </BaseModal>
 
-      <!--   Form rename folder   -->
+      <!--   Форма переименования папки   -->
       <BaseModal v-model:show="showModalRenameFolder">
         <RenameFolderForm :name-folder="this.getLogins[0].name"></RenameFolderForm>
       </BaseModal>
 
-      <!--   Confirm delete   -->
+      <!--   Подтверждение удаления папки   -->
       <BaseModal v-model:show="showModalConfirmDelete">
         <ConfirmDeleteFolder
           :name-folder="getLogins[0].name">
         </ConfirmDeleteFolder>
       </BaseModal>
 
-      <!--  List logins    -->
-      <LoginList :folder-data="this.getLogins"></LoginList>
+      <!--  Список паролей   -->
+      <div class="open-login-container">
+        <LoginList @openLogin="showOpenLogin" :folder-data="this.getLogins"
+                   :width-value="showSelectedLogin.width"></LoginList>
+        <SelectedLogin :show="showSelectedLogin.show"></SelectedLogin>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import {mapActions, mapGetters, mapMutations, mapState} from "vuex";
-import LoginList from "@/components/UserFolders/Logins/LoginList";
+import LoginList from "@/components/UserFolders/Login/LoginList";
 import SettingsFolder from "@/components/Folder/SettingsFolder";
 import ConfirmDeleteFolder from "@/components/Folder/ConfirmDeleteFolder";
 import RenameFolderForm from "@/components/Folder/RenameFolderForm";
 import AddingPasswordForm from "@/components/Folder/AddingPasswordForm";
+import SelectedLogin from "@/components/UserFolders/Login/SelectedLogin";
 
 export default {
   name: "SelectedFolderSection",
+
   components: {
     LoginList,
     SettingsFolder,
     ConfirmDeleteFolder,
     RenameFolderForm,
     AddingPasswordForm,
+    SelectedLogin,
+  },
+
+  data() {
+    return {
+      showSettings: false,
+      showSelectedLogin: {
+        width: 100,
+        show: false,
+      },
+    }
   },
 
   created() {
     this.sendRequestGetLogins(this.selectedFolderId);
   },
 
+  watch: {
+    selectedFolderId() {
+      this.showSelectedLogin.show = false;
+      this.showSelectedLogin.width = 85; // ширина секции паролей
+    }
+  },
+
   computed: {
+    ...mapGetters('userFolderData', ['getLogins']),
     ...mapState('userFolderData', [
       'logins',
       'selectedFolderId',
@@ -66,13 +91,6 @@ export default {
       'showModalRenameFolder',
       'showModalAddingPassword'
     ]),
-    ...mapGetters('userFolderData', ['getLogins']),
-  },
-
-  data() {
-    return {
-      showSettings: false,
-    }
   },
 
   methods: {
@@ -88,12 +106,25 @@ export default {
     closeFormRenameFolder() {
       this.setShowModalRenameFolder(false);
     },
+
+    showOpenLogin() {
+      this.showSelectedLogin.show = true;
+      this.showSelectedLogin.width = 25;
+    },
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .selected-folder-section {
+  .container-folder-section {
+    overflow-x: hidden;
+
+    .open-login-container {
+      display: flex;
+    }
+  }
+
   .name-folder {
     font-size: 24px;
     color: #000;

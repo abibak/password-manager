@@ -1,7 +1,7 @@
 <template>
   <transition name="animationForm">
-    <div class="modal" v-if="show">
-      <div class="modal-shadow">
+    <div class="modal-shadow" v-if="show">
+      <div class="modal">
         <slot></slot>
       </div>
     </div>
@@ -21,6 +21,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.modal {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+}
 
 .modal-shadow {
   height: 100%;

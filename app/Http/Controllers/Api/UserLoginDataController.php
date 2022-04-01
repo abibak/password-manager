@@ -9,6 +9,7 @@ use App\Http\Resources\UserLoginResource;
 use App\Models\UserLogin;
 use App\Repositories\UserLoginRepository;
 use Illuminate\Http\Request;
+use function GuzzleHttp\Promise\all;
 
 class UserLoginDataController extends Controller
 {
@@ -37,7 +38,7 @@ class UserLoginDataController extends Controller
      * @param UserLoginRequest $loginRequest
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(UserLoginRequest $request)
+    public function store(Request $request)
     {
         $folder = $this->userLoginRepository->getUserIdFromFolder($request->user_folder_id);
 

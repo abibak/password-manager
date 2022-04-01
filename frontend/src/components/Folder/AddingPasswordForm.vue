@@ -18,7 +18,7 @@
         </div>
 
         <div class="element-form">
-          <label for="password">Пароль <span class="generate-password">Сгенерировать</span></label>
+          <label for="password">Пароль <span class="generate-password" @click="generatePassword">Сгенерировать</span></label>
           <BaseInput id="password" :type="form.types.password" v-model.trim="form.fields.password"></BaseInput>
           <i :class="form.showPassClass" @click="showPassword"></i>
           <i class="bi bi-gear" @click="showGenerationPassword = true"></i>
@@ -44,7 +44,7 @@
 
         <div class="element-form input-file">
           <label for="file"><i class="bi bi-plus-circle"></i>Выбрать файл</label>
-          <input type="file" id="file">
+          <input type="file" id="file" ref="input-file" @change="fileUpload">
         </div>
 
         <BaseButton @click="sendDataForm(), setShowModalAddingPassword(false)">Сохранить</BaseButton>
@@ -107,7 +107,14 @@ export default {
       setShowModalAddingPassword: 'setShowModalAddingPassword',
     }),
 
+    fileUpload() {
+      this.form.fields.file = this.$refs['input-file'].files[0];
+    },
+
     sendDataForm() {
+     /* let formData = new FormData();
+      formData.append('file', this.form.fields.file);*/
+
       this.sendRequestCreatePassword(this.form.fields);
     },
 
@@ -119,6 +126,10 @@ export default {
 
       this.form.showPassClass = 'bi bi-eye';
       return this.form.types.password = 'password';
+    },
+
+    generatePassword() {
+      console.log(this.$refs);
     },
 
     setPassword(password) {

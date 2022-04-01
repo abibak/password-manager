@@ -1,13 +1,15 @@
 <template>
-  <div class="login-item">
+  <div class="login-item" ref="loginItem" @click="selectLogin" :style="loginItemStyles">
     <p><span class="short-name">{{ login.name[0] }}</span>{{ login.name }}</p>
-    <p>{{ login.login }}</p>
-    <p>{{ login.url }}</p>
-    <p>{{ login.tag }}</p>
+    <p class="attribute-login" v-if="showAttributes">{{ login.login }}</p>
+    <p class="attribute-login" v-if="showAttributes">{{ login.url }}</p>
+    <p class="attribute-login" v-if="showAttributes">{{ login.tag }}</p>
   </div>
 </template>
 
 <script>
+import {mapMutations, mapState} from "vuex";
+
 export default {
   name: "LoginItem",
 
@@ -15,13 +17,50 @@ export default {
     login: {
       type: Object,
       required: true,
+    },
+
+    showAttributes: {
+      type: Boolean,
+      required: true,
     }
-  }
+  },
+
+  data() {
+    return {
+      loginItemStyles: {
+        backgroundColor: '',
+      }
+    }
+  },
+
+  watch: {
+    selectedLoginId() {
+    },
+
+    showAttributes() {
+    },
+  },
+
+  computed: {
+    ...mapState('userFolderData', ['selectedLoginId']),
+  },
+
+  methods: {
+    ...mapMutations('userFolderData', {
+      setSelectedLoginId: 'setSelectedLoginId',
+    }),
+
+    selectLogin() {
+      this.loginItemStyles.backgroundColor = 'rgba(38, 131, 224, .080)';
+      this.setSelectedLoginId(this.login.id);
+    },
+  },
 }
 </script>
 
 <style lang="scss" scoped>
 .login-item {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -32,6 +71,10 @@ export default {
   font-weight: 400;
   cursor: pointer;
   transition: background-color .18s;
+
+  .attribute-login {
+    transition: opacity $transTime;
+  }
 
   &:first-child {
     margin-top: 0;
