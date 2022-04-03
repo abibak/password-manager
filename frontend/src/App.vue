@@ -36,6 +36,7 @@ export default {
   font-size: 16px;
   font-weight: 500;
   color: #fff;
+  overflow-x: hidden;
   background-color: $backgroundColor;
 }
 

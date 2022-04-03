@@ -15,21 +15,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.bi-x {
+  font-size: 34px;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
+  -o-transition: color $transTime;
+  -webkit-transition: color $transTime;
+  -moz-transition: color $transTime;
+  transition: color $transTime;
 
-
-  .bi-x {
-    font-size: 34px;
-    cursor: pointer;
-    position: absolute;
-    top: 0;
-    right: 0;
-    -o-transition: color $transTime;
-    -webkit-transition: color $transTime;
-    -moz-transition: color $transTime;
-    transition: color $transTime;
-
-    &:hover {
-      color: #a3a3a3;
-    }
+  &:hover {
+    color: #a3a3a3;
   }
+}
 </style>

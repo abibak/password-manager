@@ -33,8 +33,8 @@
       <!--  Список паролей   -->
       <div class="open-login-container">
         <LoginList @openLogin="showOpenLogin" :folder-data="this.getLogins"
-                   :width-value="showSelectedLogin.width"></LoginList>
-        <SelectedLogin :show="showSelectedLogin.show"></SelectedLogin>
+                   :width-value="loginListWidth"></LoginList>
+        <SelectedLogin @close="closeLoginView" :show="showSelectedLogin.show"></SelectedLogin>
       </div>
     </div>
   </div>
@@ -64,8 +64,9 @@ export default {
   data() {
     return {
       showSettings: false,
+      loginListWidth: 80,
+
       showSelectedLogin: {
-        width: 100,
         show: false,
       },
     }
@@ -77,8 +78,7 @@ export default {
 
   watch: {
     selectedFolderId() {
-      this.showSelectedLogin.show = false;
-      this.showSelectedLogin.width = 85; // ширина секции паролей
+      this.closeLoginView();
     }
   },
 
@@ -109,7 +109,12 @@ export default {
 
     showOpenLogin() {
       this.showSelectedLogin.show = true;
-      this.showSelectedLogin.width = 25;
+      this.loginListWidth = 40; // ширина при просмотре
+    },
+
+    closeLoginView() {
+      this.showSelectedLogin.show = false;
+      this.loginListWidth = 80; // ширина секции паролей по умолчанию
     },
   }
 }
@@ -118,8 +123,6 @@ export default {
 <style lang="scss" scoped>
 .selected-folder-section {
   .container-folder-section {
-    overflow-x: hidden;
-
     .open-login-container {
       display: flex;
     }

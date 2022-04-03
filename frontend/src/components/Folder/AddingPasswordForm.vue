@@ -7,39 +7,39 @@
 
       <form @submit.prevent>
         <div class="element-form">
-          <label for="name">Название</label>
-          <BaseInput id="name-name" v-model.trim="form.fields.name" :value="form.fields.name"></BaseInput>
+          <label for="addName">Название</label>
+          <BaseInput id="addName" v-model.trim="form.fields.name" :value="form.fields.name"></BaseInput>
         </div>
 
         <div class="element-form">
-          <label for="login">Логин</label>
-          <BaseInput id="login" v-model.trim="form.fields.login"></BaseInput>
+          <label for="addLogin">Логин</label>
+          <BaseInput id="addLogin" v-model.trim="form.fields.login"></BaseInput>
           <i class="bi bi-clipboard"></i>
         </div>
 
         <div class="element-form">
-          <label for="password">Пароль <span class="generate-password" @click="generatePassword">Сгенерировать</span></label>
-          <BaseInput id="password" :type="form.types.password" v-model.trim="form.fields.password"></BaseInput>
+          <label for="addPassword">Пароль <span class="generate-password" @click="generatePassword">Сгенерировать</span></label>
+          <BaseInput id="addPassword" :type="form.types.password" v-model.trim="form.fields.password"></BaseInput>
           <i :class="form.showPassClass" @click="showPassword"></i>
           <i class="bi bi-gear" @click="showGenerationPassword = true"></i>
           <i class="bi bi-clipboard"></i>
         </div>
 
         <div class="element-form">
-          <label for="url">URL</label>
-          <BaseInput id="url" v-model.trim="form.fields.url"></BaseInput>
+          <label for="addUrl">URL</label>
+          <BaseInput id="addUrl" v-model.trim="form.fields.url"></BaseInput>
           <i class="bi bi-clipboard"></i>
         </div>
 
         <div class="element-form">
-          <label for="tag">Теги</label>
-          <BaseInput id="tag" placeholder="social, admin" v-model.trim="form.fields.tags"></BaseInput>
+          <label for="addTag">Теги</label>
+          <BaseInput id="addTag" placeholder="social, admin" v-model.trim="form.fields.tags"></BaseInput>
           <i class="bi bi-clipboard"></i>
         </div>
 
         <div class="element-form">
-          <label for="note">Заметка</label>
-          <textarea id="note" v-model.trim="form.fields.note"></textarea>
+          <label for="addNote">Заметка</label>
+          <textarea id="addNote" v-model.trim="form.fields.note"></textarea>
         </div>
 
         <div class="element-form input-file">

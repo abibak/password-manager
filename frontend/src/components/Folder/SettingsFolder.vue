@@ -44,6 +44,7 @@ export default {
 .settings-folder {
   background-color: #fff;
   color: #000;
+  z-index: 11;
   box-shadow: 0 0 6px 1px #a3a3a3;
   border-radius: 10px;
   position: absolute;

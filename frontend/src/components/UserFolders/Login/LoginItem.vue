@@ -72,16 +72,16 @@ export default {
   cursor: pointer;
   transition: background-color .18s;
 
-  .attribute-login {
-    transition: opacity $transTime;
-  }
-
   &:first-child {
     margin-top: 0;
   }
 
   &:hover {
     background-color: rgba(38, 131, 224, .080);
+  }
+
+  .attribute-login {
+    transition: opacity $transTime;
   }
 
   p {

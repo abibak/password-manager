@@ -63,10 +63,10 @@ export default {
   padding: 25px 20px 0 20px;
   border-right: 1px solid #a3a3a3;
   font-size: 16px;
-  transition: width .4s;
+  transition: width .45s;
 
   .headlines, .login {
-    width: 70%;
+    width: 75%;
   }
 
   .login {

@@ -23,9 +23,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     /* api resource routes */
     Route::apiResource('user/folder', 'App\Http\Controllers\Api\UserFolderController');
     Route::apiResource('user/login', 'App\Http\Controllers\Api\UserLoginDataController');
+    Route::apiResource('user/organization/folder', 'App\Http\Controllers\Api\OrganizationFolderController');
 
 
     /*Route::get('/testadmin', function () {
-        return 'aye';
+        return 'test';
     })->middleware('admin');*/
 });

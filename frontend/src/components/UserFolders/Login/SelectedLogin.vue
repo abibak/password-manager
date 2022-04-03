@@ -1,6 +1,8 @@
 <template>
-  <div class="selected-login" v-if="show">
+  <div class="selected-login" v-if="show" :style="{width: widthValue + '%'}">
     <div class="container-selected-login">
+      <BaseCloseModal @click="close"></BaseCloseModal>
+
       <div class="info-login">
         <p class="name-login">
           <span class="short-name">{{ this.getDataOpenLogin.name.charAt(0) }}</span>
@@ -9,7 +11,13 @@
       </div>
 
       <div class="icon-actions">
-        <i class="bi bi-person-plus"></i>
+        <div class="icon-control">
+          <i class="bi bi-pencil-square"></i>
+        </div>
+
+        <div class="icon-control" @click="showSettings = !showSettings">
+          <i class="bi bi-three-dots"></i>
+        </div>
       </div>
 
       <div class="list-actions-login">
@@ -21,7 +29,7 @@
         <form>
           <div class="element-form">
             <label for="name">Название</label>
-            <BaseInput id="name-name" :value="getDataOpenLogin.name" disabled></BaseInput>
+            <BaseInput id="name" :value="getDataOpenLogin.name" disabled></BaseInput>
           </div>
 
           <div class="element-form">
@@ -72,28 +80,46 @@ export default {
   },
 
   data() {
-    return {}
+    return {
+      widthValue: 25,
+    }
   },
 
-  created() {
-    console.log(this.getDataOpenLogin);
+  watch: {
+    show() {
+      if (this.show) {
+        setTimeout(() => {
+          return this.widthValue = 60;
+        }, 1)
+      }
+      this.widthValue = 25;
+    },
   },
 
   computed: {
     ...mapGetters('userFolderData', {
       setSelectedLoginId: 'setSelectedLoginId',
       getDataOpenLogin: 'getDataOpenLogin',
-    })
+    }),
   },
 
-  methods: {},
+  methods: {
+    close() {
+      this.$emit('close');
+    },
+  },
 }
 </script>
 
 <style lang="scss" scoped>
 .selected-login {
+  transition: width .45s;
+
   .container-selected-login {
-    padding: 25px 0 0 20px;
+    width: 100%;
+    padding: 25px 20px 0 20px;
+    position: relative;
+    top: 0;
 
     .info-login {
       .name-login {
@@ -116,9 +142,61 @@ export default {
       }
     }
 
+    .icon-actions, .list-actions-login, .element-form {
+      width: 65%;
+    }
+
+    .icon-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+
+      i {
+        font-size: 22px;
+        color: #2683e0;
+      }
+
+      .icon-control {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 26px;
+        height: 26px;
+        padding: 16px;
+        margin-left: 8px;
+        border-radius: 50%;
+        border: 1px solid #2683e0;
+        cursor: pointer;
+      }
+    }
+
+    .list-actions-login {
+      font-weight: 400;
+      display: inline-block;
+      padding-bottom: 10px;
+      font-size: 20px;
+      color: #000;
+      border-bottom: 2px solid rgba(163, 163, 163, .3);
+
+      .action {
+        margin-right: 15px;
+        padding-bottom: 8px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #fff;
+        }
+      }
+
+      .action:first-child {
+        border-bottom: 2px solid $backgroundColor;
+      }
+    }
+
     form {
+      padding-top: 10px;
+
       .element-form {
-        width: 440px;
         margin-top: 20px;
         position: relative;
 
@@ -132,8 +210,9 @@ export default {
 
         textarea {
           display: block;
-          max-width: 440px;
-          min-width: 100%;
+          width: 100%;
+          max-width: 100%;
+          min-width: 20%;
           max-height: 350px;
           min-height: 100px;
           outline: none;

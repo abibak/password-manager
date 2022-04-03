@@ -33,7 +33,7 @@
           <div class="section-organization">
             <div class="info-org-section">
               <p>Раздел организации</p>
-              <i class="bi bi-plus-circle"></i>
+              <i class="bi bi-plus-circle" v-if="userData.is_admin"></i>
             </div>
 
             <div class="organization-folders">
@@ -122,13 +122,15 @@ export default {
 
 <style lang="scss" scoped>
 .site-main {
+  margin: auto;
+  width: 92%;
   font-size: 18px;
   padding: 15px 15px;
 
   .header-main {
     display: flex;
     justify-content: space-between;
-    padding: 0 15px;
+    padding: 0 20px;
 
     .block-app-naming {
       display: flex;
@@ -209,7 +211,7 @@ export default {
       display: flex;
 
       .left-section {
-        width: 20%;
+        width: 25%;
         min-height: 800px;
         padding: 20px 20px 20px 0;
         border-right: 1px solid #a3a3a3;
