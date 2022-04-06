@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class AccessOrganizationFolder extends Model
 {
     use HasFactory;
+
+    public function user()
+    {
+        return $this->belongsTo(OrganizationFolder::class);
+    }
 }

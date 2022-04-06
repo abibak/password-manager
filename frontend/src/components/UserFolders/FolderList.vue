@@ -1,6 +1,6 @@
 <template>
   <div class="block-folder" v-for="(item) of folders" :key="item.id">
-    <FolderItem :folder="item"></FolderItem>
+    <FolderItem :folder="item" :type-folder="typeFolder"></FolderItem>
   </div>
 </template>
 
@@ -14,7 +14,16 @@ export default {
     FolderItem,
   },
 
-  props: ['folders']
+  props: {
+    folders: {
+      type: Object
+    },
+
+    typeFolder: {
+      type: String,
+      required: true,
+    }
+  }
 }
 </script>
 

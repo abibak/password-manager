@@ -7,7 +7,6 @@ export default {
     dataFolders: [],
     selectedFolderId: null,
     selectedLoginId: null,
-    showSectionSelectedFolder: false,
     showModalConfirmDelete: false,
     showModalRenameFolder: false,
     showModalAddingPassword: false,
@@ -34,20 +33,12 @@ export default {
       state.dataFolders = data;
     },
 
-    setDataLogins(state, data) {
-      state.logins = data;
-    },
-
     setSelectedFolderId(state, id) {
       state.selectedFolderId = id;
     },
 
     setSelectedLoginId(state, val) {
       state.selectedLoginId = val;
-    },
-
-    setShowSectionSelectedFolder(state, val) {
-      state.showSectionSelectedFolder = val;
     },
 
     setShowModalConfirmDelete(state, val) {
@@ -80,13 +71,13 @@ export default {
       });
     },
 
-    async sendRequestGetLogins({state, commit}) {
+    /*async sendRequestGetLogins({state, commit}) {
       await instance.get(process.env.VUE_APP_API_URL + 'user/login/' + state.selectedFolderId, {
         headers: {'Authorization': 'Bearer ' + localStorage.getItem('authToken')}
       }).then(response => {
         commit('setDataLogins', response.data.data);
       });
-    },
+    },*/
 
     async sendRequestCreatePassword({state, dispatch, commit}, data) {
       await instance.post(process.env.VUE_APP_API_URL + 'user/login', {

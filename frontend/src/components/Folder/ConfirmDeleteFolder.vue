@@ -28,8 +28,8 @@ export default {
   },
 
   methods: {
-    ...mapMutations('userFolderData', ['setShowModalConfirmDelete']),
-    ...mapActions('userFolderData', ['sendRequestDeleteFolder'],),
+    ...mapMutations('userFolder', ['setShowModalConfirmDelete']),
+    ...mapActions('userFolder', ['sendRequestDeleteFolder'],),
 
     deleteFolder() {
       this.setShowModalConfirmDelete(false);

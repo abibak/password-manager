@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import {mapMutations} from "vuex";
+import {mapMutations, mapState} from "vuex";
 
 export default {
   name: "FolderItem",
@@ -12,17 +12,42 @@ export default {
     folder: {
       type: Object,
       required: true,
+    },
+
+    typeFolder: {
+      type: String,
+      required: true,
     }
   },
 
+  computed: {
+    ...mapState('userFolder', ['selectedFolderId']),
+    ...mapState('organizationFolder', ['selectedOrgFolderId']),
+  },
+
   methods: {
-    ...mapMutations('userFolderData', {
+    ...mapMutations({
       setShowSectionSelectedFolder: 'setShowSectionSelectedFolder',
+      setTypeFolder: 'setTypeFolder',
+    }),
+    ...mapMutations('userFolder', {
       setSelectedFolderId: 'setSelectedFolderId',
+    }),
+    ...mapMutations('organizationFolder', {
+      setSelectedOrgFolderId: 'setSelectedOrgFolderId',
     }),
 
     openFolder(id) {
-      this.setSelectedFolderId(id);
+      if (this.typeFolder === 'orgFolder') {
+        this.setSelectedOrgFolderId(id);
+        this.setSelectedFolderId(null);
+        this.setTypeFolder(this.typeFolder);
+      } else {
+        this.setSelectedFolderId(id);
+        this.setSelectedOrgFolderId(null);
+        this.setTypeFolder(this.typeFolder);
+      }
+
       this.setShowSectionSelectedFolder(true);
     },
   },
@@ -30,7 +55,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .folder {
   word-wrap: break-word;
   color: #a3a3a3;
@@ -41,5 +65,4 @@ export default {
     opacity: .8;
   }
 }
-
 </style>

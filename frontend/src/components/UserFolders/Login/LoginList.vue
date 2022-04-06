@@ -42,11 +42,15 @@ export default {
   watch: {
     selectedFolderId() {
       this.hideHeadlines = true;
+    },
+    selectedOrgFolderId() {
+      this.hideHeadlines = true;
     }
   },
 
   computed: {
-    ...mapState('userFolderData', ['selectedFolderId']),
+    ...mapState('userFolder', ['selectedFolderId']),
+    ...mapState('userFolder', ['selectedOrgFolderId']),
   },
 
   methods: {

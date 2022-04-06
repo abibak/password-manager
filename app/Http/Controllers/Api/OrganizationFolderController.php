@@ -3,18 +3,31 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\OrganizationFolderCollection;
+use App\Http\Resources\OrganizationFolderResource;
+use App\Models\OrganizationFolder;
+use App\Repositories\OrganizationFolderRepository;
 use Illuminate\Http\Request;
 
 class OrganizationFolderController extends Controller
 {
+    protected $organizationFolderRepository;
+
+    public function __construct()
+    {
+        $this->organizationFolderRepository = new OrganizationFolderRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index()
     {
-        //
+        return OrganizationFolderResource::collection(
+            $this->organizationFolderRepository->getDataFoldersWithLogins()
+        );
     }
 
     /**

@@ -1,8 +1,9 @@
 <template>
   <div class="selected-folder-section">
     <div class="container-folder-section">
+
       <div class="header-info-folder">
-        <p class="name-folder">{{ this.getLogins[0].name }}</p>
+        <p class="name-folder">{{ this.currentFolder[0].name }}</p>
 
         <div class="unit-folder-control">
           <div class="icon-control" @click="showSettings = !showSettings">
@@ -18,21 +19,21 @@
         <AddingPasswordForm></AddingPasswordForm>
       </BaseModal>
 
-      <!--   Форма переименования папки   -->
+      <!--    орма переименования папки    -->
       <BaseModal v-model:show="showModalRenameFolder">
-        <RenameFolderForm :name-folder="this.getLogins[0].name"></RenameFolderForm>
+        <RenameFolderForm :name-folder="this.currentFolder[0].name"></RenameFolderForm>
       </BaseModal>
 
-      <!--   Подтверждение удаления папки   -->
+      <!--    Подтверждение удаления папки    -->
       <BaseModal v-model:show="showModalConfirmDelete">
         <ConfirmDeleteFolder
           :name-folder="getLogins[0].name">
         </ConfirmDeleteFolder>
       </BaseModal>
 
-      <!--  Список паролей   -->
+      <!--    Список паролей    -->
       <div class="open-login-container">
-        <LoginList @openLogin="showOpenLogin" :folder-data="this.getLogins"
+        <LoginList @openLogin="showOpenLogin" :folder-data="this.currentFolder"
                    :width-value="loginListWidth"></LoginList>
         <SelectedLogin @close="closeLoginView" :show="showSelectedLogin.show"></SelectedLogin>
       </div>
@@ -63,8 +64,11 @@ export default {
 
   data() {
     return {
+      currentFolder: '',
+
       showSettings: false,
       loginListWidth: 80,
+      logins: '',
 
       showSelectedLogin: {
         show: false,
@@ -73,31 +77,46 @@ export default {
   },
 
   created() {
-    this.sendRequestGetLogins(this.selectedFolderId);
+    if (this.typeFolder === 'orgFolder') {
+      this.currentFolder = this.getOrgLogins;
+    } else if (this.typeFolder === 'userFolder') {
+      this.currentFolder = this.getLogins;
+    }
   },
 
   watch: {
     selectedFolderId() {
-      this.closeLoginView();
-    }
+      if (this.selectedFolderId === null) {
+        return this.closeLoginView();
+      }
+
+      this.currentFolder = this.getLogins;
+    },
+
+    selectedOrgFolderId() {
+      if (this.selectedOrgFolderId === null) {
+        return this.closeLoginView();
+      }
+
+      this.currentFolder = this.getOrgLogins;
+    },
   },
 
   computed: {
-    ...mapGetters('userFolderData', ['getLogins']),
-    ...mapState('userFolderData', [
-      'logins',
+    ...mapState(['typeFolder']),
+    ...mapState('organizationFolder', ['selectedOrgFolderId']),
+    ...mapState('userFolder', [
       'selectedFolderId',
       'showModalConfirmDelete',
       'showModalRenameFolder',
       'showModalAddingPassword'
     ]),
+    ...mapGetters('userFolder', ['getLogins']),
+    ...mapGetters('organizationFolder', ['getOrgLogins']), // organization namespace
   },
 
   methods: {
-    ...mapActions({
-      sendRequestGetLogins: 'userFolderData/sendRequestGetLogins',
-    }),
-    ...mapMutations('userFolderData', {
+    ...mapMutations('userFolder', {
       setShowModalConfirmDelete: 'setShowModalConfirmDelete',
       setShowModalRenameFolder: 'setShowModalRenameFolder',
       setShowModalAddingPassword: 'setShowModalAddingPassword',

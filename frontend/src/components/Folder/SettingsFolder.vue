@@ -32,7 +32,7 @@ export default {
   },
 
   methods: {
-    ...mapMutations('userFolderData', {
+    ...mapMutations('userFolder', {
       setShowModalConfirmDelete: 'setShowModalConfirmDelete',
       setShowModalRenameFolder: 'setShowModalRenameFolder',
     }),

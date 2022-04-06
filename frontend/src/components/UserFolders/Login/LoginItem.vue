@@ -33,26 +33,27 @@ export default {
     }
   },
 
-  watch: {
-    selectedLoginId() {
-    },
-
-    showAttributes() {
-    },
-  },
-
   computed: {
-    ...mapState('userFolderData', ['selectedLoginId']),
+    ...mapState('userFolder', ['selectedLoginId']),
+    ...mapState(['typeFolder']),
   },
 
   methods: {
-    ...mapMutations('userFolderData', {
+    ...mapMutations('userFolder', {
       setSelectedLoginId: 'setSelectedLoginId',
+    }),
+    ...mapMutations('organizationFolder', {
+      setSelectedOrgLoginId: 'setSelectedOrgLoginId',
     }),
 
     selectLogin() {
+      if (this.typeFolder === 'orgFolder') {
+        return this.setSelectedOrgLoginId(this.login.id);
+      } else {
+        this.setSelectedLoginId(this.login.id);
+      }
+
       this.loginItemStyles.backgroundColor = 'rgba(38, 131, 224, .080)';
-      this.setSelectedLoginId(this.login.id);
     },
   },
 }

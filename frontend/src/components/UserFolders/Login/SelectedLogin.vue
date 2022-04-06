@@ -3,10 +3,12 @@
     <div class="container-selected-login">
       <BaseCloseModal @click="close"></BaseCloseModal>
 
+      {{currentLogin}}
+
       <div class="info-login">
         <p class="name-login">
-          <span class="short-name">{{ this.getDataOpenLogin.name.charAt(0) }}</span>
-          {{ this.getDataOpenLogin.name }}
+          <span class="short-name">{{ this.currentLogin.name.charAt(0) }}</span>
+          {{ this.currentLogin.name }}
         </p>
       </div>
 
@@ -29,36 +31,36 @@
         <form>
           <div class="element-form">
             <label for="name">Название</label>
-            <BaseInput id="name" :value="getDataOpenLogin.name" disabled></BaseInput>
+            <BaseInput id="name" :value="currentLogin.name" disabled></BaseInput>
           </div>
 
           <div class="element-form">
             <label for="login">Логин</label>
-            <BaseInput id="login" :value="getDataOpenLogin.login" disabled></BaseInput>
+            <BaseInput id="login" :value="currentLogin.login" disabled></BaseInput>
             <i class="bi bi-clipboard"></i>
           </div>
 
           <div class="element-form">
             <label for="password">Пароль</label>
-            <BaseInput id="password" :value="getDataOpenLogin.password" disabled></BaseInput>
+            <BaseInput id="password" :value="currentLogin.password" disabled></BaseInput>
             <i class="bi bi-clipboard"></i>
           </div>
 
           <div class="element-form">
             <label for="url">URL</label>
-            <BaseInput id="url" :value="getDataOpenLogin.url" disabled></BaseInput>
+            <BaseInput id="url" :value="currentLogin.url" disabled></BaseInput>
             <i class="bi bi-clipboard"></i>
           </div>
 
           <div class="element-form">
             <label for="tag">Теги</label>
-            <BaseInput id="tag" :value="getDataOpenLogin.tag" disabled></BaseInput>
+            <BaseInput id="tag" :value="currentLogin.tag" disabled></BaseInput>
             <i class="bi bi-clipboard"></i>
           </div>
 
           <div class="element-form">
             <label for="note">Заметка</label>
-            <textarea id="note" :value="getDataOpenLogin.note" disabled></textarea>
+            <textarea id="note" :value="currentLogin.note" disabled></textarea>
           </div>
         </form>
       </div>
@@ -67,7 +69,7 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import {mapGetters, mapState} from "vuex";
 
 export default {
   name: "SelectedLogin",
@@ -81,6 +83,7 @@ export default {
 
   data() {
     return {
+      currentLogin: '',
       widthValue: 25,
     }
   },
@@ -94,12 +97,23 @@ export default {
       }
       this.widthValue = 25;
     },
+
+    getDataOpenLogin() {
+      this.currentLogin = this.getDataOpenLogin;
+    },
+
+    getDataOrgOpenLogin() {
+      this.currentLogin = this.getDataOrgOpenLogin;
+    }
   },
 
   computed: {
-    ...mapGetters('userFolderData', {
-      setSelectedLoginId: 'setSelectedLoginId',
+    ...mapState(['typeFolder']),
+    ...mapGetters('userFolder', {
       getDataOpenLogin: 'getDataOpenLogin',
+    }),
+    ...mapGetters('organizationFolder', {
+      getDataOrgOpenLogin: 'getDataOrgOpenLogin',
     }),
   },
 

@@ -44,9 +44,9 @@ export default {
 
   methods: {
     ...mapActions({
-      sendRequestRenameFolder: 'userFolderData/sendRequestRenameFolder',
+      sendRequestRenameFolder: 'userFolder/sendRequestRenameFolder',
     }),
-    ...mapMutations('userFolderData', {
+    ...mapMutations('userFolder', {
       setShowModalRenameFolder: 'setShowModalRenameFolder',
     }),
 

@@ -37,10 +37,7 @@
             </div>
 
             <div class="organization-folders">
-              <p class="org-folder">Пароли компании</p>
-              <p class="org-folder">Пользователи</p>
-              <p class="org-folder">Клиенты</p>
-              <p class="org-folder">IT</p>
+              <FolderList :folders="this.dataOrganizationFolders.data" :type-folder="`orgFolder`"></FolderList>
             </div>
           </div>
 
@@ -52,7 +49,7 @@
 
             <div class="user-folders">
               <!-- Список пользовательских папок -->
-              <FolderList :folders="this.dataFolders.data"></FolderList>
+              <FolderList :folders="this.dataFolders.data" :type-folder="`userFolder`"></FolderList>
             </div>
 
             <div class="favorite-passwords">
@@ -76,7 +73,7 @@
 import FolderList from "@/components/UserFolders/FolderList";
 import CreateFolderForm from "@/components/Folder/CreateFolderForm";
 import BaseModal from "@/components/UI/BaseModal";
-import SelectedFolderSection from "@/components/UserFolders/SelectedFolderSection";
+import SelectedFolderSection from "@/components/SelectedFolderSection";
 import {mapActions, mapState} from "vuex";
 
 export default {
@@ -97,16 +94,20 @@ export default {
 
   created() {
     this.sendRequestGetFolders();
+    this.sendRequestGetOrganizationFolders();
   },
 
   computed: {
     ...mapState('auth', ['userData']),
-    ...mapState('userFolderData', ['dataFolders', 'showSectionSelectedFolder']),
+    ...mapState('userFolder', ['dataFolders', 'showSectionSelectedFolder']),
+    ...mapState(['showSectionSelectedFolder']),
+    ...mapState('organizationFolder', ['dataOrganizationFolders']),
   },
 
   methods: {
     ...mapActions({
-      sendRequestGetFolders: 'userFolderData/sendRequestGetFolders',
+      sendRequestGetFolders: 'userFolder/sendRequestGetFolders',
+      sendRequestGetOrganizationFolders: 'organizationFolder/sendRequestGetOrganizationFolders',
     }),
 
     showFormCreateFolder() {

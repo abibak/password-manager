@@ -19,12 +19,14 @@ class OrganizationFolderSeeder extends Seeder
     {
         for ($i = 0; $i < 5; $i++) {
             OrganizationFolder::insert([
+                'user_id' => User::all()->random()->id,
                 'name' => Str::random(8),
             ]);
         }
 
         for ($i = 0; $i < 10; $i++) {
             OrganizationFolder::insert([
+                'user_id' => User::all()->random()->id,
                 'name' => Str::random(8),
             ]);
         }

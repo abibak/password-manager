@@ -33,7 +33,7 @@ export default {
 
   methods: {
     ...mapActions({
-      sendRequestCreateFolder: 'userFolderData/sendRequestCreateFolder',
+      sendRequestCreateFolder: 'userFolder/sendRequestCreateFolder',
     }),
 
     addFolder() {

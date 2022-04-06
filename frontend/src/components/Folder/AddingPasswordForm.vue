@@ -100,10 +100,10 @@ export default {
   },
 
   methods: {
-    ...mapActions('userFolderData', {
+    ...mapActions('userFolder', {
       sendRequestCreatePassword: 'sendRequestCreatePassword',
     }),
-    ...mapMutations('userFolderData', {
+    ...mapMutations('userFolder', {
       setShowModalAddingPassword: 'setShowModalAddingPassword',
     }),
 
