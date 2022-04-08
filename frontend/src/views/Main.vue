@@ -302,7 +302,7 @@ export default {
       }
 
       .right-folder-section {
-        width: 80%;
+        width: 75%;
       }
     }
   }

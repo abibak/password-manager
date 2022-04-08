@@ -35,7 +35,5 @@ class LoginController extends Controller
         }
 
         throw new UserNotFoundException();
-
-        //return response()->json(['messages' => 'User not found'], 401);
     }
 }

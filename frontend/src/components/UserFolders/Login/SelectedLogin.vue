@@ -3,8 +3,6 @@
     <div class="container-selected-login">
       <BaseCloseModal @click="close"></BaseCloseModal>
 
-      {{currentLogin}}
-
       <div class="info-login">
         <p class="name-login">
           <span class="short-name">{{ this.currentLogin.name.charAt(0) }}</span>
@@ -24,6 +22,7 @@
 
       <div class="list-actions-login">
         <span class="action">Общие</span>
+        <span class="action" v-if="typeFolder === 'orgFolder'">История действий</span>
         <span class="action">Файлы</span>
       </div>
 
@@ -152,7 +151,7 @@ export default {
         text-align: center;
         color: #fff;
         border-radius: 6px;
-        background-color: $backgroundColor;
+        background-color: $baseColor;
       }
     }
 
@@ -203,7 +202,7 @@ export default {
       }
 
       .action:first-child {
-        border-bottom: 2px solid $backgroundColor;
+        border-bottom: 2px solid $baseColor;
       }
     }
 

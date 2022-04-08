@@ -35,7 +35,7 @@ export default {
   transition: border-bottom-color $transTime;
 
   &:focus {
-    border-bottom-color: $backgroundColor;
+    border-bottom-color: $baseColor;
   }
 }
 

@@ -38,7 +38,7 @@ class UserLoginDataController extends Controller
      * @param UserLoginRequest $loginRequest
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(UserLoginRequest $request)
     {
         $folder = $this->userLoginRepository->getUserIdFromFolder($request->user_folder_id);
 

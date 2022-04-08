@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('organization_folders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->string('name', 100);
+            $table->string('name', 50);
             $table->boolean('status')->default(true);
             $table->timestamps();
         });

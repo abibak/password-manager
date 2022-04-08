@@ -210,12 +210,12 @@ export default {
           transition: border-color $transTime;
 
           &:focus {
-            border-color: $backgroundColor;
+            border-color: $baseColor;
           }
         }
 
         .generate-password {
-          color: $backgroundColor;
+          color: $baseColor;
           font-size: 14px;
           padding-left: 10px;
           cursor: pointer;

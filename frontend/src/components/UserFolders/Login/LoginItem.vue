@@ -104,7 +104,7 @@ export default {
       text-align: center;
       color: #fff;
       border-radius: 6px;
-      background-color: $backgroundColor;
+      background-color: $baseColor;
     }
   }
 }

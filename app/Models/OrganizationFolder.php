@@ -9,6 +9,8 @@ class OrganizationFolder extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['id', 'user_id', 'name', 'status'];
+
     public function logins()
     {
         return $this->hasMany(OrganizationLogin::class);

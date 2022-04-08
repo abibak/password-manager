@@ -64,7 +64,7 @@ export default {
   border-radius: 10px;
   cursor: pointer;
   position: relative;
-  background-color: $backgroundColor;
+  background-color: $baseColor;
   transition: all .3s;
 
   .btn-toggle {

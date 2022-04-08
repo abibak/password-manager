@@ -40,7 +40,7 @@ class UserFolderController extends Controller
     public function store(Request $request)
     {
         $validation = Validator::make($request->all(), [
-            'name' => 'required'
+            'name' => 'required|max:50',
         ]);
 
         if (!$validation->fails()) {

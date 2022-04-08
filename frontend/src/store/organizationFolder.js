@@ -7,6 +7,7 @@ export default {
     dataOrganizationFolders: [],
     selectedOrgFolderId: null,
     selectedOrgLoginId: null,
+    showInviteFolder: false,
   }),
 
   getters: {
@@ -15,7 +16,7 @@ export default {
     },
 
     getDataOrgOpenLogin(state) {
-      const folder = state.dataOrganizationFolders.data;
+      const folder = state.dataOrganizationFolders.data ?? [];
 
       for (let i = 0; i < folder.length; i++) {
         if (folder[i].id === state.selectedOrgFolderId) {
@@ -37,6 +38,10 @@ export default {
     setSelectedOrgLoginId(state, val) {
       state.selectedOrgLoginId = val;
     },
+
+    setShowInviteFolder(state, val) {
+      state.showInviteFolder = val;
+    },
   },
 
   actions: {
@@ -45,6 +50,30 @@ export default {
         headers: {'Authorization': 'Bearer ' + localStorage.getItem('authToken')}
       }).then(response => {
         commit('setDataFolders', response.data);
+      });
+    },
+
+    async sendRequestCreateFolder({dispatch}, nameFolder) {
+      await instance.post(process.env.VUE_APP_API_URL + 'user/organization/folder', {
+        name: nameFolder,
+      }, {
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('authToken'),
+        }
+      }).then(response => {
+        if (response.status === 201) {
+          dispatch('sendRequestGetFolders');
+        }
+      });
+    },
+
+    async sendInviteToFolder({state}, data) {
+      data.organization_folder_id = state.selectedOrgFolderId;
+      await instance.post(process.env.VUE_APP_API_URL + 'access/folder', data)
+        .then(response => {
+          if (response.status === 201) {
+            state.showInviteFolder = false;
+          }
       });
     },
   },

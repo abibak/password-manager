@@ -37,7 +37,7 @@ export default {
   font-weight: 500;
   color: #fff;
   overflow-x: hidden;
-  background-color: $backgroundColor;
+  background-color: $baseColor;
 }
 
 .error-message {
@@ -46,6 +46,11 @@ export default {
   position: absolute;
   bottom: -20px;
   left: 0;
+}
+
+.name-action {
+  font-size: 22px;
+  color: #000;
 }
 
 </style>

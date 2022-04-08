@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\OrganizationFolderRequest;
 use App\Http\Resources\OrganizationFolderCollection;
 use App\Http\Resources\OrganizationFolderResource;
 use App\Models\OrganizationFolder;
+use App\Models\UserFolder;
 use App\Repositories\OrganizationFolderRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class OrganizationFolderController extends Controller
 {
@@ -33,18 +36,29 @@ class OrganizationFolderController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(OrganizationFolderRequest $request)
     {
-        //
+        $folder = OrganizationFolder::create([
+            'user_id' => auth()->user()->id,
+            'name' => $request->name,
+            'status' => true,
+        ]);
+
+        if ($folder) {
+            return response()->json([
+                'data' => $folder,
+                'message' => 'Created folder'
+            ], 201);
+        }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -55,8 +69,8 @@ class OrganizationFolderController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -67,7 +81,7 @@ class OrganizationFolderController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

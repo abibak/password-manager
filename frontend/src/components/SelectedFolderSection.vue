@@ -3,15 +3,31 @@
     <div class="container-folder-section">
 
       <div class="header-info-folder">
-        <p class="name-folder">{{ this.currentFolder[0].name }}</p>
+        <div class="container-header-info">
+          <p class="name-folder">{{ this.currentFolder[0].name }}</p>
 
-        <div class="unit-folder-control">
-          <div class="icon-control" @click="showSettings = !showSettings">
-            <i class="bi bi-three-dots"></i>
-            <SettingsFolder v-model:show="showSettings"></SettingsFolder>
+          <div class="unit-folder-control">
+            <div class="icon-control icon-invite-user" v-if="this.typeFolder === 'orgFolder'" @click="setShowInviteFolder(true)">
+              <i class="bi bi-person-plus"></i>
+            </div>
+
+            <div class="icon-control icon-options" @click="showSettings = !showSettings">
+              <i class="bi bi-three-dots"></i>
+              <SettingsFolder v-model:show="showSettings"></SettingsFolder>
+            </div>
+
+            <BaseButton @click="setShowModalAddingPassword(true)">Добавить пароль</BaseButton>
           </div>
+        </div>
 
-          <BaseButton @click="setShowModalAddingPassword(true)">Добавить пароль</BaseButton>
+        <div class="info-users" v-if="typeFolder === 'orgFolder'">
+          <span v-if="this.currentFolder[0].users.length !== 0">
+            Еще <span class="view-users">{{this.currentFolder[0].users.length}} сотрудников</span> могут просматривать папку
+          </span>
+
+          <span v-if="this.currentFolder[0].users.length === 0">
+            <span>В папке отсутствуют пользователи</span>
+          </span>
         </div>
       </div>
 
@@ -19,7 +35,7 @@
         <AddingPasswordForm></AddingPasswordForm>
       </BaseModal>
 
-      <!--    орма переименования папки    -->
+      <!--    форма переименования папки    -->
       <BaseModal v-model:show="showModalRenameFolder">
         <RenameFolderForm :name-folder="this.currentFolder[0].name"></RenameFolderForm>
       </BaseModal>
@@ -37,18 +53,23 @@
                    :width-value="loginListWidth"></LoginList>
         <SelectedLogin @close="closeLoginView" :show="showSelectedLogin.show"></SelectedLogin>
       </div>
+
+      <BaseModal v-model:show="showInviteFolder">
+        <InviteToFolder :name-folder="this.currentFolder[0].name"></InviteToFolder>
+      </BaseModal>
     </div>
   </div>
 </template>
 
 <script>
-import {mapActions, mapGetters, mapMutations, mapState} from "vuex";
+import {mapGetters, mapMutations, mapState} from "vuex";
 import LoginList from "@/components/UserFolders/Login/LoginList";
 import SettingsFolder from "@/components/Folder/SettingsFolder";
 import ConfirmDeleteFolder from "@/components/Folder/ConfirmDeleteFolder";
 import RenameFolderForm from "@/components/Folder/RenameFolderForm";
 import AddingPasswordForm from "@/components/Folder/AddingPasswordForm";
 import SelectedLogin from "@/components/UserFolders/Login/SelectedLogin";
+import InviteToFolder from "@/components/Folder/InviteToFolder";
 
 export default {
   name: "SelectedFolderSection",
@@ -60,6 +81,7 @@ export default {
     RenameFolderForm,
     AddingPasswordForm,
     SelectedLogin,
+    InviteToFolder,
   },
 
   data() {
@@ -86,10 +108,26 @@ export default {
 
   watch: {
     selectedFolderId() {
+      if (this.selectedFolderId !== null) {
+        this.closeLoginView();
+        this.currentFolder = this.getLogins;
+      }
+    },
+
+    selectedOrgFolderId() {
+      if (this.selectedOrgFolderId !== null) {
+        this.closeLoginView();
+        this.currentFolder = this.getOrgLogins;
+      }
+    },
+
+
+    // old variant
+    /*selectedFolderId() {
       if (this.selectedFolderId === null) {
         return this.closeLoginView();
       }
-
+      this.closeLoginView();
       this.currentFolder = this.getLogins;
     },
 
@@ -97,14 +135,14 @@ export default {
       if (this.selectedOrgFolderId === null) {
         return this.closeLoginView();
       }
-
+      this.closeLoginView();
       this.currentFolder = this.getOrgLogins;
-    },
+    },*/
   },
 
   computed: {
     ...mapState(['typeFolder']),
-    ...mapState('organizationFolder', ['selectedOrgFolderId']),
+    ...mapState('organizationFolder', ['selectedOrgFolderId', 'showInviteFolder']),
     ...mapState('userFolder', [
       'selectedFolderId',
       'showModalConfirmDelete',
@@ -120,6 +158,10 @@ export default {
       setShowModalConfirmDelete: 'setShowModalConfirmDelete',
       setShowModalRenameFolder: 'setShowModalRenameFolder',
       setShowModalAddingPassword: 'setShowModalAddingPassword',
+    }),
+    // organization namespace
+    ...mapMutations('organizationFolder', {
+      setShowInviteFolder: 'setShowInviteFolder',
     }),
 
     closeFormRenameFolder() {
@@ -148,16 +190,42 @@ export default {
   }
 
   .name-folder {
+    width: 50%;
+    overflow: hidden;
+    text-overflow: ellipsis;
     font-size: 24px;
     color: #000;
   }
 
   .header-info-folder {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     padding: 25px 20px;
     border-bottom: 1px solid $color;
+
+    .container-header-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .info-users {
+      display: flex;
+      align-items: center;
+      margin-top: 5px;
+
+      span:first-child {
+        font-size: 16px;
+
+        .view-users {
+          color: $baseColor;
+          cursor: pointer;
+          transition: color $transTime;
+
+          &:hover {
+            color: $baseColorHover;
+          }
+        }
+      }
+    }
 
     .unit-folder-control {
       display: flex;
@@ -175,6 +243,14 @@ export default {
         border: 1px solid #2683e0;
         cursor: pointer;
         position: relative;
+      }
+
+      .icon-invite-user {
+        background-color: $baseColor;
+
+        .bi-person-plus {
+          color: #fff;
+        }
       }
 
       .bi-three-dots {

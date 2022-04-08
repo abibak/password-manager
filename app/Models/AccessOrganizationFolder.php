@@ -9,6 +9,8 @@ class AccessOrganizationFolder extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['organization_folder_id', 'user_id', 'access'];
+
     public function user()
     {
         return $this->belongsTo(OrganizationFolder::class);

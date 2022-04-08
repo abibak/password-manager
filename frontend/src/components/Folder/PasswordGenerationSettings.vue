@@ -188,7 +188,7 @@ export default {
           margin-left: 5px;
           border: none;
           text-align: center;
-          border-bottom: 1px solid $backgroundColor;
+          border-bottom: 1px solid $baseColor;
           outline: none;
         }
       }
@@ -203,7 +203,7 @@ export default {
       margin: 15px 0;
       padding: 0 23px 0 10px;
       border-radius: 8px;
-      border: 1px solid $backgroundColor;
+      border: 1px solid $baseColor;
 
       &:focus {
         box-shadow: 0 0 0 2px rgba(38, 131, 224, .7);
@@ -230,7 +230,7 @@ export default {
       margin-top: 15px;
 
       span:first-child {
-        color: $backgroundColor;
+        color: $baseColor;
         font-weight: 400;
         cursor: pointer;
       }
