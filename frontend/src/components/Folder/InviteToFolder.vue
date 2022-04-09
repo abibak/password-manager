@@ -11,7 +11,7 @@
             <label for="login-user">Логин пользователя</label>
 
             <select id="login-user" name="login-user" v-model="selectUserId">
-              <option :value="item.id" v-for="(item) of this.userLogins">{{ item.login }} . {{item.id}}</option>
+              <option :value="item.id" v-for="(item) of this.userLogins">{{ item.login }} . {{ item.id }}</option>
             </select>
           </div>
 
@@ -60,7 +60,7 @@ export default {
   },
 
   computed: {
-    // ...mapState('auth', ['userData']),
+    ...mapState('auth', ['userData']),
     ...mapGetters('organizationFolder', ['getOrgLogins']),
   },
 
@@ -70,43 +70,47 @@ export default {
     }),
     ...mapMutations('organizationFolder', {
       setShowInviteFolder: 'setShowInviteFolder',
+      setUserAccess: 'setUserAccess',
     }),
 
     inviteToFolder() {
+      this.setShowInviteFolder(false);
       this.sendInviteToFolder({
         user_id: this.selectUserId,
         access: this.selectAccess,
-      })
+      });
+    },
+
+    iterateArray(arr, key) {
+      let ids = [];
+
+      for (let item in arr) {
+        ids.push(arr[item][key]);
+      }
+
+      return ids.sort((a, b) => {
+        return a - b;
+      });
+    },
+
+    passArrayToIterate(arr, typeArray = '') {
+      if (typeArray === 'usersAccess') {
+        return this.iterateArray(arr, 'user_id');
+      }
+      return this.iterateArray(arr, 'id');
     },
 
     async getLogins() {
       await instance.get(process.env.VUE_APP_API_URL + '/access/folder')
         .then(response => {
           const users = this.getOrgLogins[0].users;
-          let userIds = [];
-          let allUserIds = [];
 
-          // нужно оптимизировать
-          for (let key in users) {
-            userIds.push(users[key].user_id);
-          }
-
-          for (let key in response.data.data) {
-            allUserIds.push(response.data.data[key].id)
-          }
-
-          // нужно оптимизировать
-          userIds.sort((a, b) => {
-            return a - b;
-          });
-
-          allUserIds.sort((a, b) => {
-            return a - b;
-          });
+          let usersAccess = this.passArrayToIterate(users, 'usersAccess'); // пользователи имеющие доступ
+          let allUserIds = this.passArrayToIterate(response.data.data); // все пользователи
 
           for (let i = 0; i < response.data.data.length; i++) {
             const itemResponse = response.data.data[i];
-            let resultFindId = !userIds.includes(allUserIds[i]);
+            let resultFindId = !usersAccess.includes(allUserIds[i]);
 
             if (resultFindId) {
               this.userLogins.push(itemResponse);

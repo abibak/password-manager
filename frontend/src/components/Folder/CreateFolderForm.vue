@@ -15,13 +15,20 @@
 </template>
 
 <script>
-import {mapActions} from "vuex";
+import {mapActions, mapState} from "vuex";
 import BaseInput from "@/components/UI/BaseInput";
 
 export default {
   name: "CreateFolderForm",
   components: {
     BaseInput,
+  },
+
+  props: {
+    typeFolder: {
+      type: String,
+      required: true,
+    },
   },
 
   data() {
@@ -35,14 +42,22 @@ export default {
     ...mapActions({
       sendRequestCreateFolder: 'userFolder/sendRequestCreateFolder',
     }),
+    ...mapActions({
+      sendRequestCreateOrgFolder: 'organizationFolder/sendRequestCreateOrgFolder',
+    }),
 
     addFolder() {
       if (this.nameFolder === '') {
         return this.errorInput = 'red';
       }
 
+      if (this.typeFolder === 'orgFolder') {
+        this.sendRequestCreateOrgFolder(this.nameFolder);
+      } else {
+        this.sendRequestCreateFolder(this.nameFolder);
+      }
+
       this.closeForm();
-      this.sendRequestCreateFolder(this.nameFolder);
     },
 
     closeForm() {
@@ -85,7 +100,7 @@ export default {
     }
 
     .base-input {
-      width: 420px;
+      width: 460px;
       padding: 5px 0;
       background-color: transparent;
       font-size: 16px;

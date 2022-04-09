@@ -7,22 +7,23 @@
           <p class="name-folder">{{ this.currentFolder[0].name }}</p>
 
           <div class="unit-folder-control">
-            <div class="icon-control icon-invite-user" v-if="this.typeFolder === 'orgFolder'" @click="setShowInviteFolder(true)">
+            <div class="icon-control icon-invite-user" v-if="this.typeFolder === 'orgFolder' && this.userAccess === 3"
+                 @click="setShowInviteFolder(true)">
               <i class="bi bi-person-plus"></i>
             </div>
 
-            <div class="icon-control icon-options" @click="showSettings = !showSettings">
+            <div class="icon-control icon-options" v-if="this.userAccess === 3"  @click="showSettings = !showSettings">
               <i class="bi bi-three-dots"></i>
               <SettingsFolder v-model:show="showSettings"></SettingsFolder>
             </div>
 
-            <BaseButton @click="setShowModalAddingPassword(true)">Добавить пароль</BaseButton>
+            <BaseButton @click="setShowModalAddingPassword(true)" v-if="this.userAccess === 3">Добавить пароль</BaseButton>
           </div>
         </div>
 
         <div class="info-users" v-if="typeFolder === 'orgFolder'">
           <span v-if="this.currentFolder[0].users.length !== 0">
-            Еще <span class="view-users">{{this.currentFolder[0].users.length}} сотрудников</span> могут просматривать папку
+            Еще <span class="view-users">{{ this.currentFolder[0].users.length }} сотрудников</span> могут просматривать папку
           </span>
 
           <span v-if="this.currentFolder[0].users.length === 0">
@@ -100,6 +101,7 @@ export default {
 
   created() {
     if (this.typeFolder === 'orgFolder') {
+      this.setStatusAccessFolder();
       this.currentFolder = this.getOrgLogins;
     } else if (this.typeFolder === 'userFolder') {
       this.currentFolder = this.getLogins;
@@ -109,6 +111,7 @@ export default {
   watch: {
     selectedFolderId() {
       if (this.selectedFolderId !== null) {
+        this.setStatusAccessFolder();
         this.closeLoginView();
         this.currentFolder = this.getLogins;
       }
@@ -116,6 +119,7 @@ export default {
 
     selectedOrgFolderId() {
       if (this.selectedOrgFolderId !== null) {
+        this.setStatusAccessFolder();
         this.closeLoginView();
         this.currentFolder = this.getOrgLogins;
       }
@@ -141,8 +145,9 @@ export default {
   },
 
   computed: {
+    ...mapState('auth', ['userData']),
     ...mapState(['typeFolder']),
-    ...mapState('organizationFolder', ['selectedOrgFolderId', 'showInviteFolder']),
+    ...mapState('organizationFolder', ['selectedOrgFolderId', 'showInviteFolder', 'userAccess']),
     ...mapState('userFolder', [
       'selectedFolderId',
       'showModalConfirmDelete',
@@ -162,7 +167,20 @@ export default {
     // organization namespace
     ...mapMutations('organizationFolder', {
       setShowInviteFolder: 'setShowInviteFolder',
+      setUserAccess: 'setUserAccess',
     }),
+
+    setStatusAccessFolder() {
+      if (this.typeFolder === 'userFolder') {
+        return this.setUserAccess(3);
+      }
+
+      if (this.getOrgLogins[0].user_id === this.userData.id) {
+        this.setUserAccess(3);
+      } else {
+        this.setUserAccess(this.getOrgLogins[0]?.access);
+      }
+    },
 
     closeFormRenameFolder() {
       this.setShowModalRenameFolder(false);
@@ -191,8 +209,7 @@ export default {
 
   .name-folder {
     width: 50%;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    word-break: break-all;
     font-size: 24px;
     color: #000;
   }

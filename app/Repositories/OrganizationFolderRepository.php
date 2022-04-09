@@ -13,6 +13,12 @@ class OrganizationFolderRepository extends BaseRepository
 
     public function getDataFoldersWithLogins()
     {
+        // папки созданные пользователем
+        $userOrg = $this->startCondition()
+            ->where('user_id', auth()->user()->id)
+            ->with(['users', 'logins'])
+            ->get();
+
         // папки с доступом
         $access = $this->startCondition()
             ->join('access_organization_folders', function ($join) {
@@ -20,15 +26,10 @@ class OrganizationFolderRepository extends BaseRepository
                     ->where('access_organization_folders.user_id', '=', auth()->user()->id);
             })->with(['logins', 'users'])->get();
 
-        // папки созданные пользователем
-        $userOrg = $this->startCondition()
-            ->join('access_organization_folders', function ($join) {
-                $join->on('access_organization_folders.organization_folder_id', '=', 'organization_folders.id')
-                    ->where('organization_folders.user_id', '=', auth()->user()->id);
-            })->with(['logins', 'users'])->get();
-
         if (count($userOrg)) {
-            $access[] = $userOrg[0];
+            foreach ($userOrg as $folder) {
+                $access[] = $folder;
+            }
         }
 
         return $access;

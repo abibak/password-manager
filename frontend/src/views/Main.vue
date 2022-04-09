@@ -13,11 +13,8 @@
       </div>
     </div>
 
-    <!--  Form create folder  -->
-    <BaseModal v-bind:show="showForm">
-      <CreateFolderForm @closeForm="closeFormCreateFolder"></CreateFolderForm>
-    </BaseModal>
-    <!--  end form  -->
+    <!--  Форма создания пароля  -->
+
 
     <div class="main-section">
       <div class="container-main">
@@ -33,7 +30,12 @@
           <div class="section-organization">
             <div class="info-org-section">
               <p>Раздел организации</p>
-              <i class="bi bi-plus-circle" v-if="userData.is_admin"></i>
+              <i class="bi bi-plus-circle" v-if="userData.is_admin"
+                 @click="showFormCreateOrgFolder"></i>
+
+              <BaseModal v-bind:show="showCreateFormOrg">
+                <CreateFolderForm @closeForm="closeFormCreateFolder" :type-folder="`orgFolder`"></CreateFolderForm>
+              </BaseModal>
             </div>
 
             <div class="organization-folders">
@@ -45,6 +47,10 @@
             <div class="info-section-user">
               <p>Личный раздел</p>
               <i class="bi bi-plus-circle" @click="showFormCreateFolder"></i>
+
+              <BaseModal v-bind:show="showCreateForm">
+                <CreateFolderForm @closeForm="closeFormCreateFolder" :type-folder="`userFolder`"></CreateFolderForm>
+              </BaseModal>
             </div>
 
             <div class="user-folders">
@@ -88,7 +94,8 @@ export default {
 
   data() {
     return {
-      showForm: false,
+      showCreateFormOrg: false,
+      showCreateForm: false,
     }
   },
 
@@ -110,12 +117,17 @@ export default {
       sendRequestGetOrganizationFolders: 'organizationFolder/sendRequestGetOrganizationFolders',
     }),
 
+    showFormCreateOrgFolder() {
+      this.showCreateFormOrg = true;
+    },
+
     showFormCreateFolder() {
-      this.showForm = true;
+      this.showCreateForm = true;
     },
 
     closeFormCreateFolder() {
-      this.showForm = false;
+      this.showCreateFormOrg = false;
+      this.showCreateForm = false;
     },
   },
 }

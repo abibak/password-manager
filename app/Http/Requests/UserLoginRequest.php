@@ -27,9 +27,9 @@ class UserLoginRequest extends FormRequest
     {
         return [
             'user_folder_id' => 'exists:App\Models\UserFolder,id',
-            'name' => 'bail|required|min:3|max:100',
+            'name' => 'bail|required|max:100',
             'login' => 'bail|required|max:150',
-            'password' => 'bail|required',
+            'password' => 'bail|required|min:6|max:60',
             'note' => 'bail|max:500',
             'tag' => 'bail|max:50',
             'url' => 'bail|max:200',

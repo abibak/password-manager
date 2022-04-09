@@ -8,6 +8,7 @@ export default {
     selectedOrgFolderId: null,
     selectedOrgLoginId: null,
     showInviteFolder: false,
+    userAccess: null,
   }),
 
   getters: {
@@ -42,6 +43,10 @@ export default {
     setShowInviteFolder(state, val) {
       state.showInviteFolder = val;
     },
+
+    setUserAccess(state, val) {
+      state.userAccess = val;
+    },
   },
 
   actions: {
@@ -49,11 +54,12 @@ export default {
       await instance.get(process.env.VUE_APP_API_URL + 'user/organization/folder', {
         headers: {'Authorization': 'Bearer ' + localStorage.getItem('authToken')}
       }).then(response => {
+        console.log(response.data);
         commit('setDataFolders', response.data);
       });
     },
 
-    async sendRequestCreateFolder({dispatch}, nameFolder) {
+    async sendRequestCreateOrgFolder({dispatch}, nameFolder) {
       await instance.post(process.env.VUE_APP_API_URL + 'user/organization/folder', {
         name: nameFolder,
       }, {
@@ -67,14 +73,17 @@ export default {
       });
     },
 
+    async sendRequestGetFolders({commit}) {
+      await instance.get(process.env.VUE_APP_API_URL + 'user/organization/folder', {
+        headers: {'Authorization': 'Bearer ' + localStorage.getItem('authToken')}
+      }).then(response => {
+        commit('setDataFolders', response.data);
+      });
+    },
+
     async sendInviteToFolder({state}, data) {
       data.organization_folder_id = state.selectedOrgFolderId;
-      await instance.post(process.env.VUE_APP_API_URL + 'access/folder', data)
-        .then(response => {
-          if (response.status === 201) {
-            state.showInviteFolder = false;
-          }
-      });
+      await instance.post(process.env.VUE_APP_API_URL + 'access/folder', data);
     },
   },
 }

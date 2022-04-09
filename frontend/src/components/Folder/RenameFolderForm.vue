@@ -102,7 +102,7 @@ export default {
       }
 
       .base-input {
-        width: 390px;
+        width: 460px;
         padding: 5px 0;
         font-size: 16px;
         transition: border-bottom-color $transTime;

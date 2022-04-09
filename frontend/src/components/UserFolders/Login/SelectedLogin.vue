@@ -1,5 +1,5 @@
 <template>
-  <div class="selected-login" v-if="show" :style="{width: widthValue + '%'}">
+  <div class="selected-login" v-if="show" :style="{opacity: opacity}">
     <div class="container-selected-login">
       <BaseCloseModal @click="close"></BaseCloseModal>
 
@@ -83,7 +83,8 @@ export default {
   data() {
     return {
       currentLogin: '',
-      widthValue: 25,
+      widthValue: 85,
+      opacity: 0,
     }
   },
 
@@ -91,10 +92,10 @@ export default {
     show() {
       if (this.show) {
         setTimeout(() => {
-          return this.widthValue = 60;
+          this.opacity = 1;
         }, 1)
       }
-      this.widthValue = 25;
+      this.opacity = 0;
     },
 
     getDataOpenLogin() {
@@ -118,7 +119,11 @@ export default {
 
   methods: {
     close() {
-      this.$emit('close');
+      this.opacity = 0;
+
+      setTimeout(() => {
+        this.$emit('close');
+      }, 300);
     },
   },
 }
@@ -126,11 +131,12 @@ export default {
 
 <style lang="scss" scoped>
 .selected-login {
-  transition: width .45s;
+  width: 65%;
+  transition: opacity .6s;
 
   .container-selected-login {
     width: 100%;
-    padding: 25px 20px 0 20px;
+    padding: 25px 20px 20px 20px;
     position: relative;
     top: 0;
 
@@ -192,7 +198,7 @@ export default {
       border-bottom: 2px solid rgba(163, 163, 163, .3);
 
       .action {
-        margin-right: 15px;
+        margin-right: 20px;
         padding-bottom: 8px;
         cursor: pointer;
 
