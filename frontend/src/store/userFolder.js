@@ -1,4 +1,4 @@
-import {instance} from '@/store/index';
+import {instance} from '@/store';
 
 export default {
   namespaced: true,
@@ -64,9 +64,7 @@ export default {
 
   actions: {
     async sendRequestGetFolders({commit}) {
-      await instance.get(process.env.VUE_APP_API_URL + 'user/folder', {
-        headers: {'Authorization': 'Bearer ' + localStorage.getItem('authToken')}
-      }).then(response => {
+      await instance.get(process.env.VUE_APP_API_URL + 'user/folder').then(response => {
         commit('setDataFolders', response.data);
       });
     },
@@ -88,8 +86,6 @@ export default {
         url: data.url,
         note: data.note,
         tag: data.tags,
-      }, {
-        headers: {'Authorization': 'Bearer ' + localStorage.getItem('authToken'),}
       }).then(response => {
         if (response.status === 201) {
           dispatch('searchFolderById').then(data => {
@@ -118,10 +114,6 @@ export default {
     async sendRequestCreateFolder({dispatch}, nameFolder) {
       await instance.post(process.env.VUE_APP_API_URL + 'user/folder', {
         name: nameFolder,
-      }, {
-        headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem('authToken'),
-        }
       }).then(response => {
         if (response.status === 201) {
           dispatch('sendRequestGetFolders');
@@ -132,10 +124,6 @@ export default {
     async sendRequestRenameFolder({state, dispatch, commit}, val) {
       await instance.put(process.env.VUE_APP_API_URL + 'user/folder/' + state.selectedFolderId, {
         newName: val,
-      }, {
-        headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem('authToken'),
-        }
       }).then(response => {
         if (response.status === 200) {
           dispatch('searchFolderById').then(data => {
@@ -146,11 +134,7 @@ export default {
     },
 
     async sendRequestDeleteFolder({state, commit, dispatch}) {
-      await instance.delete(process.env.VUE_APP_API_URL + 'user/folder/' + state.selectedFolderId, {
-        headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem('authToken'),
-        },
-      }).then(() => {
+      await instance.delete(process.env.VUE_APP_API_URL + 'user/folder/' + state.selectedFolderId).then(() => {
         commit('setShowSectionSelectedFolder', false);
         dispatch('sendRequestGetFolders');
       });

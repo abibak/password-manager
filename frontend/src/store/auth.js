@@ -1,32 +1,44 @@
-import {instance} from '@/store/index';
+import {instance} from "@/store";
 import router from "@/router";
-
-if (!localStorage.getItem('authToken')) {
-  localStorage.setItem('authToken', '');
-}
 
 export default {
   namespaced: true,
 
   state: () => ({
     userData: '',
+    authToken: '',
+    isAuth: null,
   }),
 
-  getters: {},
+  getters: {
+    getAuthToken(state) {
+      return state.authToken;
+    },
+  },
 
   mutations: {
     setUserData(state, data) {
       state.userData = data;
+    },
+
+    setAuthToken(state, token) {
+      state.authToken = token;
+    },
+
+    setIsAuth(state, value) {
+      state.isAuth = value;
     }
   },
 
   actions: {
     async getUserData({commit}) {
-      await instance.get(process.env.VUE_APP_API_URL + 'getAuth')
+      await instance.get(process.env.VUE_APP_API_URL + 'getUser')
         .then(response => {
           commit('setUserData', response.data);
-        }).catch(error => {
-          localStorage.setItem('authToken', '');
+          commit('setAuthToken', localStorage.getItem('authToken'));
+          commit('setIsAuth', true);
+          router.push('/');
+        }).catch(() => {
           router.push('/login');
         });
     },
@@ -37,13 +49,14 @@ export default {
         password: data.password,
       }).then(response => {
         if (state.userData !== null || state.userData !== {}) {
+          localStorage.setItem('authToken', response.data['access_token']);
+          commit('setAuthToken', response.data['access_token']);
           commit('setUserData', response.data.user);
-          localStorage.setItem('authToken', response.data['access_token'] ?? '');
           router.push('/');
         }
       }).catch(error => {
         if (error.response?.status === 400) {
-          commit('setErrors', error.response?.data.messages, {root: true});
+          commit('setErrors', error.response.data.messages, {root: true});
         }
       })
     },

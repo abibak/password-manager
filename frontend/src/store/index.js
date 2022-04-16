@@ -1,17 +1,17 @@
 import {createStore} from 'vuex';
-import axios from "axios";
 import auth from "@/store/auth";
 import userFolder from "@/store/userFolder";
 import organizationFolder from '@/store/organizationFolder'
+import axios from "axios";
 
 export const instance = axios.create();
-instance.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('authToken');
 
 export default createStore({
   state: () => ({
     errors: '',
     showSectionSelectedFolder: false,
     typeFolder: null,
+    showTopSettingsMenu: false,
   }),
 
   getters: {},
@@ -28,6 +28,10 @@ export default createStore({
     setTypeFolder(state, type) {
       state.typeFolder = type;
     },
+
+    setShowTopSettingsMenu(state, val) {
+      state.showTopSettingsMenu = val;
+    }
   },
 
   actions: {

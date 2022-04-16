@@ -23,20 +23,6 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
-})
-
-function checkAuth() {
-  return localStorage.getItem('authToken');
-}
-
-router.beforeEach((to) => {
-  if (to.name === 'login' && checkAuth()) {
-    router.push('/');
-  }
-
-  if (to.name !== 'login' && !checkAuth()) {
-    router.push('login');
-  }
 });
 
 export default router

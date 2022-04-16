@@ -13,15 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('folders_history', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('role_id')->nullable()->constrained();
-            $table->string('login', 40)->unique();
-            $table->string('email')->unique();
-            $table->string('password', 300);
-            $table->boolean('is_admin');
-            $table->boolean('is_blocked');
-            $table->string('token')->unique()->nullable();
+            $table->foreignId('organization_folder_id')->constrained();
+            $table->string('user_login');
+            $table->string('action', 150);
             $table->timestamps();
         });
     }
@@ -33,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('folders_history');
     }
 };

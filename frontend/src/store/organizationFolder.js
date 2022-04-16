@@ -1,4 +1,4 @@
-import {instance} from "@/store/index";
+import {instance} from "@/store";
 
 export default {
   namespaced: true,
@@ -51,10 +51,7 @@ export default {
 
   actions: {
     async sendRequestGetOrganizationFolders({commit}) {
-      await instance.get(process.env.VUE_APP_API_URL + 'user/organization/folder', {
-        headers: {'Authorization': 'Bearer ' + localStorage.getItem('authToken')}
-      }).then(response => {
-        console.log(response.data);
+      await instance.get(process.env.VUE_APP_API_URL + 'user/organization/folder').then(response => {
         commit('setDataFolders', response.data);
       });
     },
@@ -62,10 +59,6 @@ export default {
     async sendRequestCreateOrgFolder({dispatch}, nameFolder) {
       await instance.post(process.env.VUE_APP_API_URL + 'user/organization/folder', {
         name: nameFolder,
-      }, {
-        headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem('authToken'),
-        }
       }).then(response => {
         if (response.status === 201) {
           dispatch('sendRequestGetFolders');
@@ -74,9 +67,7 @@ export default {
     },
 
     async sendRequestGetFolders({commit}) {
-      await instance.get(process.env.VUE_APP_API_URL + 'user/organization/folder', {
-        headers: {'Authorization': 'Bearer ' + localStorage.getItem('authToken')}
-      }).then(response => {
+      await instance.get(process.env.VUE_APP_API_URL + 'user/organization/folder').then(response => {
         commit('setDataFolders', response.data);
       });
     },

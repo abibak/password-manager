@@ -110,6 +110,7 @@ export default {
       if (this.numbers) {
         characterSet += '0123456789';
       }
+
       if (this.upperCase) {
         characterSet += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
       }

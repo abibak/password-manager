@@ -104,6 +104,7 @@ export default {
       this.setStatusAccessFolder();
       this.currentFolder = this.getOrgLogins;
     } else if (this.typeFolder === 'userFolder') {
+      this.setStatusAccessFolder();
       this.currentFolder = this.getLogins;
     }
   },
@@ -124,24 +125,6 @@ export default {
         this.currentFolder = this.getOrgLogins;
       }
     },
-
-
-    // old variant
-    /*selectedFolderId() {
-      if (this.selectedFolderId === null) {
-        return this.closeLoginView();
-      }
-      this.closeLoginView();
-      this.currentFolder = this.getLogins;
-    },
-
-    selectedOrgFolderId() {
-      if (this.selectedOrgFolderId === null) {
-        return this.closeLoginView();
-      }
-      this.closeLoginView();
-      this.currentFolder = this.getOrgLogins;
-    },*/
   },
 
   computed: {

@@ -20,4 +20,9 @@ class OrganizationFolder extends Model
     {
         return $this->hasMany(AccessOrganizationFolder::class);
     }
+
+    public function history()
+    {
+        return $this->hasMany(FolderHistory::class);
+    }
 }

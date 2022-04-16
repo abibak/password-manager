@@ -99,11 +99,20 @@ export default {
     },
 
     getDataOpenLogin() {
-      this.currentLogin = this.getDataOpenLogin;
+      if (this.typeFolder === 'userFolder') {
+        this.currentLogin = this.getDataOpenLogin;
+      } else {
+        this.currentLogin = this.getDataOrgOpenLogin;
+      }
     },
 
     getDataOrgOpenLogin() {
-      this.currentLogin = this.getDataOrgOpenLogin;
+
+      if (this.typeFolder === 'orgFolder') {
+        this.currentLogin = this.getDataOrgOpenLogin;
+      } else {
+        this.currentLogin = this.getDataOpenLogin;
+      }
     }
   },
 

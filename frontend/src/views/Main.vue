@@ -1,6 +1,14 @@
 <template>
-  <div class="site-main">
+  <BaseModal :show="showTopSettingsMenu">
+    <TopSettingsMenu></TopSettingsMenu>
+  </BaseModal>
+
+  <div class="site-main" :style="{transform: mainScale}">
     <div class="header-main">
+      <div class="icon-menu" @click="setShowTopSettingsMenu(true)">
+        <i class="bi bi-list"></i>
+      </div>
+
       <div class="block-app-naming">
         <span class="app-name">Password Manager</span>
         <span class="vertical-line"></span>
@@ -9,12 +17,9 @@
       <div class="block-info-user">
         <i class="bi bi-bell"></i>
         <span class="user-login">{{ userData.login }}</span>
-        <span class="avatar-user">A</span>
+        <span class="avatar-user">{{ getFirstLetterNameUser }}</span>
       </div>
     </div>
-
-    <!--  Форма создания пароля  -->
-
 
     <div class="main-section">
       <div class="container-main">
@@ -80,7 +85,8 @@ import FolderList from "@/components/UserFolders/FolderList";
 import CreateFolderForm from "@/components/Folder/CreateFolderForm";
 import BaseModal from "@/components/UI/BaseModal";
 import SelectedFolderSection from "@/components/SelectedFolderSection";
-import {mapActions, mapState} from "vuex";
+import TopSettingsMenu from "@/components/TopSettingsMenu";
+import {mapActions, mapMutations, mapState} from "vuex";
 
 export default {
   name: "Main",
@@ -90,12 +96,14 @@ export default {
     CreateFolderForm,
     BaseModal,
     SelectedFolderSection,
+    TopSettingsMenu,
   },
 
   data() {
     return {
       showCreateFormOrg: false,
       showCreateForm: false,
+      mainScale: 'scale(1)',
     }
   },
 
@@ -104,14 +112,31 @@ export default {
     this.sendRequestGetOrganizationFolders();
   },
 
+  watch: {
+    showTopSettingsMenu() {
+      if (this.showTopSettingsMenu) {
+        return this.mainScale = 'scale(.98)';
+      }
+
+      return this.mainScale = 'scale(1)';
+    },
+  },
+
   computed: {
     ...mapState('auth', ['userData']),
     ...mapState('userFolder', ['dataFolders', 'showSectionSelectedFolder']),
-    ...mapState(['showSectionSelectedFolder']),
+    ...mapState(['showSectionSelectedFolder', 'showTopSettingsMenu']),
     ...mapState('organizationFolder', ['dataOrganizationFolders']),
+
+    getFirstLetterNameUser() {
+      return typeof this.userData.login === 'string' ? this.userData.login.charAt(0).toUpperCase() : '';
+    }
   },
 
   methods: {
+    ...mapMutations({
+      setShowTopSettingsMenu: 'setShowTopSettingsMenu',
+    }),
     ...mapActions({
       sendRequestGetFolders: 'userFolder/sendRequestGetFolders',
       sendRequestGetOrganizationFolders: 'organizationFolder/sendRequestGetOrganizationFolders',
@@ -139,15 +164,25 @@ export default {
   width: 92%;
   font-size: 18px;
   padding: 15px 15px;
+  transition: transform .35s;
 
   .header-main {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    padding: 0 20px;
+    padding: 0 15px;
+    position: relative;
+
+    .icon-menu {
+      font-size: 26px;
+      position: absolute;
+      cursor: pointer;
+    }
 
     .block-app-naming {
       display: flex;
       align-items: center;
+      margin-left: 35px;
 
       .vertical-line {
         width: 1px;
@@ -302,7 +337,6 @@ export default {
           .bi-plus-circle {
             color: #a3a3a3;
             font-size: 22px;
-            z-index: 1;
             cursor: pointer;
             transition: opacity $transTime;
 

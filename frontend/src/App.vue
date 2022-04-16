@@ -6,19 +6,40 @@
 
 <script>
 import 'normalize.css'
-import {mapActions} from "vuex";
+import {mapActions, mapGetters} from "vuex";
+import {instance} from "@/store";
 
 export default {
   mounted() {
+    this.initConfigInstance();
+
     if (localStorage.getItem('authToken')) {
       this.getUserData();
     }
+  },
+
+  computed: {
+    ...mapGetters('auth', {
+      getAuthToken: 'getAuthToken',
+    })
   },
 
   methods: {
     ...mapActions({
       'getUserData': 'auth/getUserData',
     }),
+
+    initConfigInstance() {
+      instance.interceptors.request.use((config) => {
+        config.headers = {
+          'Authorization': 'Bearer ' + localStorage.getItem('authToken'),
+        }
+
+        return config;
+      }, (error) => {
+        console.log(error);
+      })
+    }
   },
 }
 </script>

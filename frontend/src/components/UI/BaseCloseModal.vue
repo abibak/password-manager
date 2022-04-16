@@ -1,5 +1,5 @@
 <template>
-  <i class="bi bi-x" @click="closeModal"></i>
+  <i class="bi bi-x base-close-modal" @click="closeModal"></i>
 </template>
 
 <script>
@@ -15,7 +15,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.bi-x {
+.base-close-modal {
   font-size: 34px;
   cursor: pointer;
   position: absolute;

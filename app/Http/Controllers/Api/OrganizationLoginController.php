@@ -3,46 +3,41 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UserLoginRequest;
-use App\Http\Resources\UserFolderResource;
 use App\Http\Resources\UserLoginResource;
 use App\Models\UserLogin;
+use App\Repositories\OrganizationLoginRepository;
 use App\Repositories\UserLoginRepository;
 use Illuminate\Http\Request;
-use function GuzzleHttp\Promise\all;
 
-class UserLoginDataController extends Controller
+class OrganizationLoginController extends Controller
 {
-    private $userLoginRepository;
+    private $organizationLoginRepository;
 
     public function __construct()
     {
-        $this->userLoginRepository = new UserLoginRepository;
+        $this->organizationLoginRepository = new OrganizationLoginRepository;
     }
 
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        /*$logins = UserLoginResource::collection($this->userLoginRepository->getDataLoginsByUserId());
-        return response()->json(['data' => $logins]);*/
+        //
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param UserLoginRequest $loginRequest
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(UserLoginRequest $request)
+    public function store(Request $request)
     {
-        $folder = $this->userLoginRepository->getUserIdFromFolder($request->user_folder_id);
+        $folder = $this->organizationLoginRepository->getUserIdFromFolder($request->user_folder_id);
 
-        /* проверка прав на создание записи */
         if ($folder[0]->user_id === auth()->user()->id) {
             $create = UserLogin::create($request->all());
 
@@ -57,15 +52,11 @@ class UserLoginDataController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
-    public function show(int $id)
+    public function show($id)
     {
-        return response()->json([
-            'data' => UserLoginResource::collection(
-                $this->userLoginRepository->getDataLoginsByFolderId($id)[0]->logins
-            )
-        ]);
+        //
     }
 
     /**

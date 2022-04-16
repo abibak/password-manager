@@ -16,7 +16,7 @@ class AuthController extends Controller
         $this->userRepository = new UserRepository;
     }
 
-    public function sendUserData()
+    public function getUser()
     {
         return auth()->user();
     }
