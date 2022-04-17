@@ -3,7 +3,7 @@
     <div class="container-generation">
       <BaseCloseModal @click="closeGeneration"></BaseCloseModal>
 
-      <p class="name-action">Генератор паролей</p>
+      <p class="name-action">Генератор пароля</p>
 
       <div class="generated-password">
         <BaseInput v-model="generatedPassword" @input="calculateBits" disabled></BaseInput>
@@ -13,38 +13,41 @@
       <div class="size-password">
         <div class="info-length">
           <label for="lengthPassword">Длина пароля:</label>
-          <input type="text" id="lengthPassword" v-model="size" @input="changeSize">
+          <input type="text" id="lengthPassword" v-model="size" @input="change">
         </div>
 
-<!--        <p>Длина пароля: {{ this.size }}</p>-->
-        <input type="range" min="6" max="60" step="2" v-model="size" @change="changeSize">
+        <input type="range" min="6" max="60" step="2" v-model="size" @change="change">
       </div>
 
       <div class="list-toggle">
         <div class="block-toggle">
-          <BaseToggle @click="specialSymbols = !specialSymbols" v-model:active="specialSymbols"></BaseToggle>
+          <BaseToggle @click="settingsGenerator.specialSymbols = !settingsGenerator.specialSymbols"
+                      v-model:active="settingsGenerator.specialSymbols"></BaseToggle>
           <span>Специальные символы</span>
         </div>
 
         <div class="block-toggle">
-          <BaseToggle @click="numbers = !numbers" :active="numbers"></BaseToggle>
+          <BaseToggle @click="settingsGenerator.numbers = !settingsGenerator.numbers"
+                      :active="settingsGenerator.numbers"></BaseToggle>
           <span>Числа</span>
         </div>
 
         <div class="block-toggle">
-          <BaseToggle @click="upperCase = !upperCase" :active="upperCase"></BaseToggle>
+          <BaseToggle @click="settingsGenerator.upperCase = !settingsGenerator.upperCase"
+                      :active="settingsGenerator.upperCase"></BaseToggle>
           <span>Прописные буквы</span>
         </div>
 
         <div class="block-toggle">
-          <BaseToggle @click="lowerCase = !lowerCase" :active="lowerCase"></BaseToggle>
+          <BaseToggle @click="settingsGenerator.lowerCase = !settingsGenerator.lowerCase"
+                      :active="settingsGenerator.lowerCase"></BaseToggle>
           <span>Строчные буквы</span>
         </div>
       </div>
 
       <div class="actions">
         <span @click="generate">Сгенерировать</span>
-        <BaseButton @click="sendPassword">Создать пароль</BaseButton>
+        <BaseButton @click="sendPassword" v-model:disabled="activeBtn">Создать пароль</BaseButton>
       </div>
     </div>
   </div>
@@ -63,12 +66,17 @@ export default {
   data() {
     return {
       size: 16,
-      specialSymbols: true,
-      numbers: true,
-      upperCase: true,
-      lowerCase: true,
       generatedPassword: '',
-      characterSetLength: 0,
+
+      settingsGenerator: {
+        specialSymbols: true,
+        numbers: true,
+        upperCase: true,
+        lowerCase: true,
+        characterSetLength: 0,
+      },
+
+      activeBtn: false,
     }
   },
 
@@ -94,14 +102,51 @@ export default {
     },
   },
 
+  computed: {
+    specialSymbols() {
+      return this.settingsGenerator.specialSymbols;
+    },
+
+    numbers() {
+      return this.settingsGenerator.numbers;
+    },
+
+    upperCase() {
+      return this.settingsGenerator.upperCase;
+    },
+
+    lowerCase() {
+      return this.settingsGenerator.lowerCase;
+    },
+
+    getParameterResult() {
+      return [this.specialSymbols, this.numbers, this.upperCase, this.lowerCase];
+    },
+  },
+
   methods: {
-    changeSize() {
+    change() {
+      if (this.size > 60) {
+        this.size = 60;
+      }
+
       this.generate();
     },
 
     generate() {
       let characterSet = '',
         password = '';
+
+      let lengthSettings = this.getParameterResult.length,
+        countFalse = 0;
+
+      for (const value of this.getParameterResult) {
+        if (value === false) {
+          countFalse++;
+        }
+      }
+
+      this.activeBtn = lengthSettings === countFalse;
 
       if (this.specialSymbols) {
         characterSet += '!,.[]{}()%?&*$#^<>~@|';
@@ -124,10 +169,11 @@ export default {
       }
 
       this.generatedPassword = password;
-      this.characterSetLength = characterSet.length;
+      this.settingsGenerator.characterSetLength = characterSet.length;
     },
 
     sendPassword() {
+      console.log('test');
       if (this.generatedPassword !== '') {
         this.$emit('getPassword', this.generatedPassword);
         this.closeGeneration();

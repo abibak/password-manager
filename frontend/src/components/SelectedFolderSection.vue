@@ -128,9 +128,13 @@ export default {
   },
 
   computed: {
+    // organization namespace
+    ...mapState('organizationFolder', ['selectedOrgFolderId', 'showInviteFolder', 'userAccess']),
+    ...mapGetters('organizationFolder', ['getOrgLogins']),
+
+    // user namespace
     ...mapState('auth', ['userData']),
     ...mapState(['typeFolder']),
-    ...mapState('organizationFolder', ['selectedOrgFolderId', 'showInviteFolder', 'userAccess']),
     ...mapState('userFolder', [
       'selectedFolderId',
       'showModalConfirmDelete',
@@ -138,7 +142,6 @@ export default {
       'showModalAddingPassword'
     ]),
     ...mapGetters('userFolder', ['getLogins']),
-    ...mapGetters('organizationFolder', ['getOrgLogins']), // organization namespace
   },
 
   methods: {
@@ -147,20 +150,24 @@ export default {
       setShowModalRenameFolder: 'setShowModalRenameFolder',
       setShowModalAddingPassword: 'setShowModalAddingPassword',
     }),
+
     // organization namespace
     ...mapMutations('organizationFolder', {
       setShowInviteFolder: 'setShowInviteFolder',
       setUserAccess: 'setUserAccess',
     }),
 
+    // установка доступа пользователя к папке
     setStatusAccessFolder() {
       if (this.typeFolder === 'userFolder') {
         return this.setUserAccess(3);
       }
 
+      // если пользователь владелец папки, установить "3" доступ
       if (this.getOrgLogins[0].user_id === this.userData.id) {
         this.setUserAccess(3);
       } else {
+        // установка назначенного доступа
         this.setUserAccess(this.getOrgLogins[0]?.access);
       }
     },
