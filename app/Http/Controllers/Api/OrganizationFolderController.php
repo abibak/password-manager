@@ -3,22 +3,25 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\OrganizationFolderRequest;
+use App\Http\Requests\FolderRequest;
 use App\Http\Resources\OrganizationFolderCollection;
 use App\Http\Resources\OrganizationFolderResource;
 use App\Models\OrganizationFolder;
 use App\Models\UserFolder;
 use App\Repositories\OrganizationFolderRepository;
+use App\Services\FolderService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class OrganizationFolderController extends Controller
 {
-    protected $organizationFolderRepository;
+    private $organizationFolderRepository;
+    private $folderService;
 
     public function __construct()
     {
         $this->organizationFolderRepository = new OrganizationFolderRepository;
+        $this->folderService = new FolderService(new OrganizationFolder);
     }
 
     /**
@@ -39,13 +42,13 @@ class OrganizationFolderController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(OrganizationFolderRequest $request)
+    public function store(FolderRequest $request)
     {
-        $folder = OrganizationFolder::create([
-            'user_id' => auth()->user()->id,
-            'name' => $request->name,
-            'status' => true,
-        ]);
+        $folder = $this->folderService->store(array_merge(
+                $request->all(),
+                ['user_id' => auth()->user()->id]
+            )
+        );
 
         if ($folder) {
             return response()->json([

@@ -3,20 +3,22 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\FolderRequest;
 use App\Http\Resources\UserFolderResource;
 use App\Models\UserFolder;
 use App\Repositories\UserFolderRepository;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use App\Services\FolderService;
 use Mockery\Exception;
 
 class UserFolderController extends Controller
 {
     private $userFolderRepository;
+    private $folderService;
 
     public function __construct()
     {
         $this->userFolderRepository = new UserFolderRepository;
+        $this->folderService = new FolderService(new UserFolder);
     }
 
     /**
@@ -35,29 +37,20 @@ class UserFolderController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return string
      */
-    public function store(Request $request)
+    public function store(FolderRequest $request)
     {
-        $validation = Validator::make($request->all(), [
-            'name' => 'required|max:50',
-        ]);
+        $folder = $this->folderService->store(array_merge(
+                $request->all(),
+                ['user_id' => auth()->user()->id]
+            )
+        );
 
-        if (!$validation->fails()) {
-            $folder = UserFolder::create([
-                'user_id' => auth()->user()->id,
-                'name' => $request->name,
-            ]);
-
-            if ($folder) {
-                return response()->json([
-                    'data' => $folder,
-                    'message' => 'Created folder'
-                ], 201);
-            }
-        }
-
-        return response()->json($validation->errors(), 400);
+        return response()->json([
+            'data' => $folder,
+            'message' => 'Created folder'
+        ], 201);
     }
 
     /**
@@ -82,18 +75,20 @@ class UserFolderController extends Controller
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, int $id)
+    public function update(FolderRequest $request, int $id)
     {
         try {
-            $folderEdit = $this->userFolderRepository->getFolderUpdate($request, $id);
+            $folderEdit = $this->userFolderRepository->getFolderUpdate($id);
+            $result = $this->folderService->update($folderEdit, $request->all());
 
-            if (!$folderEdit) {
-                throw new Exception('Error update');
+            if ($result) {
+                return response()->json([
+                    'data' => $folderEdit,
+                    'message' => 'Updated folder'
+                ]);
             }
-
-            return response()->json(['message' => 'Success update'], 200);
-        } catch (Exception $exception) {
-            return response()->json(['error' => $exception->getMessage()], 400);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()]);
         }
     }
 

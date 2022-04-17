@@ -72,9 +72,11 @@ export default {
       });
     },
 
-    async sendInviteToFolder({state}, data) {
+    async sendInviteToFolder({dispatch, state}, data) {
       data.organization_folder_id = state.selectedOrgFolderId;
-      await instance.post(process.env.VUE_APP_API_URL + 'access/folder', data);
+      await instance.post(process.env.VUE_APP_API_URL + 'access/folder', data).then(() => {
+        dispatch('sendRequestGetOrganizationFolders');
+      });
     },
   },
 }

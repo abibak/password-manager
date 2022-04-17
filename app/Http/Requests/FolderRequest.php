@@ -6,7 +6,7 @@ use App\Exceptions\ValidationException;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
-class OrganizationFolderRequest extends FormRequest
+class FolderRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
