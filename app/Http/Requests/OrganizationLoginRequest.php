@@ -2,11 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Exceptions\ValidationException;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use App\Exceptions\ValidationException;
 
-class UserLoginRequest extends FormRequest
+class OrganizationLoginRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,7 +26,7 @@ class UserLoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_folder_id' => 'bail|required|exists:App\Models\UserFolder,id',
+            'organization_folder_id' => 'required',
             'name' => 'bail|required|max:100',
             'login' => 'bail|required|max:150',
             'password' => 'bail|required|min:6|max:60',

@@ -10,6 +10,7 @@
 
           <ul>
             <li>Настройки аккаунта</li>
+            <li @click="logoutSystem">Выход из системы</li>
           </ul>
         </div>
 
@@ -32,7 +33,8 @@
 </template>
 
 <script>
-import {mapMutations, mapState} from "vuex";
+import {mapActions, mapMutations, mapState} from "vuex";
+import router from "@/router";
 
 export default {
   name: "TopSettingsMenu",
@@ -54,9 +56,19 @@ export default {
   },
 
   methods: {
+    ...mapActions('auth', {
+      logout: 'logout',
+    }),
+
     ...mapMutations({
       setShowTopSettingsMenu: 'setShowTopSettingsMenu',
-    })
+    }),
+
+    logoutSystem() {
+      router.push('/login');
+      this.setShowTopSettingsMenu(false);
+      this.logout();
+    },
   }
 }
 </script>

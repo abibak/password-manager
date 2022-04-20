@@ -7,7 +7,6 @@ export default {
     dataFolders: [],
     selectedFolderId: null,
     selectedLoginId: null,
-    showModalConfirmDelete: false,
     showModalRenameFolder: false,
     showModalAddingPassword: false,
   }),
@@ -39,10 +38,6 @@ export default {
 
     setSelectedLoginId(state, val) {
       state.selectedLoginId = val;
-    },
-
-    setShowModalConfirmDelete(state, val) {
-      state.showModalConfirmDelete = val;
     },
 
     setShowModalRenameFolder(state, val) {
@@ -88,25 +83,25 @@ export default {
         tag: data.tags,
       }).then(response => {
         if (response.status === 201) {
+          //  поиск папки для установки пароля
           dispatch('searchFolderById').then(data => {
+            console.log(data);
             return commit('setPasswordInDataFolder', {
               id: data,
               login: response.data.data[0],
             });
           });
         }
-      }).catch(error => {
-        console.log(error.response);
-      })
+      });
     },
 
     searchFolderById({state}) {
       const obj = state.dataFolders.data;
 
-      /* поиск папки */
+      // поиск папки и получение идентификатора
       for (let i = 0; i < obj.length; i++) {
         if (obj[i].id === state.selectedFolderId) {
-          return i; // идентификатор по списку объектов dataFolder
+          return i; // индекс по списку dataFolder
         }
       }
     },

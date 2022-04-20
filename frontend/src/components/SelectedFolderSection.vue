@@ -43,8 +43,12 @@
 
       <!--    Подтверждение удаления папки    -->
       <BaseModal v-model:show="showModalConfirmDelete">
-        <ConfirmDeleteFolder
+<!--        <ConfirmDeleteFolder
           :name-folder="getLogins[0].name">
+        </ConfirmDeleteFolder>-->
+
+        <ConfirmDeleteFolder
+          :name-folder="(this.typeFolder === 'orgFolder') ? getOrgLogins[0].name : getLogins[0].name">
         </ConfirmDeleteFolder>
       </BaseModal>
 
@@ -134,10 +138,9 @@ export default {
 
     // user namespace
     ...mapState('auth', ['userData']),
-    ...mapState(['typeFolder']),
+    ...mapState(['typeFolder', 'showModalConfirmDelete']),
     ...mapState('userFolder', [
       'selectedFolderId',
-      'showModalConfirmDelete',
       'showModalRenameFolder',
       'showModalAddingPassword'
     ]),
@@ -168,7 +171,7 @@ export default {
         this.setUserAccess(3);
       } else {
         // установка назначенного доступа
-        this.setUserAccess(this.getOrgLogins[0]?.access);
+        this.setUserAccess(parseInt(this.getOrgLogins[0]?.access));
       }
     },
 

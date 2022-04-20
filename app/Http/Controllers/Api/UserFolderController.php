@@ -100,15 +100,10 @@ class UserFolderController extends Controller
      */
     public function destroy($id)
     {
-        try {
-            $folderDestroy = $this->userFolderRepository->getFolderDelete($id);
+        $folderDestroy = $this->userFolderRepository->getFolderDelete($id);
 
-            if (!$folderDestroy) {
-                throw new Exception('Error delete');
-            }
-            return response()->json(['message' => 'Deleted'], 200);
-        } catch (Exception $exception) {
-            return response()->json(['message' => $exception->getMessage()], 400);
+        if ($folderDestroy) {
+            return $this->folderService->destroy($folderDestroy);
         }
     }
 }

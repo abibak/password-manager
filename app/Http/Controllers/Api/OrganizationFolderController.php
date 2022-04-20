@@ -89,6 +89,7 @@ class OrganizationFolderController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $folderDestroy = $this->organizationFolderRepository->getFolderDelete($id);
+        $this->folderService->destroy($folderDestroy);
     }
 }

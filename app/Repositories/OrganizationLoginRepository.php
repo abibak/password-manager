@@ -2,8 +2,8 @@
 
 namespace App\Repositories;
 
+use App\Models\OrganizationFolder;
 use App\Models\OrganizationFolder as Model;
-use App\Models\UserFolder;
 
 class OrganizationLoginRepository extends BaseRepository
 {
@@ -14,6 +14,6 @@ class OrganizationLoginRepository extends BaseRepository
 
     public function getUserIdFromFolder(int $idFolder)
     {
-        return UserFolder::select('user_id')->where('id', $idFolder)->get();
+        return OrganizationFolder::select('user_id')->where('id', $idFolder)->first();
     }
 }

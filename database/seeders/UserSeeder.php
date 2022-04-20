@@ -21,7 +21,6 @@ class UserSeeder extends Seeder
     {
         User::factory()->count(10)->create();
 
-
         User::insert([
             'login' => 'admin',
             'email' => 'admin@mail.ru',
@@ -29,17 +28,5 @@ class UserSeeder extends Seeder
             'is_admin' => true,
             'is_blocked' => false,
         ]);
-
-        /*for ($i = 0; $i < 10; $i++) {
-            $randomLength = rand(2, 20);
-
-            User::insert([
-                'login' => Str::random($randomLength),
-                'email' => Str::random(8) . '@mail.ru',
-                'password' => Hash::make('test'),
-                'is_admin' => false,
-                'is_blocked' => false,
-            ]);
-        }*/
     }
 }

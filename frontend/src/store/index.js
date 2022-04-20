@@ -9,9 +9,10 @@ export const instance = axios.create();
 export default createStore({
   state: () => ({
     errors: '',
-    showSectionSelectedFolder: false,
     typeFolder: null,
+    showSectionSelectedFolder: false,
     showTopSettingsMenu: false,
+    showModalConfirmDelete: false,
   }),
 
   getters: {},
@@ -31,7 +32,11 @@ export default createStore({
 
     setShowTopSettingsMenu(state, val) {
       state.showTopSettingsMenu = val;
-    }
+    },
+
+    setShowModalConfirmDelete(state, val) {
+      state.showModalConfirmDelete = val;
+    },
   },
 
   actions: {

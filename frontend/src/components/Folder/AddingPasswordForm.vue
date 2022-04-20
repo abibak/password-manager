@@ -60,7 +60,7 @@
 
 <script>
 import PasswordGenerationSettings from "@/components/Folder/PasswordGenerationSettings";
-import {mapActions, mapMutations} from "vuex";
+import {mapActions, mapMutations, mapState} from "vuex";
 
 export default {
   name: "AddingPasswordForm",
@@ -89,6 +89,10 @@ export default {
     }
   },
 
+  computed: {
+    ...mapState(['typeFolder']),
+  },
+
   watch: {
     showGenerationPassword() {
       if (this.showGenerationPassword) {
@@ -100,6 +104,12 @@ export default {
   },
 
   methods: {
+    // organization folder namespace
+    ...mapActions('organizationFolder', {
+      sendRequestCreateOrgPassword: 'sendRequestCreateOrgPassword'
+    }),
+
+    // user folder namespace
     ...mapActions('userFolder', {
       sendRequestCreatePassword: 'sendRequestCreatePassword',
     }),
@@ -114,6 +124,10 @@ export default {
     sendDataForm() {
      /* let formData = new FormData();
       formData.append('file', this.form.fields.file);*/
+
+      if (this.typeFolder === 'orgFolder') {
+        return this.sendRequestCreateOrgPassword(this.form.fields);
+      }
 
       this.sendRequestCreatePassword(this.form.fields);
     },

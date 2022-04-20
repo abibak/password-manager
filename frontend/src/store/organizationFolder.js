@@ -47,17 +47,22 @@ export default {
     setUserAccess(state, val) {
       state.userAccess = val;
     },
+
+    setPasswordInDataFolder(state, values) {
+      state.dataOrganizationFolders.data[values.id].logins.push(values.login);
+    },
   },
 
   actions: {
     async sendRequestGetOrganizationFolders({commit}) {
-      await instance.get(process.env.VUE_APP_API_URL + 'user/organization/folder').then(response => {
+      await instance.get(process.env.VUE_APP_API_URL + 'organization/folder').then(response => {
         commit('setDataFolders', response.data);
       });
     },
 
+
     async sendRequestCreateOrgFolder({dispatch}, nameFolder) {
-      await instance.post(process.env.VUE_APP_API_URL + 'user/organization/folder', {
+      await instance.post(process.env.VUE_APP_API_URL + 'organization/folder', {
         name: nameFolder,
       }).then(response => {
         if (response.status === 201) {
@@ -66,9 +71,52 @@ export default {
       });
     },
 
+    searchFolderById({state}) {
+      const obj = state.dataOrganizationFolders.data;
+
+      // поиск папки и получение идентификатора
+      for (let i = 0; i < obj.length; i++) {
+        if (obj[i].id === state.selectedOrgFolderId) {
+          return i; // индекс по списку dataFolder
+        }
+      }
+    },
+
+    async sendRequestCreateOrgPassword({state, dispatch, commit}, data) {
+      await instance.post(process.env.VUE_APP_API_URL + 'organization/login', {
+        organization_folder_id: state.selectedOrgFolderId,
+        name: data.name,
+        login: data.login,
+        password: data.password,
+        url: data.url,
+        note: data.note,
+        tag: data.tags,
+      }).then(response => {
+        console.log(response);
+        if (response.status === 201) {
+          dispatch('searchFolderById').then(data => {
+            return commit('setPasswordInDataFolder', {
+              id: data,
+              login: response.data.data[0],
+            });
+          });
+        }
+      }).catch(error => {
+        console.log(error.response);
+      });
+    },
+
     async sendRequestGetFolders({commit}) {
-      await instance.get(process.env.VUE_APP_API_URL + 'user/organization/folder').then(response => {
+      await instance.get(process.env.VUE_APP_API_URL + 'organization/folder').then(response => {
         commit('setDataFolders', response.data);
+      });
+    },
+
+    async sendRequestDeleteOrgFolder({state, commit, dispatch}) {
+      console.log('test');
+      await instance.delete(process.env.VUE_APP_API_URL + 'organization/folder/' + state.selectedOrgFolderId).then(() => {
+        commit('setShowSectionSelectedFolder', false, {root: true});
+        dispatch('sendRequestGetFolders');
       });
     },
 

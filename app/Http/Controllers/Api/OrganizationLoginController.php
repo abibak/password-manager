@@ -3,19 +3,21 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\UserLoginResource;
-use App\Models\UserLogin;
+use App\Http\Requests\OrganizationLoginRequest;
+use App\Models\OrganizationLogin;
 use App\Repositories\OrganizationLoginRepository;
-use App\Repositories\UserLoginRepository;
+use App\Services\LoginService;
 use Illuminate\Http\Request;
 
 class OrganizationLoginController extends Controller
 {
     private $organizationLoginRepository;
+    private $loginService;
 
     public function __construct()
     {
         $this->organizationLoginRepository = new OrganizationLoginRepository;
+        $this->loginService = new LoginService(new OrganizationLogin);
     }
 
     /**
@@ -34,18 +36,9 @@ class OrganizationLoginController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(OrganizationLoginRequest $request)
     {
-        $folder = $this->organizationLoginRepository->getUserIdFromFolder($request->user_folder_id);
-
-        if ($folder[0]->user_id === auth()->user()->id) {
-            $create = UserLogin::create($request->all());
-
-            return response()->json([
-                'data' => UserLoginResource::collection([$create]),
-                'message' => 'Created',
-            ], 201);
-        }
+        return $this->loginService->store($request->all());
     }
 
     /**

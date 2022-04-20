@@ -5,23 +5,27 @@
 </template>
 
 <script>
-import 'normalize.css'
+import 'normalize.css';
 import {mapActions, mapGetters} from "vuex";
 import {instance} from "@/store";
+import router from "@/router";
 
 export default {
   mounted() {
+    const authToken = localStorage.getItem('authToken')
     this.initConfigInstance();
 
-    if (localStorage.getItem('authToken')) {
+    if (authToken) {
       this.getUserData();
+    } else if (authToken === null || authToken === '') {
+      router.push('/login');
     }
   },
 
   computed: {
     ...mapGetters('auth', {
       getAuthToken: 'getAuthToken',
-    })
+    }),
   },
 
   methods: {
@@ -38,7 +42,7 @@ export default {
         return config;
       }, (error) => {
         console.log(error);
-      })
+      });
     }
   },
 }

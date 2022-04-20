@@ -6,7 +6,7 @@
       <div class="confirm">
         <i class="bi bi-trash3"></i>
         <p class="text-confirm">Вы уверены, что хотите удалить папку</p>
-        <p class="name-folder-delete">"{{this.nameFolder}}"</p>
+        <p class="name-folder-delete">"{{ this.nameFolder }}"</p>
 
         <BaseButton class="btn-delete-folder" @click="deleteFolder">Удалить</BaseButton>
       </div>
@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import {mapActions, mapMutations} from "vuex";
+import {mapActions, mapMutations, mapState} from "vuex";
 
 export default {
   name: "ConfirmDeleteFolder",
@@ -27,12 +27,26 @@ export default {
     },
   },
 
+  computed: {
+    ...mapState(['typeFolder']),
+  },
+
   methods: {
-    ...mapMutations('userFolder', ['setShowModalConfirmDelete']),
-    ...mapActions('userFolder', ['sendRequestDeleteFolder'],),
+    ...mapMutations(['setShowModalConfirmDelete']),
+    ...mapActions('userFolder', ['sendRequestDeleteFolder']),
+
+    ...mapActions('organizationFolder', {
+      sendRequestDeleteOrgFolder: 'sendRequestDeleteOrgFolder',
+    }),
 
     deleteFolder() {
       this.setShowModalConfirmDelete(false);
+
+      if (this.typeFolder === 'orgFolder') {
+        console.log('org del');
+        return this.sendRequestDeleteOrgFolder();
+      }
+
       this.sendRequestDeleteFolder();
     },
 

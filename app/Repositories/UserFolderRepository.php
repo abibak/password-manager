@@ -33,6 +33,6 @@ class UserFolderRepository extends BaseRepository
 
     public function getFolderDelete(int $id)
     {
-        return $this->checkPermissions()->where('id', $id)->delete();
+        return $this->checkPermissions()->where('id', $id)->first();
     }
 }

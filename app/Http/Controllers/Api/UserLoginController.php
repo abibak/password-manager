@@ -7,16 +7,19 @@ use App\Http\Requests\UserLoginRequest;
 use App\Http\Resources\UserLoginResource;
 use App\Models\UserLogin;
 use App\Repositories\UserLoginRepository;
+use App\Services\LoginService;
 use Illuminate\Http\Request;
 use function GuzzleHttp\Promise\all;
 
 class UserLoginController extends Controller
 {
     private $userLoginRepository;
+    private $loginService;
 
     public function __construct()
     {
         $this->userLoginRepository = new UserLoginRepository;
+        $this->loginService = new LoginService(new UserLogin);
     }
 
     /**
@@ -39,17 +42,7 @@ class UserLoginController extends Controller
      */
     public function store(UserLoginRequest $request)
     {
-        $folder = $this->userLoginRepository->getUserIdFromFolder($request->user_folder_id);
-
-        /* проверка прав на создание записи */
-        if ($folder[0]->user_id === auth()->user()->id) {
-            $create = UserLogin::create($request->all());
-
-            return response()->json([
-                'data' => UserLoginResource::collection([$create]),
-                'message' => 'Created',
-            ], 201);
-        }
+        return $this->loginService->store($request->all());
     }
 
     /**

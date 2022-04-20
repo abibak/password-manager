@@ -19,8 +19,8 @@ class AccessOrganizationFolderSeeder extends Seeder
     {
         for ($i = 1; $i <= 10; $i++) {
             AccessOrganizationFolder::insert([
-                'organization_folder_id' => OrganizationFolder::all()->random()->id,
-                'user_id' => User::all()->random()->id,
+                'organization_folder_id' => $i,
+                'user_id' => $i,
                 'access' => '3',
             ]);
         }

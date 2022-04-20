@@ -27,5 +27,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('access/folder', 'App\Http\Controllers\Api\AccessOrganizationFolderController');
     Route::apiResource('user/folder', 'App\Http\Controllers\Api\UserFolderController');
     Route::apiResource('user/login', 'App\Http\Controllers\Api\UserLoginController');
-    Route::apiResource('user/organization/folder', 'App\Http\Controllers\Api\OrganizationFolderController');
+    Route::apiResource('organization/folder', 'App\Http\Controllers\Api\OrganizationFolderController');
 });

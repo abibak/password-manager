@@ -14,7 +14,7 @@ class UserLoginRepository extends BaseRepository
 
     public function getUserIdFromFolder(int $idFolder)
     {
-        return UserFolder::select('user_id')->where('id', $idFolder)->get();
+        return UserFolder::select('user_id')->where('id', $idFolder)->first();
     }
 
     public function getDataLoginsByFolderId(int $idFolder)

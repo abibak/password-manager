@@ -22,25 +22,25 @@
       <div class="list-toggle">
         <div class="block-toggle">
           <BaseToggle @click="settingsGenerator.specialSymbols = !settingsGenerator.specialSymbols"
-                      v-model:active="settingsGenerator.specialSymbols"></BaseToggle>
+                      v-model:active="specialSymbols"></BaseToggle>
           <span>Специальные символы</span>
         </div>
 
         <div class="block-toggle">
           <BaseToggle @click="settingsGenerator.numbers = !settingsGenerator.numbers"
-                      :active="settingsGenerator.numbers"></BaseToggle>
+                      :active="numbers"></BaseToggle>
           <span>Числа</span>
         </div>
 
         <div class="block-toggle">
           <BaseToggle @click="settingsGenerator.upperCase = !settingsGenerator.upperCase"
-                      :active="settingsGenerator.upperCase"></BaseToggle>
+                      :active="upperCase"></BaseToggle>
           <span>Прописные буквы</span>
         </div>
 
         <div class="block-toggle">
           <BaseToggle @click="settingsGenerator.lowerCase = !settingsGenerator.lowerCase"
-                      :active="settingsGenerator.lowerCase"></BaseToggle>
+                      :active="lowerCase"></BaseToggle>
           <span>Строчные буквы</span>
         </div>
       </div>
@@ -173,11 +173,8 @@ export default {
     },
 
     sendPassword() {
-      console.log('test');
-      if (this.generatedPassword !== '') {
-        this.$emit('getPassword', this.generatedPassword);
-        this.closeGeneration();
-      }
+      this.$emit('getPassword', this.generatedPassword);
+      this.closeGeneration();
     },
 
     calculateBits() {

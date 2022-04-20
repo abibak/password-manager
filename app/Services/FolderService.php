@@ -13,17 +13,35 @@ class FolderService extends Service
         parent::__construct($model);
     }
 
-    public function store(array $data)
+    public function store(array $request)
     {
-        return $this->startCondition()::create($data);
+        return $this->startCondition()::create($request);
     }
 
-    public function update($folder, array $data)
+    public function show(int $id)
     {
-        if ($folder === null) {
+        //
+    }
+
+    public function update($dataModel, array $data)
+    {
+        if ($dataModel === null) {
             throw new Exception('Error updated');
         }
 
-        return $folder->update($data);
+        return $dataModel->update($data);
+    }
+
+    public function destroy($dataModel)
+    {
+        $modelDelete = $dataModel->delete();
+
+        if (!$modelDelete) {
+            return response()->json(['message' => 'Error delete'], 400);
+        }
+
+        return response()->json([
+            'message' => 'Deleted'
+        ], 200);
     }
 }

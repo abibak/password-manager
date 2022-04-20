@@ -64,7 +64,8 @@ export default {
     async logout({commit}) {
       await instance.get(process.env.VUE_APP_API_URL + 'logout').then(() => {
         commit('setUserData', null);
-        localStorage.removeItem('authToken');
+        commit('setAuthToken', '');
+        localStorage.setItem('authToken', '');
       });
     },
   },

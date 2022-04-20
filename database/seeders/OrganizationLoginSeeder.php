@@ -20,18 +20,6 @@ class OrganizationLoginSeeder extends Seeder
     {
         $tags = ['socials', 'admins', 'work'];
 
-        for ($i = 0; $i < 5; $i++) {
-            OrganizationLogin::insert([
-                'organization_folder_id' => OrganizationFolder::all()->random()->id,
-                'name' => Str::random(10),
-                'login' => Str::random(6),
-                'password' => Crypt::encryptString(Str::random(10)),
-                'url' => 'example.com',
-                'tag' => collect($tags)->random(),
-                'note' => Crypt::encryptString('test_note' . $i),
-            ]);
-        }
-
         for ($i = 0; $i < 10; $i++) {
             OrganizationLogin::insert([
                 'organization_folder_id' => OrganizationFolder::all()->random()->id,

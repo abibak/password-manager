@@ -13,8 +13,14 @@ abstract class Service
         $this->model = $model;
     }
 
+    /* clone model */
     public function startCondition()
     {
         return clone $this->model;
     }
+
+    abstract public function store(array $request);
+    abstract public function show(int $id);
+    abstract public function update($dataModel, array $request);
+    abstract public function destroy($dataModel);
 }
