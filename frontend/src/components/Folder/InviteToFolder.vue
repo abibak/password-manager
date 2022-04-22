@@ -61,7 +61,8 @@ export default {
 
   computed: {
     ...mapState('auth', ['userData']),
-    ...mapGetters('organizationFolder', ['getOrgLogins']),
+    ...mapState('folder', ['selectedOrgFolderId']),
+    ...mapGetters('folder', ['getOrgLogins']),
   },
 
   methods: {
@@ -76,6 +77,7 @@ export default {
     inviteToFolder() {
       this.setShowInviteFolder(false);
       this.sendInviteToFolder({
+        'organization_folder_id': this.selectedOrgFolderId,
         user_id: this.selectUserId,
         access: this.selectAccess,
       });
@@ -88,6 +90,7 @@ export default {
         ids.push(arr[item][key]);
       }
 
+      // сортировка идентификаторов
       return ids.sort((a, b) => {
         return a - b;
       });

@@ -33,20 +33,10 @@ export default {
 
   methods: {
     ...mapMutations(['setShowModalConfirmDelete']),
-    ...mapActions('userFolder', ['sendRequestDeleteFolder']),
-
-    ...mapActions('organizationFolder', {
-      sendRequestDeleteOrgFolder: 'sendRequestDeleteOrgFolder',
-    }),
+    ...mapActions('folder', ['sendRequestDeleteFolder']),
 
     deleteFolder() {
       this.setShowModalConfirmDelete(false);
-
-      if (this.typeFolder === 'orgFolder') {
-        console.log('org del');
-        return this.sendRequestDeleteOrgFolder();
-      }
-
       this.sendRequestDeleteFolder();
     },
 

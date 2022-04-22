@@ -15,8 +15,10 @@
           <i class="bi bi-pencil-square"></i>
         </div>
 
-        <div class="icon-control" @click="showSettings = !showSettings">
+        <div class="icon-control" @click="showSettings = !showSettings, setConfirmDeleteLogin(true)">
           <i class="bi bi-three-dots"></i>
+
+          <SettingsLogin v-model:show="confirmDeleteLogin"></SettingsLogin>
         </div>
       </div>
 
@@ -68,10 +70,14 @@
 </template>
 
 <script>
-import {mapGetters, mapState} from "vuex";
+import {mapGetters, mapMutations, mapState} from "vuex";
+import SettingsLogin from "@/components/Folder/Login/SettingsLogin";
 
 export default {
   name: "SelectedLogin",
+  components: {
+    SettingsLogin,
+  },
 
   props: {
     show: {
@@ -107,7 +113,6 @@ export default {
     },
 
     getDataOrgOpenLogin() {
-
       if (this.typeFolder === 'orgFolder') {
         this.currentLogin = this.getDataOrgOpenLogin;
       } else {
@@ -117,16 +122,17 @@ export default {
   },
 
   computed: {
-    ...mapState(['typeFolder']),
-    ...mapGetters('userFolder', {
+    ...mapState('login', ['confirmDeleteLogin']),
+    ...mapState('folder', ['typeFolder']),
+    ...mapGetters('folder', {
       getDataOpenLogin: 'getDataOpenLogin',
-    }),
-    ...mapGetters('organizationFolder', {
       getDataOrgOpenLogin: 'getDataOrgOpenLogin',
     }),
   },
 
   methods: {
+    ...mapMutations('login', ['setConfirmDeleteLogin']),
+
     close() {
       this.opacity = 0;
 

@@ -77,11 +77,11 @@ export default {
 
         fields: {
           name: 'Новый пароль',
-          login: 'sdfsdf',
-          password: 'sdfdsf',
-          url: 'sdfsdf',
-          tags: 'sdfsdf',
-          note: 'sdfsdsdf',
+          login: 'test-login',
+          password: 'test-pass',
+          url: 'example.com',
+          tags: 'tag',
+          note: 'test note',
         },
         showPassClass: 'bi bi-eye'
       },
@@ -90,7 +90,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['typeFolder']),
+    ...mapState('folder', ['typeFolder']),
   },
 
   watch: {
@@ -105,15 +105,16 @@ export default {
 
   methods: {
     // organization folder namespace
-    ...mapActions('organizationFolder', {
-      sendRequestCreateOrgPassword: 'sendRequestCreateOrgPassword'
+    ...mapActions('folder', {
+      sendRequestCreatePassword: 'sendRequestCreatePassword'
     }),
 
     // user folder namespace
-    ...mapActions('userFolder', {
+    ...mapActions('folder', {
       sendRequestCreatePassword: 'sendRequestCreatePassword',
     }),
-    ...mapMutations('userFolder', {
+
+    ...mapMutations({
       setShowModalAddingPassword: 'setShowModalAddingPassword',
     }),
 
@@ -125,9 +126,9 @@ export default {
      /* let formData = new FormData();
       formData.append('file', this.form.fields.file);*/
 
-      if (this.typeFolder === 'orgFolder') {
-        return this.sendRequestCreateOrgPassword(this.form.fields);
-      }
+      /*if (this.typeFolder === 'orgFolder') {
+        return this.sendRequestCreatePassword(this.form.fields);
+      }*/
 
       this.sendRequestCreatePassword(this.form.fields);
     },

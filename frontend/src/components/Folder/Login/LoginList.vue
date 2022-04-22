@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import LoginItem from "@/components/UserFolders/Login/LoginItem";
+import LoginItem from "@/components/Folder/Login/LoginItem";
 import {mapState} from "vuex";
 
 export default {
@@ -49,8 +49,8 @@ export default {
   },
 
   computed: {
-    ...mapState('userFolder', ['selectedFolderId']),
-    ...mapState('userFolder', ['selectedOrgFolderId']),
+    ...mapState('folder', ['selectedFolderId']),
+    ...mapState('organizationFolder', ['selectedOrgFolderId']),
   },
 
   methods: {

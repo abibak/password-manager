@@ -45,6 +45,11 @@ class OrganizationFolderRepository extends BaseRepository
         return $access;
     }
 
+    public function getFolderUpdate(int $id)
+    {
+        return $this->checkPermissions()->where('id', $id)->first();
+    }
+
     public function getFolderDelete(int $id)
     {
         return $this->checkPermissions()->where('id', $id)->first();

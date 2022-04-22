@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import FolderItem from "@/components/UserFolders/FolderItem";
+import FolderItem from "@/components/Folder/FolderItem";
 
 export default {
   name: "FoldersList",

@@ -4,14 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FolderRequest;
-use App\Http\Resources\OrganizationFolderCollection;
 use App\Http\Resources\OrganizationFolderResource;
 use App\Models\OrganizationFolder;
-use App\Models\UserFolder;
 use App\Repositories\OrganizationFolderRepository;
 use App\Services\FolderService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use Mockery\Exception;
 
 class OrganizationFolderController extends Controller
 {
@@ -74,11 +72,23 @@ class OrganizationFolderController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+            $folderEdit = $this->organizationFolderRepository->getFolderUpdate($id);
+            $result = $this->folderService->update($folderEdit, $request->all());
+
+            if ($result) {
+                return response()->json([
+                    'data' => $folderEdit,
+                    'message' => 'Updated folder'
+                ]);
+            }
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()]);
+        }
     }
 
     /**

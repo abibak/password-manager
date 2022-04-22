@@ -1,17 +1,22 @@
 <template>
-  <div class="settings-folder" v-if="show">
+  <div class="settings-login" v-if="show">
     <div class="container-settings">
       <p>Настройки папки</p>
 
       <div class="list-settings">
         <div class="action">
           <i class="bi bi-pencil-square"></i>
-          <span @click="setShowModalRenameFolder(true)">Переименовать</span>
+          <span @click="">Переименовать</span>
         </div>
 
         <div class="action">
           <i class="bi bi-trash3"></i>
-          <span class="delete-folder" @click="setShowModalConfirmDelete(true)">Удалить</span>
+          <span class="delete-folder" @click="">История</span>
+        </div>
+
+        <div class="action">
+          <i class="bi bi-trash3"></i>
+          <span class="delete-folder" @click="sendRequestDeleteLogin">Удалить</span>
         </div>
       </div>
     </div>
@@ -19,29 +24,27 @@
 </template>
 
 <script>
-import {mapMutations} from "vuex";
+import {mapActions} from "vuex";
 
 export default {
-  name: "SettingsFolder",
+  name: "SettingsLogin",
 
   props: {
     show: {
       type: Boolean,
       required: true,
-    },
+      default: false,
+    }
   },
 
   methods: {
-    ...mapMutations({
-      setShowModalConfirmDelete: 'setShowModalConfirmDelete',
-      setShowModalRenameFolder: 'setShowModalRenameFolder',
-    }),
-  }
+    ...mapActions('login', ['sendRequestDeleteLogin'])
+  },
 }
 </script>
 
 <style lang="scss" scoped>
-.settings-folder {
+.settings-login {
   background-color: #fff;
   color: #000;
   z-index: 11;

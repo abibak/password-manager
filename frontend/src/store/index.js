@@ -1,18 +1,21 @@
 import {createStore} from 'vuex';
-import auth from "@/store/auth";
-import userFolder from "@/store/userFolder";
-import organizationFolder from '@/store/organizationFolder'
 import axios from "axios";
+import auth from "@/store/auth";
+import organizationFolder from '@/store/organizationFolder'
+import folder from "@/store/folder";
+import login from "@/store/login";
 
 export const instance = axios.create();
 
 export default createStore({
   state: () => ({
     errors: '',
-    typeFolder: null,
+    openGeneralSettings: false,
     showSectionSelectedFolder: false,
     showTopSettingsMenu: false,
     showModalConfirmDelete: false,
+    showModalRenameFolder: false,
+    showModalAddingPassword: false,
   }),
 
   getters: {},
@@ -26,26 +29,33 @@ export default createStore({
       state.showSectionSelectedFolder = val;
     },
 
-    setTypeFolder(state, type) {
-      state.typeFolder = type;
+    setShowModalConfirmDelete(state, val) {
+      state.showModalConfirmDelete = val;
     },
 
     setShowTopSettingsMenu(state, val) {
       state.showTopSettingsMenu = val;
     },
 
-    setShowModalConfirmDelete(state, val) {
-      state.showModalConfirmDelete = val;
+    setShowModalAddingPassword(state, val) {
+      state.showModalAddingPassword = val;
+    },
+
+    setOpenGeneralSettings(state, val) {
+      state.openGeneralSettings = val;
+    },
+
+    setShowModalRenameFolder(state, val) {
+      state.showModalRenameFolder = val;
     },
   },
 
-  actions: {
-
-  },
+  actions: {},
 
   modules: {
     auth: auth,
-    userFolder: userFolder,
+    folder: folder,
     organizationFolder: organizationFolder,
+    login: login,
   }
 })

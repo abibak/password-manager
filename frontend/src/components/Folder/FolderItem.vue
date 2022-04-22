@@ -21,20 +21,17 @@ export default {
   },
 
   computed: {
-    ...mapState('userFolder', ['selectedFolderId']),
-    ...mapState('organizationFolder', ['selectedOrgFolderId']),
+    ...mapState('folder', ['selectedFolderId', 'selectedOrgFolderId']),
   },
 
   methods: {
     ...mapMutations({
       setShowSectionSelectedFolder: 'setShowSectionSelectedFolder',
-      setTypeFolder: 'setTypeFolder',
     }),
-    ...mapMutations('userFolder', {
+    ...mapMutations('folder', {
       setSelectedFolderId: 'setSelectedFolderId',
-    }),
-    ...mapMutations('organizationFolder', {
       setSelectedOrgFolderId: 'setSelectedOrgFolderId',
+      setTypeFolder: 'setTypeFolder',
     }),
 
     openFolder(id) {

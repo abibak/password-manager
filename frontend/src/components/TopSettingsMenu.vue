@@ -9,7 +9,7 @@
           <hr>
 
           <ul>
-            <li>Настройки аккаунта</li>
+            <li @click="settingsClickEvent">Настройки аккаунта</li>
             <li @click="logoutSystem">Выход из системы</li>
           </ul>
         </div>
@@ -19,12 +19,12 @@
           <hr>
 
           <ul>
-            <li>Управление пользователями</li>
-            <li>Информация об организации</li>
-            <li>Настройки системы</li>
-            <li>Настройки системы</li>
-            <li>Панель безопасности</li>
-            <li>История действий</li>
+            <li @click="settingsClickEvent">Управление пользователями</li>
+            <li @click="settingsClickEvent">Информация об организации</li>
+            <li @click="settingsClickEvent">Настройки системы</li>
+            <li @click="settingsClickEvent">Настройки системы</li>
+            <li @click="settingsClickEvent">Панель безопасности</li>
+            <li @click="settingsClickEvent">История действий</li>
           </ul>
         </div>
       </div>
@@ -60,15 +60,21 @@ export default {
       logout: 'logout',
     }),
 
-    ...mapMutations({
-      setShowTopSettingsMenu: 'setShowTopSettingsMenu',
-    }),
+    ...mapMutations([
+      'setOpenGeneralSettings',
+      'setShowTopSettingsMenu'
+    ]),
 
     logoutSystem() {
       router.push('/login');
       this.setShowTopSettingsMenu(false);
       this.logout();
     },
+
+    settingsClickEvent() {
+      this.setShowTopSettingsMenu(false);
+      this.setOpenGeneralSettings(true);
+    }
   }
 }
 </script>
@@ -145,7 +151,6 @@ export default {
         }
       }
     }
-
   }
 }
 </style>

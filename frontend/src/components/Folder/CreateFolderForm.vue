@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import {mapActions, mapState} from "vuex";
+import {mapActions, mapMutations, mapState} from "vuex";
 import BaseInput from "@/components/UI/BaseInput";
 
 export default {
@@ -40,10 +40,11 @@ export default {
 
   methods: {
     ...mapActions({
-      sendRequestCreateFolder: 'userFolder/sendRequestCreateFolder',
+      sendRequestCreateFolder: 'folder/sendRequestCreateFolder',
     }),
-    ...mapActions({
-      sendRequestCreateOrgFolder: 'organizationFolder/sendRequestCreateOrgFolder',
+
+    ...mapMutations('folder', {
+      setTypeFolder: 'setTypeFolder',
     }),
 
     addFolder() {
@@ -52,11 +53,12 @@ export default {
       }
 
       if (this.typeFolder === 'orgFolder') {
-        this.sendRequestCreateOrgFolder(this.nameFolder);
+        this.setTypeFolder(this.typeFolder);
       } else {
-        this.sendRequestCreateFolder(this.nameFolder);
+        this.setTypeFolder(this.typeFolder);
       }
 
+      this.sendRequestCreateFolder(this.nameFolder);
       this.closeForm();
     },
 

@@ -43,12 +43,8 @@ export default {
   },
 
   methods: {
-    ...mapActions({
-      sendRequestRenameFolder: 'userFolder/sendRequestRenameFolder',
-    }),
-    ...mapMutations('userFolder', {
-      setShowModalRenameFolder: 'setShowModalRenameFolder',
-    }),
+    ...mapActions('folder', ['sendRequestRenameFolder']),
+    ...mapMutations(['setShowModalRenameFolder']),
 
     renameFolder() {
       if (this.newName === '') {

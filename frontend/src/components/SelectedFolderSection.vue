@@ -43,10 +43,6 @@
 
       <!--    Подтверждение удаления папки    -->
       <BaseModal v-model:show="showModalConfirmDelete">
-<!--        <ConfirmDeleteFolder
-          :name-folder="getLogins[0].name">
-        </ConfirmDeleteFolder>-->
-
         <ConfirmDeleteFolder
           :name-folder="(this.typeFolder === 'orgFolder') ? getOrgLogins[0].name : getLogins[0].name">
         </ConfirmDeleteFolder>
@@ -68,12 +64,12 @@
 
 <script>
 import {mapGetters, mapMutations, mapState} from "vuex";
-import LoginList from "@/components/UserFolders/Login/LoginList";
+import LoginList from "@/components/Folder/Login/LoginList";
 import SettingsFolder from "@/components/Folder/SettingsFolder";
 import ConfirmDeleteFolder from "@/components/Folder/ConfirmDeleteFolder";
 import RenameFolderForm from "@/components/Folder/RenameFolderForm";
 import AddingPasswordForm from "@/components/Folder/AddingPasswordForm";
-import SelectedLogin from "@/components/UserFolders/Login/SelectedLogin";
+import SelectedLogin from "@/components/Folder/Login/SelectedLogin";
 import InviteToFolder from "@/components/Folder/InviteToFolder";
 
 export default {
@@ -132,23 +128,27 @@ export default {
   },
 
   computed: {
-    // organization namespace
-    ...mapState('organizationFolder', ['selectedOrgFolderId', 'showInviteFolder', 'userAccess']),
-    ...mapGetters('organizationFolder', ['getOrgLogins']),
-
     // user namespace
     ...mapState('auth', ['userData']),
-    ...mapState(['typeFolder', 'showModalConfirmDelete']),
-    ...mapState('userFolder', [
-      'selectedFolderId',
-      'showModalRenameFolder',
-      'showModalAddingPassword'
+    ...mapState([
+      'showModalConfirmDelete',
+      'showModalAddingPassword',
+      'showModalRenameFolder'
     ]),
-    ...mapGetters('userFolder', ['getLogins']),
+    ...mapState('folder', [
+      'typeFolder',
+      'selectedFolderId',
+      'selectedOrgFolderId',
+    ]),
+
+    // organization namespace
+    ...mapState('organizationFolder', ['showInviteFolder', 'userAccess']),
+    ...mapGetters('folder', ['getLogins']),
+    ...mapGetters('folder', ['getOrgLogins']),
   },
 
   methods: {
-    ...mapMutations('userFolder', {
+    ...mapMutations({
       setShowModalConfirmDelete: 'setShowModalConfirmDelete',
       setShowModalRenameFolder: 'setShowModalRenameFolder',
       setShowModalAddingPassword: 'setShowModalAddingPassword',

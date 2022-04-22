@@ -35,14 +35,12 @@ export default {
 
   computed: {
     ...mapState('userFolder', ['selectedLoginId']),
-    ...mapState(['typeFolder']),
+    ...mapState('folder', ['typeFolder']),
   },
 
   methods: {
-    ...mapMutations('userFolder', {
+    ...mapMutations('folder', {
       setSelectedLoginId: 'setSelectedLoginId',
-    }),
-    ...mapMutations('organizationFolder', {
       setSelectedOrgLoginId: 'setSelectedOrgLoginId',
     }),
 

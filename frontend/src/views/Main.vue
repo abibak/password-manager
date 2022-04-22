@@ -24,48 +24,52 @@
     <div class="main-section">
       <div class="container-main">
         <div class="left-section">
-          <div class="search-panel">
-            <form>
-              <input type="text" placeholder="Поиск" class="search">
-            </form>
+          <LeftSettingsMenu v-if="openGeneralSettings === true"></LeftSettingsMenu>
 
-            <i class="bi bi-search"></i>
-          </div>
+          <div class="container-left-section" v-if="openGeneralSettings === false">
+            <div class="search-panel">
+              <form>
+                <input type="text" placeholder="Поиск" class="search">
+              </form>
 
-          <div class="section-organization">
-            <div class="info-org-section">
-              <p>Раздел организации</p>
-              <i class="bi bi-plus-circle" v-if="userData.is_admin"
-                 @click="showFormCreateOrgFolder"></i>
-
-              <BaseModal v-bind:show="showCreateFormOrg">
-                <CreateFolderForm @closeForm="closeFormCreateFolder" :type-folder="`orgFolder`"></CreateFolderForm>
-              </BaseModal>
+              <i class="bi bi-search"></i>
             </div>
 
-            <div class="organization-folders">
-              <FolderList :folders="this.dataOrganizationFolders.data" :type-folder="`orgFolder`"></FolderList>
-            </div>
-          </div>
+            <div class="section-organization">
+              <div class="info-org-section">
+                <p>Раздел организации</p>
+                <i class="bi bi-plus-circle" v-if="userData.is_admin"
+                   @click="showFormCreateOrgFolder"></i>
 
-          <div class="section-user">
-            <div class="info-section-user">
-              <p>Личный раздел</p>
-              <i class="bi bi-plus-circle" @click="showFormCreateFolder"></i>
+                <BaseModal v-bind:show="showCreateFormOrg">
+                  <CreateFolderForm @closeForm="closeFormCreateFolder" :type-folder="`orgFolder`"></CreateFolderForm>
+                </BaseModal>
+              </div>
 
-              <BaseModal v-bind:show="showCreateForm">
-                <CreateFolderForm @closeForm="closeFormCreateFolder" :type-folder="`userFolder`"></CreateFolderForm>
-              </BaseModal>
-            </div>
-
-            <div class="user-folders">
-              <!-- Список пользовательских папок -->
-              <FolderList :folders="this.dataFolders.data" :type-folder="`userFolder`"></FolderList>
+              <div class="organization-folders">
+                <FolderList :folders="this.dataOrganizationFolders.data" :type-folder="`orgFolder`"></FolderList>
+              </div>
             </div>
 
-            <div class="favorite-passwords">
-              <i class="bi bi-star"></i>
-              <span>Избранные пароли</span>
+            <div class="section-user">
+              <div class="info-section-user">
+                <p>Личный раздел</p>
+                <i class="bi bi-plus-circle" @click="showFormCreateFolder"></i>
+
+                <BaseModal v-bind:show="showCreateForm">
+                  <CreateFolderForm @closeForm="closeFormCreateFolder" :type-folder="`userFolder`"></CreateFolderForm>
+                </BaseModal>
+              </div>
+
+              <div class="user-folders">
+                <!-- Список пользовательских папок -->
+                <FolderList :folders="this.dataFolders.data" :type-folder="`userFolder`"></FolderList>
+              </div>
+
+              <div class="favorite-passwords">
+                <i class="bi bi-star"></i>
+                <span>Избранные пароли</span>
+              </div>
             </div>
           </div>
         </div>
@@ -81,11 +85,12 @@
 </template>
 
 <script>
-import FolderList from "@/components/UserFolders/FolderList";
+import FolderList from "@/components/Folder/FolderList";
 import CreateFolderForm from "@/components/Folder/CreateFolderForm";
 import BaseModal from "@/components/UI/BaseModal";
 import SelectedFolderSection from "@/components/SelectedFolderSection";
 import TopSettingsMenu from "@/components/TopSettingsMenu";
+import LeftSettingsMenu from "@/components/LeftSettingsMenu";
 import {mapActions, mapMutations, mapState} from "vuex";
 
 export default {
@@ -97,6 +102,7 @@ export default {
     BaseModal,
     SelectedFolderSection,
     TopSettingsMenu,
+    LeftSettingsMenu,
   },
 
   data() {
@@ -124,9 +130,9 @@ export default {
 
   computed: {
     ...mapState('auth', ['userData']),
-    ...mapState('userFolder', ['dataFolders', 'showSectionSelectedFolder']),
-    ...mapState(['showSectionSelectedFolder', 'showTopSettingsMenu']),
-    ...mapState('organizationFolder', ['dataOrganizationFolders']),
+    ...mapState('folder', ['dataFolders', 'showSectionSelectedFolder']),
+    ...mapState('folder', ['dataOrganizationFolders']),
+    ...mapState(['showSectionSelectedFolder', 'showTopSettingsMenu', 'openGeneralSettings']),
 
     getFirstLetterNameUser() {
       return typeof this.userData.login === 'string' ? this.userData.login.charAt(0).toUpperCase() : '';
@@ -137,9 +143,10 @@ export default {
     ...mapMutations({
       setShowTopSettingsMenu: 'setShowTopSettingsMenu',
     }),
+
     ...mapActions({
-      sendRequestGetFolders: 'userFolder/sendRequestGetFolders',
-      sendRequestGetOrganizationFolders: 'organizationFolder/sendRequestGetOrganizationFolders',
+      sendRequestGetFolders: 'folder/sendRequestGetFolders',
+      sendRequestGetOrganizationFolders: 'folder/sendRequestGetOrganizationFolders',
     }),
 
     showFormCreateOrgFolder() {

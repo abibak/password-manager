@@ -68,7 +68,7 @@ class LoginService extends Service
 
     }
 
-    public function destroy(int $id)
+    public function destroy($dataModel)
     {
         //
     }
