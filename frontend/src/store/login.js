@@ -13,6 +13,7 @@ export default {
 
   mutations: {
     setShowSettingsLogin(state, val) {
+      console.log(val);
       state.showSettingsLogin = val;
     },
 

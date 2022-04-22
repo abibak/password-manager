@@ -15,10 +15,10 @@
           <i class="bi bi-pencil-square"></i>
         </div>
 
-        <div class="icon-control" @click="showSettings = !showSettings, setConfirmDeleteLogin(true)">
+        <div class="icon-control settings-login-control" @click="setShowSettingsLogin(true)">
           <i class="bi bi-three-dots"></i>
 
-          <SettingsLogin v-model:show="confirmDeleteLogin"></SettingsLogin>
+          <SettingsLogin v-model:show="showSettingsLogin"></SettingsLogin>
         </div>
       </div>
 
@@ -122,7 +122,7 @@ export default {
   },
 
   computed: {
-    ...mapState('login', ['confirmDeleteLogin']),
+    ...mapState('login', ['showSettingsLogin']),
     ...mapState('folder', ['typeFolder']),
     ...mapGetters('folder', {
       getDataOpenLogin: 'getDataOpenLogin',
@@ -131,7 +131,7 @@ export default {
   },
 
   methods: {
-    ...mapMutations('login', ['setConfirmDeleteLogin']),
+    ...mapMutations('login', ['setShowSettingsLogin']),
 
     close() {
       this.opacity = 0;
@@ -201,6 +201,10 @@ export default {
         border-radius: 50%;
         border: 1px solid #2683e0;
         cursor: pointer;
+      }
+
+      .settings-login-control {
+        position: relative;
       }
     }
 

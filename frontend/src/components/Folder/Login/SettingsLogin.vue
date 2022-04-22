@@ -1,22 +1,17 @@
 <template>
   <div class="settings-login" v-if="show">
     <div class="container-settings">
-      <p>Настройки папки</p>
+      <p>Настройки пароля</p>
 
       <div class="list-settings">
-        <div class="action">
+        <div class="action" @click="closeSettings">
           <i class="bi bi-pencil-square"></i>
-          <span @click="">Переименовать</span>
+          <span>История</span>
         </div>
 
-        <div class="action">
+        <div class="action" @click="closeSettings">
           <i class="bi bi-trash3"></i>
-          <span class="delete-folder" @click="">История</span>
-        </div>
-
-        <div class="action">
-          <i class="bi bi-trash3"></i>
-          <span class="delete-folder" @click="sendRequestDeleteLogin">Удалить</span>
+          <span class="delete-folder">Удалить</span>
         </div>
       </div>
     </div>
@@ -24,7 +19,7 @@
 </template>
 
 <script>
-import {mapActions} from "vuex";
+import {mapActions, mapMutations} from "vuex";
 
 export default {
   name: "SettingsLogin",
@@ -33,12 +28,19 @@ export default {
     show: {
       type: Boolean,
       required: true,
-      default: false,
     }
   },
 
   methods: {
-    ...mapActions('login', ['sendRequestDeleteLogin'])
+    ...mapActions('login', ['sendRequestDeleteLogin']),
+    ...mapMutations('login', {
+      setShowSettingsLogin: 'setShowSettingsLogin',
+    }),
+
+    closeSettings() {
+      console.log('close');
+      this.setShowSettingsLogin(false);
+    },
   },
 }
 </script>
