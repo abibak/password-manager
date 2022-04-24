@@ -44,6 +44,9 @@ export default {
       setSelectedOrgLoginId: 'setSelectedOrgLoginId',
     }),
 
+    // login namespace
+    ...mapMutations('login', ['setShowSelectedLogin']),
+
     selectLogin() {
       if (this.typeFolder === 'orgFolder') {
         return this.setSelectedOrgLoginId(this.login.id);
@@ -51,6 +54,7 @@ export default {
         this.setSelectedLoginId(this.login.id);
       }
 
+      this.setShowSelectedLogin(true);
       this.loginItemStyles.backgroundColor = 'rgba(38, 131, 224, .080)';
     },
   },

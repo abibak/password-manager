@@ -104,6 +104,15 @@ export default {
   },
 
   actions: {
+    // определелить путь для действий
+    defineLink({state}) {
+      if (state.typeFolder === 'orgFolder') {
+        return 'organization/';
+      } else {
+        return 'user/';
+      }
+    },
+
     // fix
     searchFolderById({state}) {
       let obj = '';
@@ -125,7 +134,7 @@ export default {
       }
     },
 
-    async sendRequestGetFolders({state, commit}) {
+    async sendRequestGetFolders({commit}) {
       await instance.get(process.env.VUE_APP_API_URL + 'user/folder').then(response => {
         commit('setDataFolders', response.data);
       });
@@ -137,37 +146,8 @@ export default {
       });
     },
 
-    /*async sendRequestCreatePassword({state, dispatch, commit}, data) {
-      let dataCreatePassword = {
-        name: data.name,
-        login: data.login,
-        password: data.password,
-        url: data.url,
-        note: data.note,
-        tag: data.tags,
-      };
-
-      if (state.typeFolder === 'orgFolder') {
-        dataCreatePassword.organization_folder_id = state.selectedOrgFolderId;
-      } else {
-        dataCreatePassword.user_folder_id = state.selectedFolderId;
-      }
-
-      await instance.post(process.env.VUE_APP_API_URL + defineLink(state.typeFolder) + 'login', dataCreatePassword).then(response => {
-        if (response.status === 201) {
-          //  поиск папки для установки пароля
-          dispatch('searchFolderById').then(data => {
-            return commit('setPasswordInDataFolder', {
-              id: data,
-              login: response.data.data[0],
-            });
-          });
-        }
-      });
-    },*/
-
     async sendRequestCreateFolder({state, dispatch}, nameFolder) {
-      await instance.post(process.env.VUE_APP_API_URL + defineLink(state.typeFolder) + 'folder', {
+      await instance.post(process.env.VUE_APP_API_URL + await dispatch('defineLink') + 'folder', {
         name: nameFolder,
       }).then(response => {
         if (response.status === 201) {
@@ -180,12 +160,9 @@ export default {
     async sendRequestRenameFolder({state, dispatch, commit}, val) {
       let folderId = (state.typeFolder === 'orgFolder') ? state.selectedOrgFolderId : state.selectedFolderId;
 
-      console.log(defineLink(state.typeFolder));
-
-      await instance.put(process.env.VUE_APP_API_URL + defineLink(state.typeFolder) + 'folder/' + folderId, {
+      await instance.put(process.env.VUE_APP_API_URL + await dispatch('defineLink') + 'folder/' + folderId, {
         name: val,
       }).then(response => {
-        console.log(response);
         if (response.status === 200) {
           dispatch('searchFolderById').then(data => {
             return commit('setNameFolderFromList', [data, val])
@@ -197,30 +174,11 @@ export default {
     async sendRequestDeleteFolder({state, commit, dispatch}) {
       let folderId = (state.typeFolder === 'orgFolder') ? state.selectedOrgFolderId : state.selectedFolderId;
 
-      await instance.delete(process.env.VUE_APP_API_URL + defineLink(state.typeFolder) + 'folder/' + folderId).then(() => {
+      await instance.delete(process.env.VUE_APP_API_URL + await dispatch('defineLink') + 'folder/' + folderId).then(() => {
         commit('setShowSectionSelectedFolder', false, {root: true});
         dispatch('sendRequestGetFolders');
         dispatch('sendRequestGetOrganizationFolders');
       });
     }
   },
-}
-
-// fix
-// определения типа папки
-
-/*const defineLink(typeFolder) {
-  if (typeFolder === 'orgFolder') {
-    return 'organization/';
-  } else {
-    return 'user/';
-  }
-}*/
-
-export function defineLink(typeFolder) {
-  if (typeFolder === 'orgFolder') {
-    return 'organization/';
-  } else {
-    return 'user/';
-  }
 }

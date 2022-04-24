@@ -28,23 +28,32 @@ export default {
     ...mapMutations({
       setShowSectionSelectedFolder: 'setShowSectionSelectedFolder',
     }),
+
+    ...mapMutations('login', ['setShowSelectedLogin', 'setShowHeadLines']),
+
     ...mapMutations('folder', {
       setSelectedFolderId: 'setSelectedFolderId',
       setSelectedOrgFolderId: 'setSelectedOrgFolderId',
+      setSelectedOrgLoginId: 'setSelectedOrgLoginId',
+      setSelectedLoginId: 'setSelectedLoginId',
       setTypeFolder: 'setTypeFolder',
     }),
 
     openFolder(id) {
       if (this.typeFolder === 'orgFolder') {
         this.setSelectedOrgFolderId(id);
+        this.setSelectedOrgLoginId(null);
         this.setSelectedFolderId(null);
         this.setTypeFolder(this.typeFolder);
       } else {
         this.setSelectedFolderId(id);
+        this.setSelectedLoginId(null);
         this.setSelectedOrgFolderId(null);
         this.setTypeFolder(this.typeFolder);
       }
 
+      this.setShowHeadLines(true);
+      this.setShowSelectedLogin(false);
       this.setShowSectionSelectedFolder(true);
     },
   },

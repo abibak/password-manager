@@ -105,15 +105,7 @@ export default {
 
   methods: {
     // organization folder namespace
-    ...mapActions('folder', {
-      sendRequestCreatePassword: 'sendRequestCreatePassword'
-    }),
-
-    // user folder namespace
-    ...mapActions('folder', {
-      sendRequestCreatePassword: 'sendRequestCreatePassword',
-    }),
-
+    ...mapActions('login', ['sendRequestCreatePassword']),
     ...mapMutations({
       setShowModalAddingPassword: 'setShowModalAddingPassword',
     }),

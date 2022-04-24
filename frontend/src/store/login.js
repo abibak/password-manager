@@ -1,5 +1,5 @@
 import {instance} from "@/store";
-import {defineLink} from "@/store/folder";
+import store from '@/store';
 
 export default {
   namespaced: true,
@@ -7,13 +7,15 @@ export default {
   state: () => ({
     showSettingsLogin: false,
     confirmDeleteLogin: false,
+    showSelectedLogin: false,
+    showHeadLines: true,
   }),
 
-  getters: {},
+  getters: {
+  },
 
   mutations: {
     setShowSettingsLogin(state, val) {
-      console.log(val);
       state.showSettingsLogin = val;
     },
 
@@ -21,10 +23,20 @@ export default {
     setConfirmDeleteLogin(state, val) {
       state.confirmDeleteLogin = val;
     },
+
+    setShowSelectedLogin(state, val) {
+      state.showSelectedLogin = val;
+    },
+
+    setShowHeadLines(state, val) {
+      state.showHeadLines = val;
+    }
   },
 
   actions: {
-    async sendRequestCreatePassword({state, dispatch, commit}, data) {
+    async sendRequestCreatePassword({state, dispatch, commit, getters}, data) {
+      const link = await dispatch('folder/defineLink', null, {root: true});
+
       let dataCreatePassword = {
         name: data.name,
         login: data.login,
@@ -34,27 +46,45 @@ export default {
         tag: data.tags,
       };
 
-      if (state.typeFolder === 'orgFolder') {
-        dataCreatePassword.organization_folder_id = state.selectedOrgFolderId;
-      } else {
-        dataCreatePassword.user_folder_id = state.selectedFolderId;
+      if (link === 'organization/') {
+        dataCreatePassword.organization_folder_id = store.state.folder.selectedOrgFolderId;
+      } else if (link === 'user/') {
+        dataCreatePassword.user_folder_id = store.state.folder.selectedFolderId;
       }
 
-      await instance.post(process.env.VUE_APP_API_URL + defineLink(state.typeFolder) + 'login', dataCreatePassword).then(response => {
+      await instance.post(process.env.VUE_APP_API_URL + link + 'login', dataCreatePassword).then(response => {
         if (response.status === 201) {
           //  поиск папки для установки пароля
-          dispatch('searchFolderById').then(data => {
-            return commit('setPasswordInDataFolder', {
+          dispatch('folder/searchFolderById', null, {root: true}).then(data => {
+            return commit('folder/setPasswordInDataFolder', {
               id: data,
               login: response.data.data[0],
-            });
+            }, {root: true});
           });
         }
       });
     },
 
-    sendRequestDeleteLogin() {
-      console.log(defineLink);
+    async sendRequestDeleteLogin({dispatch, commit}) {
+      const link = await dispatch('folder/defineLink', null, {root: true});
+      const loginId = (link === 'organization/') ? store.state.folder.selectedOrgLoginId : store.state.folder.selectedLoginId;
+
+      await instance.delete(process.env.VUE_APP_API_URL + link + 'login/' + loginId).then(response => {
+        if (response.status === 200) {
+          commit('setShowSelectedLogin', false);
+          commit('setShowHeadLines', true);
+
+          if (link === 'organization/') {
+            return dispatch('folder/sendRequestGetOrganizationFolders', null, {root: true});
+          }
+          dispatch('folder/sendRequestGetFolders', null, {root: true});
+        }
+      }).catch(error => {
+        // error deleting login
+        if (error.response.status === 400) {
+          console.log(error.response.data.message);
+        }
+      });
     },
   },
 }

@@ -1,7 +1,6 @@
 <template>
   <div class="selected-folder-section">
     <div class="container-folder-section">
-
       <div class="header-info-folder">
         <div class="container-header-info">
           <p class="name-folder">{{ this.currentFolder[0].name }}</p>
@@ -12,12 +11,13 @@
               <i class="bi bi-person-plus"></i>
             </div>
 
-            <div class="icon-control icon-options" v-if="this.userAccess === 3"  @click="showSettings = !showSettings">
+            <div class="icon-control icon-options" v-if="this.userAccess === 3" @click="showSettings = !showSettings">
               <i class="bi bi-three-dots"></i>
               <SettingsFolder v-model:show="showSettings"></SettingsFolder>
             </div>
 
-            <BaseButton @click="setShowModalAddingPassword(true)" v-if="this.userAccess === 3">Добавить пароль</BaseButton>
+            <BaseButton @click="setShowModalAddingPassword(true)" v-if="this.userAccess === 3">Добавить пароль
+            </BaseButton>
           </div>
         </div>
 
@@ -36,7 +36,7 @@
         <AddingPasswordForm></AddingPasswordForm>
       </BaseModal>
 
-      <!--    форма переименования папки    -->
+      <!--    Форма переименования папки    -->
       <BaseModal v-model:show="showModalRenameFolder">
         <RenameFolderForm :name-folder="this.currentFolder[0].name"></RenameFolderForm>
       </BaseModal>
@@ -50,12 +50,15 @@
 
       <!--    Список паролей    -->
       <div class="open-login-container">
-        <LoginList @openLogin="showOpenLogin" :folder-data="this.currentFolder"
+        <!--    Список паролей текущей папки    -->
+        <LoginList @openLogin="showOpenLogin" v-model:folder-data="this.currentFolder"
                    :width-value="loginListWidth"></LoginList>
-        <SelectedLogin @close="closeLoginView" :show="showSelectedLogin.show"></SelectedLogin>
+        <!--   Отобразить выбранный пароль   -->
+        <SelectedLogin @close="closeLoginView" v-model:show="showSelectedLogin"></SelectedLogin>
       </div>
 
       <BaseModal v-model:show="showInviteFolder">
+        <!--    Пригласить в папку    -->
         <InviteToFolder :name-folder="this.currentFolder[0].name"></InviteToFolder>
       </BaseModal>
     </div>
@@ -88,25 +91,14 @@ export default {
   data() {
     return {
       currentFolder: '',
-
       showSettings: false,
       loginListWidth: 80,
-      logins: '',
-
-      showSelectedLogin: {
-        show: false,
-      },
+      logins: '', // del
     }
   },
 
   created() {
-    if (this.typeFolder === 'orgFolder') {
-      this.setStatusAccessFolder();
-      this.currentFolder = this.getOrgLogins;
-    } else if (this.typeFolder === 'userFolder') {
-      this.setStatusAccessFolder();
-      this.currentFolder = this.getLogins;
-    }
+    this.setPasswordData();
   },
 
   watch: {
@@ -125,26 +117,38 @@ export default {
         this.currentFolder = this.getOrgLogins;
       }
     },
+
+    currentFolderLogins() {
+      console.log('update');
+      this.setPasswordData();
+    },
   },
 
   computed: {
-    // user namespace
-    ...mapState('auth', ['userData']),
     ...mapState([
       'showModalConfirmDelete',
       'showModalAddingPassword',
       'showModalRenameFolder'
     ]),
+    // login namespace
+    ...mapState('login', ['showSelectedLogin']),
+    // user namespace
+    ...mapState('auth', ['userData']),
+    // folder namespace
     ...mapState('folder', [
       'typeFolder',
       'selectedFolderId',
       'selectedOrgFolderId',
     ]),
-
-    // organization namespace
-    ...mapState('organizationFolder', ['showInviteFolder', 'userAccess']),
     ...mapGetters('folder', ['getLogins']),
     ...mapGetters('folder', ['getOrgLogins']),
+    // organization namespace
+    ...mapState('organizationFolder', ['showInviteFolder', 'userAccess']),
+
+    currentFolderLogins() {
+      console.log(this.typeFolder);
+      return (this.typeFolder === 'orgFolder') ? this.getOrgLogins : this.getLogins;
+    },
   },
 
   methods: {
@@ -153,12 +157,24 @@ export default {
       setShowModalRenameFolder: 'setShowModalRenameFolder',
       setShowModalAddingPassword: 'setShowModalAddingPassword',
     }),
-
+    // login namespace
+    ...mapMutations('login', ['setShowSelectedLogin']),
     // organization namespace
     ...mapMutations('organizationFolder', {
       setShowInviteFolder: 'setShowInviteFolder',
       setUserAccess: 'setUserAccess',
     }),
+
+    // установить данные текущей папки
+    setPasswordData() {
+      if (this.typeFolder === 'orgFolder') {
+        this.setStatusAccessFolder();
+        this.currentFolder = this.getOrgLogins;
+      } else if (this.typeFolder === 'userFolder') {
+        this.setStatusAccessFolder();
+        this.currentFolder = this.getLogins;
+      }
+    },
 
     // установка доступа пользователя к папке
     setStatusAccessFolder() {
@@ -180,12 +196,12 @@ export default {
     },
 
     showOpenLogin() {
-      this.showSelectedLogin.show = true;
+      this.setShowSelectedLogin(true)
       this.loginListWidth = 40; // ширина при просмотре
     },
 
     closeLoginView() {
-      this.showSelectedLogin.show = false;
+      this.setShowSelectedLogin(false);
       this.loginListWidth = 80; // ширина секции паролей по умолчанию
     },
   }

@@ -1,15 +1,15 @@
 <template>
-  <div class="settings-login" v-if="show">
+  <div class="settings-login" v-if="show" @click.stop="closeSettings">
     <div class="container-settings">
       <p>Настройки пароля</p>
 
       <div class="list-settings">
-        <div class="action" @click="closeSettings">
+        <div class="action" @click.stop="closeSettings">
           <i class="bi bi-pencil-square"></i>
           <span>История</span>
         </div>
 
-        <div class="action" @click="closeSettings">
+        <div class="action" @click.stop="sendRequestDeleteLogin(), closeSettings()">
           <i class="bi bi-trash3"></i>
           <span class="delete-folder">Удалить</span>
         </div>

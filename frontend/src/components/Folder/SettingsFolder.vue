@@ -4,14 +4,14 @@
       <p>Настройки папки</p>
 
       <div class="list-settings">
-        <div class="action">
+        <div class="action" @click.stop="setShowModalRenameFolder(true)">
           <i class="bi bi-pencil-square"></i>
-          <span @click="setShowModalRenameFolder(true)">Переименовать</span>
+          <span>Переименовать</span>
         </div>
 
-        <div class="action">
+        <div class="action" @click.stop="setShowModalConfirmDelete(true)">
           <i class="bi bi-trash3"></i>
-          <span class="delete-folder" @click="setShowModalConfirmDelete(true)">Удалить</span>
+          <span class="delete-folder">Удалить</span>
         </div>
       </div>
     </div>

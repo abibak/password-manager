@@ -17,7 +17,7 @@
 
         <div class="icon-control settings-login-control" @click="setShowSettingsLogin(true)">
           <i class="bi bi-three-dots"></i>
-
+          <!--    Настройки пароля      -->
           <SettingsLogin v-model:show="showSettingsLogin"></SettingsLogin>
         </div>
       </div>
@@ -104,6 +104,7 @@ export default {
       this.opacity = 0;
     },
 
+    // подгрузить папки пользователи или организации
     getDataOpenLogin() {
       if (this.typeFolder === 'userFolder') {
         this.currentLogin = this.getDataOpenLogin;
@@ -118,25 +119,23 @@ export default {
       } else {
         this.currentLogin = this.getDataOpenLogin;
       }
-    }
+    },
   },
 
   computed: {
-    ...mapState('login', ['showSettingsLogin']),
+    ...mapState('login', ['showSettingsLogin', 'showHeadLines']),
     ...mapState('folder', ['typeFolder']),
-    ...mapGetters('folder', {
-      getDataOpenLogin: 'getDataOpenLogin',
-      getDataOrgOpenLogin: 'getDataOrgOpenLogin',
-    }),
+    ...mapGetters('folder', ['getDataOpenLogin', 'getDataOrgOpenLogin',]),
   },
 
   methods: {
-    ...mapMutations('login', ['setShowSettingsLogin']),
+    ...mapMutations('login', ['setShowSettingsLogin', 'setShowHeadLines']),
 
     close() {
       this.opacity = 0;
 
       setTimeout(() => {
+        this.setShowHeadLines(true);
         this.$emit('close');
       }, 300);
     },

@@ -2,13 +2,13 @@
   <div class="list-login" :style="{width: widthValue + '%'}">
     <div class="headlines">
       <div>Название</div>
-      <div v-if="hideHeadlines">Логин</div>
-      <div v-if="hideHeadlines">URL</div>
-      <div v-if="hideHeadlines">Теги</div>
+      <div v-if="showHeadLines">Логин</div>
+      <div v-if="showHeadLines">URL</div>
+      <div v-if="showHeadLines">Теги</div>
     </div>
 
     <div class="login">
-      <LoginItem :login="item" v-model:show-attributes="hideHeadlines" v-for="(item) of folderData[0].logins"
+      <LoginItem :login="item" v-model:show-attributes="showHeadLines" v-for="(item) of folderData[0].logins"
                  :key="item.login_id"
                  @click="openLogin"></LoginItem>
     </div>
@@ -17,7 +17,7 @@
 
 <script>
 import LoginItem from "@/components/Folder/Login/LoginItem";
-import {mapState} from "vuex";
+import {mapMutations, mapState} from "vuex";
 
 export default {
   name: "LoginList",
@@ -35,27 +35,34 @@ export default {
 
   data() {
     return {
-      hideHeadlines: true,
+      //hideHeadlines: true,
     }
   },
 
   watch: {
     selectedFolderId() {
-      this.hideHeadlines = true;
+      this.setShowHeadLines(true);
+      //this.hideHeadlines = true;
     },
+
     selectedOrgFolderId() {
-      this.hideHeadlines = true;
+      this.setShowHeadLines(true);
+      //this.hideHeadlines = true;
     }
   },
 
   computed: {
     ...mapState('folder', ['selectedFolderId']),
     ...mapState('organizationFolder', ['selectedOrgFolderId']),
+    ...mapState('login', ['showHeadLines']),
   },
 
   methods: {
+    ...mapMutations('login', ['setShowHeadLines']),
+
     openLogin() {
-      this.hideHeadlines = false;
+      this.setShowHeadLines(false);
+      //this.hideHeadlines = false;
       this.$emit('openLogin');
     },
   },
