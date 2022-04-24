@@ -4,9 +4,7 @@
     :type="typeInput"
     :value="modelValue"
     :style="{boxShadow: error}"
-    @input="updateValue"
-    @focusin="focusIn"
-    @blur="focusOut">
+    @input="updateValue">
 </template>
 
 <script>
@@ -38,19 +36,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-/* old version input */
-/*.input-login {
-  width: auto;
-  padding: 10px 0 10px;
-  border: none;
-  color: #fff;
-  border-bottom: 1px solid #fff;
-  outline: none;
-  line-height: normal;
-  background-color: transparent;
-}*/
-
 .input-login {
   width: auto;
   padding: 8px 8px;
@@ -66,5 +51,4 @@ export default {
     box-shadow: 0 0 0 3px rgba(38, 131, 224, .7);
   }
 }
-
 </style>

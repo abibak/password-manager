@@ -22,8 +22,8 @@ export default {
   cursor: pointer;
   transition: background-color $transTime;
 
-    &:hover {
-      background-color: rgba(38, 131, 224, .85);
-    }
+  &:hover {
+    background-color: rgba(38, 131, 224, .85);
+  }
 }
 </style>

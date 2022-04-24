@@ -93,7 +93,6 @@ export default {
       currentFolder: '',
       showSettings: false,
       loginListWidth: 80,
-      logins: '', // del
     }
   },
 
@@ -119,7 +118,6 @@ export default {
     },
 
     currentFolderLogins() {
-      console.log('update');
       this.setPasswordData();
     },
   },
@@ -146,7 +144,6 @@ export default {
     ...mapState('organizationFolder', ['showInviteFolder', 'userAccess']),
 
     currentFolderLogins() {
-      console.log(this.typeFolder);
       return (this.typeFolder === 'orgFolder') ? this.getOrgLogins : this.getLogins;
     },
   },
@@ -160,10 +157,7 @@ export default {
     // login namespace
     ...mapMutations('login', ['setShowSelectedLogin']),
     // organization namespace
-    ...mapMutations('organizationFolder', {
-      setShowInviteFolder: 'setShowInviteFolder',
-      setUserAccess: 'setUserAccess',
-    }),
+    ...mapMutations('organizationFolder', ['setShowInviteFolder', 'setUserAccess']),
 
     // установить данные текущей папки
     setPasswordData() {

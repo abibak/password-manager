@@ -25,21 +25,22 @@ export default {
   },
 
   methods: {
-    ...mapMutations({
-      setShowSectionSelectedFolder: 'setShowSectionSelectedFolder',
-    }),
+    ...mapMutations(['setShowSectionSelectedFolder']),
 
+    // login namespace
     ...mapMutations('login', ['setShowSelectedLogin', 'setShowHeadLines']),
 
-    ...mapMutations('folder', {
-      setSelectedFolderId: 'setSelectedFolderId',
-      setSelectedOrgFolderId: 'setSelectedOrgFolderId',
-      setSelectedOrgLoginId: 'setSelectedOrgLoginId',
-      setSelectedLoginId: 'setSelectedLoginId',
-      setTypeFolder: 'setTypeFolder',
-    }),
+    // organization namespace
+    ...mapMutations('folder', [
+      'setSelectedFolderId',
+      'setSelectedOrgFolderId',
+      'setSelectedOrgLoginId',
+      'setSelectedLoginId',
+      'setTypeFolder',
+    ]),
 
     openFolder(id) {
+      // открыть папку организации и обновить значения
       if (this.typeFolder === 'orgFolder') {
         this.setSelectedOrgFolderId(id);
         this.setSelectedOrgLoginId(null);
