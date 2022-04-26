@@ -1,5 +1,9 @@
 <template>
   <div class="selected-login" v-if="show" :style="{opacity: opacity}">
+    <BaseModal v-model:show="showEditLogin">
+      <EditLoginForm></EditLoginForm>
+    </BaseModal>
+
     <div class="container-selected-login">
       <BaseCloseModal @click="close"></BaseCloseModal>
 
@@ -11,12 +15,13 @@
       </div>
 
       <div class="icon-actions">
-        <div class="icon-control">
+        <div class="icon-control" @click="setShowEditLogin(true)">
           <i class="bi bi-pencil-square"></i>
         </div>
 
         <div class="icon-control settings-login-control" @click="setShowSettingsLogin(true)">
           <i class="bi bi-three-dots"></i>
+
           <!--    Настройки пароля      -->
           <SettingsLogin v-model:show="showSettingsLogin"></SettingsLogin>
         </div>
@@ -72,11 +77,13 @@
 <script>
 import {mapGetters, mapMutations, mapState} from "vuex";
 import SettingsLogin from "@/components/Folder/Login/SettingsLogin";
+import EditLoginForm from "@/components/Folder/Login/EditLoginForm";
 
 export default {
   name: "SelectedLogin",
   components: {
     SettingsLogin,
+    EditLoginForm,
   },
 
   props: {
@@ -123,13 +130,13 @@ export default {
   },
 
   computed: {
-    ...mapState('login', ['showSettingsLogin', 'showHeadLines']),
+    ...mapState('login', ['showSettingsLogin', 'showHeadLines', 'showEditLogin']),
     ...mapState('folder', ['typeFolder']),
-    ...mapGetters('folder', ['getDataOpenLogin', 'getDataOrgOpenLogin',]),
+    ...mapGetters('folder', ['getDataOpenLogin', 'getDataOrgOpenLogin']),
   },
 
   methods: {
-    ...mapMutations('login', ['setShowSettingsLogin', 'setShowHeadLines']),
+    ...mapMutations('login', ['setShowSettingsLogin', 'setShowHeadLines', 'setShowEditLogin']),
 
     close() {
       this.opacity = 0;

@@ -1,5 +1,5 @@
 <template>
-  <div class="login-item" ref="loginItem" @click="selectLogin" :style="loginItemStyles">
+  <div class="login-item" @click="selectLogin()" :style="loginItemStyles">
     <p><span class="short-name">{{ login.name[0] }}</span>{{ login.name }}</p>
     <p class="attribute-login" v-if="showAttributes">{{ login.login }}</p>
     <p class="attribute-login" v-if="showAttributes">{{ login.url }}</p>
@@ -22,7 +22,7 @@ export default {
     showAttributes: {
       type: Boolean,
       required: true,
-    }
+    },
   },
 
   data() {
@@ -34,8 +34,13 @@ export default {
   },
 
   computed: {
-    ...mapState('userFolder', ['selectedLoginId']),
-    ...mapState('folder', ['typeFolder']),
+    ...mapState('folder', ['typeFolder', 'selectedLoginId']),
+  },
+
+  watch: {
+    selectedLoginId() {
+      this.test();
+    },
   },
 
   methods: {
@@ -43,19 +48,26 @@ export default {
       setSelectedLoginId: 'setSelectedLoginId',
       setSelectedOrgLoginId: 'setSelectedOrgLoginId',
     }),
-
     // login namespace
     ...mapMutations('login', ['setShowSelectedLogin']),
 
+    test() {
+      this.loginItemStyles.backgroundColor = '';
+    },
+
+    setActiveBackground() {
+      this.loginItemStyles.backgroundColor = 'rgba(38, 131, 224, .080)';
+    },
+
     selectLogin() {
       if (this.typeFolder === 'orgFolder') {
-        return this.setSelectedOrgLoginId(this.login.id);
+        this.setSelectedOrgLoginId(this.login.id);
       } else {
         this.setSelectedLoginId(this.login.id);
       }
 
       this.setShowSelectedLogin(true);
-      this.loginItemStyles.backgroundColor = 'rgba(38, 131, 224, .080)';
+      this.setActiveBackground();
     },
   },
 }

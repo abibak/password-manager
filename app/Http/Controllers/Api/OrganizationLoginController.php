@@ -57,21 +57,23 @@ class OrganizationLoginController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return bool|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
-        //
+        $loginUpdate = $this->organizationLoginRepository->getLoginWithAccess($id);
+        return $this->loginService->update($loginUpdate, $request->all());
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
-        //
+        $loginDestroy = $this->organizationLoginRepository->getLoginWithAccess($id);
+        return $this->loginService->destroy($loginDestroy);
     }
 }

@@ -1,5 +1,5 @@
 <template>
-  <p class="folder" @click="openFolder(this.folder.id)">{{ this.folder.name }}</p>
+  <p class="folder" ref="folder-item" @click="openFolder(this.folder.id)">{{ this.folder.name }}</p>
 </template>
 
 <script>
@@ -26,10 +26,8 @@ export default {
 
   methods: {
     ...mapMutations(['setShowSectionSelectedFolder']),
-
     // login namespace
     ...mapMutations('login', ['setShowSelectedLogin', 'setShowHeadLines']),
-
     // organization namespace
     ...mapMutations('folder', [
       'setSelectedFolderId',
@@ -40,7 +38,7 @@ export default {
     ]),
 
     openFolder(id) {
-      // открыть папку организации и обновить значения
+      // открыть папку и обновить значения
       if (this.typeFolder === 'orgFolder') {
         this.setSelectedOrgFolderId(id);
         this.setSelectedOrgLoginId(null);

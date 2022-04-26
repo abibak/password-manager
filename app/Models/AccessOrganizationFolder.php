@@ -20,4 +20,9 @@ class AccessOrganizationFolder extends Model
     {
         return $this->belongsTo(OrganizationFolder::class);
     }
+
+    public function folder()
+    {
+        return $this->belongsTo(OrganizationFolder::class);
+    }
 }

@@ -78,7 +78,9 @@ class UserFolderController extends Controller
     public function update(FolderRequest $request, int $id)
     {
         try {
+            // получить модель для редактирование
             $folderEdit = $this->userFolderRepository->getFolderUpdate($id);
+            // отправка модели на редактирование
             $result = $this->folderService->update($folderEdit, $request->all());
 
             if ($result) {

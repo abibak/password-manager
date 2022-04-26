@@ -9,6 +9,7 @@ use App\Models\UserLogin;
 use App\Repositories\UserLoginRepository;
 use App\Services\LoginService;
 use Illuminate\Http\Request;
+use Mockery\Exception;
 use function GuzzleHttp\Promise\all;
 
 class UserLoginController extends Controller
@@ -65,21 +66,23 @@ class UserLoginController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
-        //
+        $loginEdit = $this->userLoginRepository->getLoginByIdWithFolder($id);
+        return $this->loginService->update($loginEdit, $request->all());
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function destroy($id = null)
     {
-        //
+        $loginDestroy = $this->userLoginRepository->getLoginByIdWithFolder($id)[0] ?? null;
+        return $this->loginService->destroy($loginDestroy);
     }
 }

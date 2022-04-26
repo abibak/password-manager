@@ -23,4 +23,9 @@ class UserLoginRepository extends BaseRepository
             ->with('logins')
             ->get();
     }
+
+    public function getLoginByIdWithFolder(int $id)
+    {
+        return $this->startCondition()->where('id', $id)->with('folder')->first();
+    }
 }

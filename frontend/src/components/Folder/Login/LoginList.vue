@@ -8,9 +8,12 @@
     </div>
 
     <div class="login">
-      <LoginItem :login="item" v-model:show-attributes="showHeadLines" v-for="(item) of folderData[0].logins"
+      <LoginItem :login="item"
+                 :show-attributes="showHeadLines"
+                 v-for="(item) of folderData[0].logins"
                  :key="item.login_id"
-                 @click="openLogin"></LoginItem>
+                 @click="openLogin">
+      </LoginItem>
     </div>
   </div>
 </template>
@@ -35,19 +38,16 @@ export default {
 
   data() {
     return {
-      //hideHeadlines: true,
     }
   },
 
   watch: {
     selectedFolderId() {
       this.setShowHeadLines(true);
-      //this.hideHeadlines = true;
     },
 
     selectedOrgFolderId() {
       this.setShowHeadLines(true);
-      //this.hideHeadlines = true;
     }
   },
 
@@ -62,7 +62,6 @@ export default {
 
     openLogin() {
       this.setShowHeadLines(false);
-      //this.hideHeadlines = false;
       this.$emit('openLogin');
     },
   },

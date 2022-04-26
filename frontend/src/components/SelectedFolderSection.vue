@@ -6,7 +6,8 @@
           <p class="name-folder">{{ this.currentFolder[0].name }}</p>
 
           <div class="unit-folder-control">
-            <div class="icon-control icon-invite-user" v-if="this.typeFolder === 'orgFolder' && this.userAccess === 3"
+            <div class="icon-control icon-invite-user"
+                 v-if="this.typeFolder === 'orgFolder' && this.userAccess === 3"
                  @click="setShowInviteFolder(true)">
               <i class="bi bi-person-plus"></i>
             </div>
@@ -16,14 +17,16 @@
               <SettingsFolder v-model:show="showSettings"></SettingsFolder>
             </div>
 
-            <BaseButton @click="setShowModalAddingPassword(true)" v-if="this.userAccess === 3">Добавить пароль
+            <BaseButton @click="setShowModalAddingPassword(true)" v-if="this.userAccess === 3">
+              Добавить пароль
             </BaseButton>
           </div>
         </div>
 
         <div class="info-users" v-if="typeFolder === 'orgFolder'">
           <span v-if="this.currentFolder[0].users.length !== 0">
-            Еще <span class="view-users">{{ this.currentFolder[0].users.length }} сотрудников</span> могут просматривать папку
+            Еще <span class="view-users">{{ this.currentFolder[0].users.length }} сотрудников</span>
+            могут просматривать папку
           </span>
 
           <span v-if="this.currentFolder[0].users.length === 0">
@@ -117,6 +120,12 @@ export default {
       }
     },
 
+    showHeadLines() {
+      if (this.showHeadLines === true) {
+        return this.loginListWidth = 80;
+      }
+    },
+
     currentFolderLogins() {
       this.setPasswordData();
     },
@@ -129,7 +138,7 @@ export default {
       'showModalRenameFolder'
     ]),
     // login namespace
-    ...mapState('login', ['showSelectedLogin']),
+    ...mapState('login', ['showSelectedLogin', 'showHeadLines']),
     // user namespace
     ...mapState('auth', ['userData']),
     // folder namespace

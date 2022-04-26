@@ -22,7 +22,7 @@ class OrganizationLogin extends Model
 
     public function folder()
     {
-        return $this->belongsTo(OrganizationFolder::class);
+        return $this->belongsTo(OrganizationFolder::class, 'organization_folder_id', 'id');
     }
 
     public function setPasswordAttribute($value)
