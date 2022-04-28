@@ -75,27 +75,28 @@
         </div>
 
         <div class="right-folder-section">
+          <SettingsAccount v-if="showSettingsAccount"></SettingsAccount>
+
           <!-- Отображение секции с открытой папкой -->
           <SelectedFolderSection v-if="this.showSectionSelectedFolder"></SelectedFolderSection>
         </div>
       </div>
-
     </div>
   </div>
 </template>
 
 <script>
+import {mapActions, mapMutations, mapState} from "vuex";
 import FolderList from "@/components/Folder/FolderList";
 import CreateFolderForm from "@/components/Folder/CreateFolderForm";
 import BaseModal from "@/components/UI/BaseModal";
 import SelectedFolderSection from "@/components/SelectedFolderSection";
 import TopSettingsMenu from "@/components/TopSettingsMenu";
 import LeftSettingsMenu from "@/components/LeftSettingsMenu";
-import {mapActions, mapMutations, mapState} from "vuex";
+import SettingsAccount from "@/components/Settings/SettingsAccount";
 
 export default {
   name: "Main",
-
   components: {
     FolderList,
     CreateFolderForm,
@@ -103,6 +104,7 @@ export default {
     SelectedFolderSection,
     TopSettingsMenu,
     LeftSettingsMenu,
+    SettingsAccount,
   },
 
   data() {
@@ -133,6 +135,7 @@ export default {
     ...mapState('folder', ['dataFolders', 'showSectionSelectedFolder']),
     ...mapState('folder', ['dataOrganizationFolders']),
     ...mapState(['showSectionSelectedFolder', 'showTopSettingsMenu', 'openGeneralSettings']),
+    ...mapState('settings', ['showSettingsAccount']),
 
     getFirstLetterNameUser() {
       return typeof this.userData.login === 'string' ? this.userData.login.charAt(0).toUpperCase() : '';
@@ -140,14 +143,8 @@ export default {
   },
 
   methods: {
-    ...mapMutations({
-      setShowTopSettingsMenu: 'setShowTopSettingsMenu',
-    }),
-
-    ...mapActions({
-      sendRequestGetFolders: 'folder/sendRequestGetFolders',
-      sendRequestGetOrganizationFolders: 'folder/sendRequestGetOrganizationFolders',
-    }),
+    ...mapActions('folder', ['sendRequestGetFolders', 'sendRequestGetOrganizationFolders',]),
+    ...mapMutations(['setShowTopSettingsMenu']),
 
     showFormCreateOrgFolder() {
       this.showCreateFormOrg = true;
@@ -193,7 +190,7 @@ export default {
 
       .vertical-line {
         width: 1px;
-        height: 60%;
+        height: 25px;
         margin-left: 15px;
         opacity: 1;
         background-color: #fff;
@@ -257,7 +254,7 @@ export default {
     width: 100%;
     background-color: #fff;
     margin-top: 15px;
-    padding: 0 0 0 20px;
+    padding: 0 0 0 25px;
     font-weight: 500;
     border-radius: 10px;
     color: #948383;
@@ -268,7 +265,7 @@ export default {
       .left-section {
         width: 25%;
         min-height: 800px;
-        padding: 20px 20px 20px 0;
+        padding: 25px 25px 25px 0;
         border-right: 1px solid #a3a3a3;
 
         .search-panel {

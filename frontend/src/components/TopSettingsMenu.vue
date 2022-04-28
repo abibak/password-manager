@@ -9,7 +9,8 @@
           <hr>
 
           <ul>
-            <li @click="settingsClickEvent">Настройки аккаунта</li>
+            <li @click="settingsClickEvent('accountSettings')">Настройки аккаунта</li>
+            <li @click="settingsClickEvent('auth')">Авторизация</li>
             <li @click="logoutSystem">Выход из системы</li>
           </ul>
         </div>
@@ -56,14 +57,10 @@ export default {
   },
 
   methods: {
-    ...mapActions('auth', {
-      logout: 'logout',
-    }),
+    ...mapActions('auth', ['logout']),
+    ...mapMutations(['setOpenGeneralSettings', 'setShowTopSettingsMenu', 'setShowSectionSelectedFolder']),
 
-    ...mapMutations([
-      'setOpenGeneralSettings',
-      'setShowTopSettingsMenu'
-    ]),
+    ...mapMutations('settings', ['setShowSettingsAccount']),
 
     logoutSystem() {
       router.push('/login');
@@ -71,9 +68,22 @@ export default {
       this.logout();
     },
 
-    settingsClickEvent() {
+    settingsClickEvent(setting) {
       this.setShowTopSettingsMenu(false);
       this.setOpenGeneralSettings(true);
+      this.setShowSectionSelectedFolder(false);
+
+      console.log(setting)
+
+
+      switch (setting) {
+        case 'accountSettings':
+          this.setShowSettingsAccount(true);
+          break;
+        default:
+          console.log('not found');
+      }
+
     }
   }
 }

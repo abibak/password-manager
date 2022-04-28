@@ -31,13 +31,16 @@ export default {
   },
 
   actions: {
-    async getUserData({commit}) {
+    async getUserData({state, commit}) {
       await instance.get(process.env.VUE_APP_API_URL + 'getUser')
         .then(response => {
           commit('setUserData', response.data);
-          commit('setAuthToken', localStorage.getItem('authToken'));
-          commit('setIsAuth', true);
-          router.push('/');
+
+          if (state.isAuth === null || state.isAuth === false) {
+            commit('setAuthToken', localStorage.getItem('authToken'));
+            commit('setIsAuth', true);
+            router.push('/');
+          }
         }).catch(() => {
           router.push('/login');
         });

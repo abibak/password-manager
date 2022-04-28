@@ -4,6 +4,8 @@ import auth from "@/store/auth";
 import organizationFolder from '@/store/organizationFolder'
 import folder from "@/store/folder";
 import login from "@/store/login";
+import settings from "@/store/settings";
+import account from "@/store/account";
 
 export const instance = axios.create();
 
@@ -57,5 +59,7 @@ export default createStore({
     folder: folder,
     organizationFolder: organizationFolder,
     login: login,
+    settings: settings,
+    account: account,
   }
 })

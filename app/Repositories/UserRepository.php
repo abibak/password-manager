@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\AccountSetting;
 use App\Models\User as Model;
 
 class UserRepository extends BaseRepository
@@ -11,36 +12,25 @@ class UserRepository extends BaseRepository
         return Model::class;
     }
 
-    /*public function checkUser(int $userId, int $folderId)
-    {
-        $data = $this->startCondition()
-            ->join('access_organization_folders', function ($join) use ($userId, $folderId) {
-                $join->on('access_organization_folders.user_id', '=', 'users.id')
-                    ->where('access_organization_folders.organization_folder_id', $folderId)
-                    ->where('access_organization_folders.user_id', $userId);
-            })->first();
-    }*/
-
     public function getLogins()
     {
         return $this->startCondition()->select('id', 'login')->orderBy('id')->get();
     }
 
-    /*public function getLogins(int $userId, int $folderId)
-    {
-        return $this->startCondition()
-            ->join('access_organization_folders', function ($join) use ($userId, $folderId) {
-                $join->on('access_organization_folders.user_id', '=', 'users.id')
-                    ->where('access_organization_folders.organization_folder_id', $folderId)
-                    ->where('access_organization_folders.user_id', $userId);
-            })->first();
-
-        // old worker variant
-        // return $this->startCondition()->select('id', 'login')->orderBy('id')->get();
-    }*/
-
     public function getUserByEmail(string $email)
     {
-        return $this->startCondition()->where('email', $email)->first();
+        return $this->startCondition()->where('email', $email)->with('settings', function ($query) {
+            $query->select('user_id', 'email_notification', 'auto_logout');
+        })->first();
+    }
+
+    public function getUserEdit()
+    {
+        return $this->startCondition()->where('id', auth()->user()->id)->first();
+    }
+
+    public function getUserSettings()
+    {
+        return AccountSetting::select('email_notification', 'auto_logout')->where('user_id', auth()->user()->id)->first();
     }
 }

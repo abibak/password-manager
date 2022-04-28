@@ -34,17 +34,13 @@ class User extends Authenticatable
         'updated_at',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
-
     public function folders()
     {
         return $this->hasMany(UserFolder::class);
+    }
+
+    public function settings()
+    {
+        return $this->hasMany(AccountSetting::class);
     }
 }

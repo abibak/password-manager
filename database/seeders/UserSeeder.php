@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\AccountSetting;
 use App\Models\Role;
 use App\Models\User;
 use Database\Factories\UserFactory;
@@ -27,6 +28,12 @@ class UserSeeder extends Seeder
             'password' => Hash::make('admin'),
             'is_admin' => true,
             'is_blocked' => false,
+        ]);
+
+        AccountSetting::insert([
+           'user_id' => User::where('email', 'admin@mail.ru')->get()->random()->id,
+           'email_notification' => true,
+           'auto_logout' => false,
         ]);
     }
 }
