@@ -82,7 +82,7 @@ class UserLoginController extends Controller
      */
     public function destroy($id = null)
     {
-        $loginDestroy = $this->userLoginRepository->getLoginByIdWithFolder($id)[0] ?? null;
+        $loginDestroy = $this->userLoginRepository->getLoginByIdWithFolder($id) ?? null;
         return $this->loginService->destroy($loginDestroy);
     }
 }

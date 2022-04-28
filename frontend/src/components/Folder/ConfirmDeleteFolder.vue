@@ -6,7 +6,7 @@
       <div class="confirm">
         <i class="bi bi-trash3"></i>
         <p class="text-confirm">Вы уверены, что хотите удалить папку</p>
-        <p class="name-folder-delete">"{{ this.nameFolder }}"</p>
+        <p class="name-folder-delete">"{{ nameFolder }}"</p>
 
         <BaseButton class="btn-delete-folder" @click="deleteFolder">Удалить</BaseButton>
       </div>
@@ -51,7 +51,7 @@ export default {
 .confirm-delete {
   width: 300px;
   background-color: #fff;
-  border-radius: 10px;
+  border-radius: 14px;
   color: #000;
   text-align: center;
   position: absolute;
@@ -60,7 +60,7 @@ export default {
   transform: translate(-50%, -50%);
 
   .container-confirm {
-    padding: 20px;
+    padding: 30px;
     position: relative;
 
     .confirm {

@@ -1,16 +1,10 @@
 <template>
-  <i class="bi bi-x base-close-modal" @click="closeModal"></i>
+  <i class="bi bi-x base-close-modal"></i>
 </template>
 
 <script>
 export default {
   name: "BaseCloseModal",
-
-  methods: {
-    closeModal() {
-      this.$emit('closeModal');
-    },
-  }
 }
 </script>
 

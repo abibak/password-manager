@@ -1,16 +1,19 @@
 <template>
   <div class="create-folder">
-    <BaseCloseModal @closeModal="closeForm"></BaseCloseModal>
-    <p class="name-action">Создать папку</p>
+    <BaseCloseModal @click="closeForm"></BaseCloseModal>
 
-    <form @submit.prevent>
-      <div class="element-form">
-        <label for="name-folder">Имя папки</label>
-        <BaseInput id="name-folder" v-model.trim="nameFolder" :style="{borderBottomColor: errorInput}"></BaseInput>
-      </div>
+    <div class="container-create-folder">
+      <p class="name-action">Создать папку</p>
 
-      <BaseButton @click="addFolder">Сохранить</BaseButton>
-    </form>
+      <form @submit.prevent>
+        <div class="element-form">
+          <label for="name-folder">Имя папки</label>
+          <BaseInput id="name-folder" v-model.trim="nameFolder" :style="{borderBottomColor: errorInput}"></BaseInput>
+        </div>
+
+        <BaseButton @click="addFolder">Сохранить</BaseButton>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -39,19 +42,16 @@ export default {
   },
 
   methods: {
-    ...mapActions({
-      sendRequestCreateFolder: 'folder/sendRequestCreateFolder',
-    }),
-
-    ...mapMutations('folder', {
-      setTypeFolder: 'setTypeFolder',
-    }),
+    ...mapActions('folder', ['sendRequestCreateFolder',]),
+    ...mapMutations('folder', ['setTypeFolder']),
+    ...mapMutations(['setShowModalAddingFolder']),
 
     addFolder() {
       if (this.nameFolder === '') {
         return this.errorInput = 'red';
       }
 
+      // установка типа раздела
       if (this.typeFolder === 'orgFolder') {
         this.setTypeFolder(this.typeFolder);
       } else {
@@ -74,39 +74,41 @@ export default {
   color: #000;
   background-color: #fff;
   border-radius: 10px;
-  padding: 20px;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 
-  .name-action {
-    font-size: 22px;
-  }
+  .container-create-folder {
+    padding: 30px;
 
-  .element-form {
-    position: relative;
-  }
-
-  .base-button {
-    margin-top: 22px;
-  }
-
-  .element-form {
-    margin-top: 18px;
-
-    label:first-child {
-      font-weight: 400;
-      font-size: 16px;
-      color: #a3a3a3;
+    .name-action {
+      font-size: 22px;
     }
 
-    .base-input {
-      width: 460px;
-      padding: 5px 0;
-      background-color: transparent;
-      font-size: 16px;
-      transition: border-bottom-color $transTime;
+    .element-form {
+      position: relative;
+    }
+
+    .base-button {
+      margin-top: 22px;
+    }
+
+    .element-form {
+      margin-top: 18px;
+
+      label:first-child {
+        font-weight: 400;
+        font-size: 16px;
+        color: #a3a3a3;
+      }
+
+      .base-input {
+        width: 480px;
+        background-color: transparent;
+        font-size: 16px;
+        transition: border-bottom-color $transTime;
+      }
     }
   }
 }

@@ -33,11 +33,6 @@ class AccountService extends Service
                 'email' => $request['email'],
             ]);
 
-            /*$this->startCondition()->where('id', auth()->user()->id)->update([
-                'login' => $request['login'],
-                'email' => $request['email'],
-            ]);*/
-
             $accountSettings->update([
                 'email_notification' => $request['email_notification'],
                 'auto_logout' => $request['auto_logout'],

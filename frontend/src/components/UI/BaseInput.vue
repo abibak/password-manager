@@ -30,6 +30,7 @@ export default {
   display: block;
   outline: none;
   border: none;
+  line-height: 40px;
   background-color: transparent;
   border-bottom: 1px solid #a3a3a3;
   transition: border-bottom-color $transTime;

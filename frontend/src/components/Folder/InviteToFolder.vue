@@ -66,13 +66,8 @@ export default {
   },
 
   methods: {
-    ...mapActions('organizationFolder', {
-      sendInviteToFolder: 'sendInviteToFolder',
-    }),
-    ...mapMutations('organizationFolder', {
-      setShowInviteFolder: 'setShowInviteFolder',
-      setUserAccess: 'setUserAccess',
-    }),
+    ...mapActions('organizationFolder', ['sendInviteToFolder']),
+    ...mapMutations('organizationFolder', ['setShowInviteFolder', 'setUserAccess']),
 
     inviteToFolder() {
       this.setShowInviteFolder(false);
@@ -96,6 +91,7 @@ export default {
       });
     },
 
+    // выборка индетификаторов пользователей
     passArrayToIterate(arr, typeArray = '') {
       if (typeArray === 'usersAccess') {
         return this.iterateArray(arr, 'user_id');
@@ -104,29 +100,27 @@ export default {
     },
 
     async getLogins() {
-      await instance.get(process.env.VUE_APP_API_URL + '/access/folder')
-        .then(response => {
-          const users = this.getOrgLogins[0].users;
+      await instance.get(process.env.VUE_APP_API_URL + '/access/folder').then(response => {
+        const users = this.getOrgLogins[0].users;
 
-          let usersAccess = this.passArrayToIterate(users, 'usersAccess'); // пользователи имеющие доступ
-          let allUserIds = this.passArrayToIterate(response.data.data); // все пользователи
+        let usersAccess = this.passArrayToIterate(users, 'usersAccess'); // пользователи имеющие доступ
+        let allUserIds = this.passArrayToIterate(response.data.data); // все пользователи
 
-          for (let i = 0; i < response.data.data.length; i++) {
-            const itemResponse = response.data.data[i];
-            let resultFindId = !usersAccess.includes(allUserIds[i]);
+        for (let i = 0; i < response.data.data.length; i++) {
+          const itemResponse = response.data.data[i];
+          let resultFindId = !usersAccess.includes(allUserIds[i]);
 
-            if (resultFindId) {
-              this.userLogins.push(itemResponse);
-            }
+          if (resultFindId) {
+            this.userLogins.push(itemResponse);
           }
-        });
+        }
+      });
     },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-
 .invite-folder {
   background-color: #fff;
   border-radius: 10px;
@@ -138,7 +132,7 @@ export default {
   overflow: hidden;
 
   .container-invite {
-    padding: 20px;
+    padding: 30px;
 
     form {
       margin-top: 15px;

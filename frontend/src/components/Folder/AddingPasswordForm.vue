@@ -106,22 +106,13 @@ export default {
   methods: {
     // organization folder namespace
     ...mapActions('login', ['sendRequestCreatePassword']),
-    ...mapMutations({
-      setShowModalAddingPassword: 'setShowModalAddingPassword',
-    }),
+    ...mapMutations(['setShowModalAddingPassword']),
 
     fileUpload() {
       this.form.fields.file = this.$refs['input-file'].files[0];
     },
 
     sendDataForm() {
-     /* let formData = new FormData();
-      formData.append('file', this.form.fields.file);*/
-
-      /*if (this.typeFolder === 'orgFolder') {
-        return this.sendRequestCreatePassword(this.form.fields);
-      }*/
-
       this.sendRequestCreatePassword(this.form.fields);
     },
 
@@ -163,7 +154,7 @@ export default {
   overflow: hidden;
 
   .container-adding {
-    padding: 20px;
+    padding: 30px;
 
     .name-action {
       font-size: 22px;
@@ -235,7 +226,7 @@ export default {
 
         .base-input {
           width: 100%;
-          padding: 5px 0;
+
           font-size: 16px;
         }
 

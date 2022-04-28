@@ -1,7 +1,7 @@
 <template>
   <div class="rename-folder">
-    <div class="container-rename">
-      <BaseCloseModal @closeModal="closeForm"></BaseCloseModal>
+    <div class="container-rename-folder">
+      <BaseCloseModal @click="this.setShowModalRenameFolder(false)"></BaseCloseModal>
 
       <p class="name-action">Переименовать папку</p>
 
@@ -73,8 +73,8 @@ export default {
   left: 50%;
   transform: translate(-50%, -50%);
 
-  .container-rename {
-    padding: 20px;
+  .container-rename-folder {
+    padding: 30px;
 
     .name-action {
       font-size: 22px;
@@ -93,13 +93,12 @@ export default {
 
       label:first-child {
         font-weight: 400;
-        font-size: 14px;
+        font-size: 16px;
         color: #a3a3a3;
       }
 
       .base-input {
-        width: 460px;
-        padding: 5px 0;
+        width: 480px;
         font-size: 16px;
         transition: border-bottom-color $transTime;
       }

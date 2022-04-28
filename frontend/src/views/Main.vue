@@ -39,9 +39,9 @@
               <div class="info-org-section">
                 <p>Раздел организации</p>
                 <i class="bi bi-plus-circle" v-if="userData.is_admin"
-                   @click="showFormCreateOrgFolder"></i>
+                   @click="showFormCreateOrgFolder = true"></i>
 
-                <BaseModal v-bind:show="showCreateFormOrg">
+                <BaseModal v-bind:show="showFormCreateOrgFolder">
                   <CreateFolderForm @closeForm="closeFormCreateFolder" :type-folder="`orgFolder`"></CreateFolderForm>
                 </BaseModal>
               </div>
@@ -54,9 +54,9 @@
             <div class="section-user">
               <div class="info-section-user">
                 <p>Личный раздел</p>
-                <i class="bi bi-plus-circle" @click="showFormCreateFolder"></i>
+                <i class="bi bi-plus-circle" @click="showFormCreateFolder = true"></i>
 
-                <BaseModal v-bind:show="showCreateForm">
+                <BaseModal v-bind:show="showFormCreateFolder">
                   <CreateFolderForm @closeForm="closeFormCreateFolder" :type-folder="`userFolder`"></CreateFolderForm>
                 </BaseModal>
               </div>
@@ -109,8 +109,8 @@ export default {
 
   data() {
     return {
-      showCreateFormOrg: false,
-      showCreateForm: false,
+      showFormCreateOrgFolder: false,
+      showFormCreateFolder: false,
       mainScale: 'scale(1)',
     }
   },
@@ -134,7 +134,7 @@ export default {
     ...mapState('auth', ['userData']),
     ...mapState('folder', ['dataFolders', 'showSectionSelectedFolder']),
     ...mapState('folder', ['dataOrganizationFolders']),
-    ...mapState(['showSectionSelectedFolder', 'showTopSettingsMenu', 'openGeneralSettings']),
+    ...mapState(['showSectionSelectedFolder', 'showTopSettingsMenu', 'openGeneralSettings', 'showModalAddingFolder']),
     ...mapState('settings', ['showSettingsAccount']),
 
     getFirstLetterNameUser() {
@@ -144,19 +144,11 @@ export default {
 
   methods: {
     ...mapActions('folder', ['sendRequestGetFolders', 'sendRequestGetOrganizationFolders',]),
-    ...mapMutations(['setShowTopSettingsMenu']),
-
-    showFormCreateOrgFolder() {
-      this.showCreateFormOrg = true;
-    },
-
-    showFormCreateFolder() {
-      this.showCreateForm = true;
-    },
+    ...mapMutations(['setShowTopSettingsMenu', 'setShowModalAddingFolder']),
 
     closeFormCreateFolder() {
-      this.showCreateFormOrg = false;
-      this.showCreateForm = false;
+      this.showFormCreateOrgFolder = false;
+      this.showFormCreateFolder = false;
     },
   },
 }
