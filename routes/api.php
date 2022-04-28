@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\AccountController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\OrganizationLoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,10 +15,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/login', ['App\Http\Controllers\Auth\LoginController', 'login'])->name('login');
-Route::post('/login', ['App\Http\Controllers\Auth\LoginController', 'login']);
+Route::get('/login', ['App\Http\Controllers\Api\Auth\LoginController', 'login'])->name('login');
+Route::post('/login', ['App\Http\Controllers\Api\Auth\LoginController', 'login']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::get('/getUsers', ['App\Http\Controllers\Controller', 'test']);
-    Route::get('logout', ['App\Http\Controllers\Controller', 'logout']);
+    /* auth routes */
+    Route::get('/getUser', ['App\Http\Controllers\Api\Auth\AuthController', 'getUser']);
+    Route::get('/logout', ['App\Http\Controllers\Api\Auth\AuthController', 'logout']);
+
+
+    /* api resource routes */
+    Route::apiResource('user/account', AccountController::class);
+    Route::apiResource('organization/login', OrganizationLoginController::class);
+    Route::apiResource('access/folder', 'App\Http\Controllers\Api\AccessOrganizationFolderController');
+    Route::apiResource('user/folder', 'App\Http\Controllers\Api\UserFolderController');
+    Route::apiResource('user/login', 'App\Http\Controllers\Api\UserLoginController');
+    Route::apiResource('organization/folder', 'App\Http\Controllers\Api\OrganizationFolderController');
 });

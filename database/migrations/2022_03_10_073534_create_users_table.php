@@ -15,13 +15,10 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('role_id')->constrained();
-            $table->string('login')->unique();
-            $table->string('first_name');
-            $table->string('middle_name');
-            $table->string('last_name');
+            $table->foreignId('role_id')->nullable()->constrained();
+            $table->string('login', 40)->unique();
             $table->string('email')->unique();
-            $table->string('master_password');
+            $table->string('password', 300);
             $table->boolean('is_admin');
             $table->boolean('is_blocked');
             $table->string('token')->unique()->nullable();

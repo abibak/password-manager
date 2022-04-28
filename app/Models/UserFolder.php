@@ -9,5 +9,15 @@ class UserFolder extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['user_id', 'name'];
+
+    public function logins()
+    {
+        return $this->hasMany(UserLogin::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

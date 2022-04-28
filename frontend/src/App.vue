@@ -1,86 +1,81 @@
 <template>
-
   <div class="app">
     <router-view></router-view>
   </div>
-
 </template>
 
 <script>
-
-import axios from 'axios';
-import {mapGetters, mapState} from "vuex";
+import 'normalize.css';
+import {mapActions, mapGetters} from "vuex";
+import {instance} from "@/store";
+import router from "@/router";
 
 export default {
-  data() {
-    return {}
-  },
-
   mounted() {
-    this.login();
+    const authToken = localStorage.getItem('authToken')
+    this.initConfigInstance();
+
+    if (authToken) {
+      this.getUserData();
+    } else if (authToken === null || authToken === '') {
+      router.push('/login');
+    }
   },
 
   computed: {
-    ...mapState([
-      'userData',
-      'isAdmin',
-      'isBlocked',
-    ]),
-
-    ...mapGetters([
-      'getFolderById',
-    ])
+    ...mapGetters('auth', {
+      getAuthToken: 'getAuthToken',
+    }),
   },
 
   methods: {
-    getFolder() {
-      console.log(process.env.VUE_APP_API_URL);
-      return this.getFolderById(2);
-    },
+    ...mapActions({
+      'getUserData': 'auth/getUserData',
+    }),
 
-    login() {
-      /*try {
-        axios.post('/api/login', {
-          'email': '0y4peKfV@mail.ru',
-        }).then((response) => {
-          console.log(
-            'Your name: ' + this.userData.name,
-            '\nyour status admin: ' + this.isAdmin,
-            '\nsystem blocked: ' + this.isBlocked
-          );
+    initConfigInstance() {
+      instance.interceptors.request.use((config) => {
+        config.headers = {
+          'Authorization': 'Bearer ' + localStorage.getItem('authToken'),
+        }
 
-          console.log('your folder id:', this.getFolder().name);
-
-          if (this.isBlocked) {
-            console.log('Your account blocked, account actions not accessible');
-          }
-        });
-      } catch (e) {
-        console.log(e);
-      }*/
+        return config;
+      }, (error) => {
+        console.log(error);
+      });
     }
-  }
+  },
 }
 </script>
 
-<style>
+<style lang="scss">
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
+  height: 100vh;
+  font-family: 'Manrope', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: #fff;
+  overflow-x: hidden;
+  background-color: $baseColor;
 }
 
-nav {
-  padding: 30px;
+.error-message {
+  color: red;
+  font-size: 14px;
+  position: absolute;
+  bottom: -20px;
+  left: 0;
 }
 
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
+.name-action {
+  font-size: 22px;
+  color: #000;
 }
 
-nav a.router-link-exact-active {
-  color: #42b983;
-}
 </style>

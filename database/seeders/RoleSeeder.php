@@ -18,7 +18,11 @@ class RoleSeeder extends Seeder
         Role::insert([
             'name' => 'admin',
             'access' => 3,
-            'status' => true,
+        ]);
+
+        Role::insert([
+            'name' => 'IT',
+            'access' => 2,
         ]);
     }
 }

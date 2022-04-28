@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\OrganizationFolder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -20,6 +21,11 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             UserSeeder::class,
             UserFolderSeeder::class,
+            UserLoginSeeder::class,
+            OrganizationFolderSeeder::class,
+            OrganizationLoginSeeder::class,
+            AccessOrganizationFolderSeeder::class,
+            FolderHistorySeeder::class,
         ]);
     }
 

@@ -17,9 +17,16 @@ class UserFolderSeeder extends Seeder
      */
     public function run()
     {
+        for ($i = 0; $i < 5; $i++) {
+            UserFolder::insert([
+                'user_id' => 1,
+                'name' => Str::random(8),
+            ]);
+        }
+
         for ($i = 0; $i < 10; $i++) {
             UserFolder::insert([
-                'user_id' => User::all()->random()->id,
+                'user_id' => User::where('id', '!=', 1)->get()->random()->id,
                 'name' => Str::random(8),
             ]);
         }

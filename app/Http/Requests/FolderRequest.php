@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Exceptions\ValidationException;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserRegisterRequest extends FormRequest
+class FolderRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +26,12 @@ class UserRegisterRequest extends FormRequest
     public function rules()
     {
         return [
-
+            'name' => 'required|min:3|max:50',
         ];
+    }
+
+    public function failedValidation(Validator $validator)
+    {
+        throw new ValidationException($validator);
     }
 }

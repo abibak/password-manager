@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('roles', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('access');
-            $table->boolean('status');
+            $table->integer('access')->nullable();
+            $table->boolean('status')->default(true);
         });
     }
 

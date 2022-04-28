@@ -18,8 +18,9 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'login',
         'email',
+        'password',
     ];
 
     /**
@@ -28,15 +29,18 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'master_password',
+        'password',
+        'created_at',
+        'updated_at',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    public function folders()
+    {
+        return $this->hasMany(UserFolder::class);
+    }
+
+    public function settings()
+    {
+        return $this->hasMany(AccountSetting::class);
+    }
 }
