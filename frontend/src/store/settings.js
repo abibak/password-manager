@@ -4,6 +4,7 @@ export default {
 
   state: () => ({
     showSettingsAccount: false,
+    selectedSetting: '',
   }),
 
   getters: {},
@@ -11,7 +12,11 @@ export default {
   mutations: {
     setShowSettingsAccount(state, val) {
       state.showSettingsAccount = val;
-    }
+    },
+
+    setSelectedSetting(state, val) {
+      state.selectedSetting = val;
+    },
   },
 
   actions: {},

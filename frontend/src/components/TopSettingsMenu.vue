@@ -59,8 +59,7 @@ export default {
   methods: {
     ...mapActions('auth', ['logout']),
     ...mapMutations(['setOpenGeneralSettings', 'setShowTopSettingsMenu', 'setShowSectionSelectedFolder']),
-
-    ...mapMutations('settings', ['setShowSettingsAccount']),
+    ...mapMutations('settings', ['setShowSettingsAccount', 'setSelectedSetting']),
 
     logoutSystem() {
       router.push('/login');
@@ -73,15 +72,12 @@ export default {
       this.setOpenGeneralSettings(true);
       this.setShowSectionSelectedFolder(false);
 
-      console.log(setting)
-
+      this.setSelectedSetting(setting);
 
       switch (setting) {
         case 'accountSettings':
           this.setShowSettingsAccount(true);
           break;
-        default:
-          console.log('not found');
       }
 
     }

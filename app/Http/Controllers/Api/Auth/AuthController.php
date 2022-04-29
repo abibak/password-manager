@@ -16,7 +16,7 @@ class AuthController extends Controller
 
     public function getUser()
     {
-        return auth()->user();
+        return $this->userRepository->getUserByEmail(auth()->user()->email);
     }
 
     public function getUserLogins()

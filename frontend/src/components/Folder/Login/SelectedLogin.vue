@@ -275,7 +275,6 @@ export default {
 
         .base-input {
           width: 100%;
-          padding: 5px 0;
           font-size: 16px;
         }
 

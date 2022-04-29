@@ -27,7 +27,7 @@ export default {
 
     setIsAuth(state, value) {
       state.isAuth = value;
-    }
+    },
   },
 
   actions: {

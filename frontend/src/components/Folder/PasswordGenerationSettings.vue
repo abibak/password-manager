@@ -201,7 +201,7 @@ export default {
 
   .container-generation {
     width: 100%;
-    padding: 20px;
+    padding: 30px;
     font-size: 16px;
 
     .name-action {

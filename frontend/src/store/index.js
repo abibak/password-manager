@@ -12,7 +12,7 @@ export const instance = axios.create();
 export default createStore({
   state: () => ({
     errors: '',
-    openGeneralSettings: false,
+    openGeneralSettings: false, // основное левое боковое меню настроек
     showSectionSelectedFolder: false,
     showTopSettingsMenu: false,
     showModalConfirmDelete: false,

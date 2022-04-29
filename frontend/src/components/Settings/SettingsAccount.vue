@@ -75,6 +75,9 @@ export default {
     initData() {
       this.form.login = this.userData.login;
       this.form.email = this.userData.email;
+
+      this.form.emailNotification = Boolean(this.userData.settings[0]['email_notification']);
+      this.form.autoLogout = Boolean(this.userData.settings[0]['auto_logout']);
     },
 
     sendData() {

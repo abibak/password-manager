@@ -1,7 +1,7 @@
 <template>
-  <div class="left-settings-menu">
+  <div class="left-settings-menu" :style="slideSettingsStyles">
     <div class="container-settings-menu">
-      <div class="icon-control" @click="setOpenGeneralSettings(false)">
+      <div class="icon-control" @click="back()">
         <i class="bi bi-arrow-left"></i>
         <span>Назад к папкам</span>
       </div>
@@ -34,21 +34,62 @@
 </template>
 
 <script>
-import {mapMutations} from "vuex";
+import {mapMutations, mapState} from "vuex";
 
 export default {
   name: "LeftSettingsMenu",
 
+  data() {
+    return {
+      slideSettingsStyles: {
+        opacity: 1,
+        transform: 'translate(0,0)',
+      }
+    }
+  },
+
+  watch: {
+    // maybe del
+    selectedOrgFolderId() {
+      this.back();
+    },
+
+    selectedFolderId() {
+      this.back();
+    }
+  },
+
+  computed: {
+    ...mapState('folder', ['selectedOrgFolderId', 'selectedFolderId']),
+    ...mapState('settings', ['selectedSetting']),
+  },
+
   methods: {
-    ...mapMutations({
-      setOpenGeneralSettings: 'setOpenGeneralSettings',
-    }),
+    ...mapMutations(['setOpenGeneralSettings']),
+    ...mapMutations('settings', ['setShowSettingsAccount']),
+
+    back() {
+      this.slideSettingsStyles.transform = 'translate(-25px, 0)';
+      this.slideSettingsStyles.opacity = 0;
+
+      setTimeout(() => {
+        this.setOpenGeneralSettings(false)
+      }, 280);
+
+      switch (this.selectedSetting) {
+        case 'accountSettings':
+          this.setShowSettingsAccount(false);
+          break;
+      }
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
 .left-settings-menu {
+  transition: opacity, transform, $transTime;
+
   .container-settings-menu {
     .icon-control {
       display: flex;

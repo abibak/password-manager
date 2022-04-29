@@ -3,7 +3,7 @@
     <TopSettingsMenu></TopSettingsMenu>
   </BaseModal>
 
-  <div class="site-main" :style="{transform: mainScale}">
+  <div class="site-main" :style="{transform: this.mainScale}">
     <div class="header-main">
       <div class="icon-menu" @click="setShowTopSettingsMenu(true)">
         <i class="bi bi-list"></i>
@@ -125,17 +125,20 @@ export default {
       if (this.showTopSettingsMenu) {
         return this.mainScale = 'scale(.98)';
       }
-
       return this.mainScale = 'scale(1)';
     },
   },
 
   computed: {
     ...mapState('auth', ['userData']),
-    ...mapState('folder', ['dataFolders', 'showSectionSelectedFolder']),
-    ...mapState('folder', ['dataOrganizationFolders']),
-    ...mapState(['showSectionSelectedFolder', 'showTopSettingsMenu', 'openGeneralSettings', 'showModalAddingFolder']),
+    ...mapState('folder', ['dataFolders', 'showSectionSelectedFolder', 'dataOrganizationFolders']),
     ...mapState('settings', ['showSettingsAccount']),
+    ...mapState([
+      'showSectionSelectedFolder',
+      'showTopSettingsMenu',
+      'openGeneralSettings',
+      'showModalAddingFolder'
+    ]),
 
     getFirstLetterNameUser() {
       return typeof this.userData.login === 'string' ? this.userData.login.charAt(0).toUpperCase() : '';
@@ -259,6 +262,8 @@ export default {
         min-height: 800px;
         padding: 25px 25px 25px 0;
         border-right: 1px solid #a3a3a3;
+        overflow-x: hidden;
+        transition: opacity $transTime;
 
         .search-panel {
           display: flex;
