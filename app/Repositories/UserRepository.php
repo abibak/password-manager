@@ -12,6 +12,13 @@ class UserRepository extends BaseRepository
         return Model::class;
     }
 
+    public function getAllUsers()
+    {
+        return $this->startCondition()->select('*')->with('assigned_roles', function ($query) {
+            $query->select('id', 'user_id', 'role_id')->with('role');
+        })->get();
+    }
+
     public function getLogins()
     {
         return $this->startCondition()->select('id', 'login')->orderBy('id')->get();
@@ -31,6 +38,9 @@ class UserRepository extends BaseRepository
 
     public function getUserSettings()
     {
-        return AccountSetting::select('email_notification', 'auto_logout')->where('user_id', auth()->user()->id)->first();
+        return AccountSetting
+            ::select('email_notification', 'auto_logout')
+            ->where('user_id', auth()->user()->id)
+            ->first();
     }
 }

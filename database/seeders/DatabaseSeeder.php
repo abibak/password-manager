@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\OrganizationFolder;
+
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -15,11 +15,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
-
         $this->call([
-            RoleSeeder::class,
             UserSeeder::class,
+            RoleSeeder::class,
+            AssignedRoleSeeder::class,
             UserFolderSeeder::class,
             UserLoginSeeder::class,
             OrganizationFolderSeeder::class,
@@ -28,5 +27,4 @@ class DatabaseSeeder extends Seeder
             FolderHistorySeeder::class,
         ]);
     }
-
 }

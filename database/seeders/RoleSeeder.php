@@ -16,13 +16,13 @@ class RoleSeeder extends Seeder
     public function run()
     {
         Role::insert([
-            'name' => 'admin',
+            'name' => 'Админы',
             'access' => 3,
         ]);
 
         Role::insert([
-            'name' => 'IT',
-            'access' => 2,
+            'name' => 'Пользователи',
+            'access' => 1,
         ]);
     }
 }

@@ -11,8 +11,8 @@
           <p class="header-settings">Мой аккаунт</p>
 
           <ul>
-            <li>Настройки аккаунта</li>
-            <li>Авторизация</li>
+            <li @click="settingsClickEvent('accountSettings')">Настройки аккаунта</li>
+            <li @click="settingsClickEvent('auth')">Авторизация</li>
           </ul>
         </div>
 
@@ -20,7 +20,7 @@
           <p class="header-settings">Управление</p>
 
           <ul>
-            <li>Управление пользователями</li>
+            <li @click="settingsClickEvent('manageUsers')">Управление пользователями</li>
             <li>Информация об организации</li>
             <li>Настройки системы</li>
             <li>Настройки системы</li>
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import {mapMutations, mapState} from "vuex";
+import {mapActions, mapMutations, mapState} from "vuex";
 
 export default {
   name: "LeftSettingsMenu",
@@ -65,8 +65,16 @@ export default {
   },
 
   methods: {
+    ...mapActions('settings', ['closeSettings', 'openSettings']),
     ...mapMutations(['setOpenGeneralSettings']),
-    ...mapMutations('settings', ['setShowSettingsAccount']),
+    ...mapMutations('settings', ['setShowSettingsAccount', 'setShowSettingsManageUsers', 'setSelectedSetting']),
+
+    settingsClickEvent(setting) {
+      this.closeSettings();
+
+      this.setSelectedSetting(setting); // установка типа настройки
+      this.openSettings(); // открыть установленную настройку
+    },
 
     back() {
       this.slideSettingsStyles.transform = 'translate(-25px, 0)';
@@ -76,11 +84,7 @@ export default {
         this.setOpenGeneralSettings(false)
       }, 280);
 
-      switch (this.selectedSetting) {
-        case 'accountSettings':
-          this.setShowSettingsAccount(false);
-          break;
-      }
+      this.closeSettings();
     },
   },
 }

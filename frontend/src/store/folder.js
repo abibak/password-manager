@@ -150,6 +150,7 @@ export default {
       await instance.post(process.env.VUE_APP_API_URL + await dispatch('defineLink') + 'folder', {
         name: nameFolder,
       }).then(response => {
+        console.log(response);
         if (response.status === 201) {
           dispatch('sendRequestGetFolders');
           dispatch('sendRequestGetOrganizationFolders');

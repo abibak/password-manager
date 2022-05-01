@@ -76,7 +76,7 @@
 
         <div class="right-folder-section">
           <SettingsAccount v-if="showSettingsAccount"></SettingsAccount>
-
+          <ListUsers v-if="showSettingsManageUsers"></ListUsers>
           <!-- Отображение секции с открытой папкой -->
           <SelectedFolderSection v-if="this.showSectionSelectedFolder"></SelectedFolderSection>
         </div>
@@ -94,6 +94,7 @@ import SelectedFolderSection from "@/components/SelectedFolderSection";
 import TopSettingsMenu from "@/components/TopSettingsMenu";
 import LeftSettingsMenu from "@/components/LeftSettingsMenu";
 import SettingsAccount from "@/components/Settings/SettingsAccount";
+import ListUsers from "@/components/Settings/ManageUsers/ListUsers";
 
 export default {
   name: "Main",
@@ -105,6 +106,7 @@ export default {
     TopSettingsMenu,
     LeftSettingsMenu,
     SettingsAccount,
+    ListUsers,
   },
 
   data() {
@@ -132,7 +134,7 @@ export default {
   computed: {
     ...mapState('auth', ['userData']),
     ...mapState('folder', ['dataFolders', 'showSectionSelectedFolder', 'dataOrganizationFolders']),
-    ...mapState('settings', ['showSettingsAccount']),
+    ...mapState('settings', ['showSettingsAccount', 'showSettingsManageUsers']),
     ...mapState([
       'showSectionSelectedFolder',
       'showTopSettingsMenu',

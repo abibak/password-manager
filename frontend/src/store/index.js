@@ -12,6 +12,7 @@ export const instance = axios.create();
 export default createStore({
   state: () => ({
     errors: '',
+    users: null,
     openGeneralSettings: false, // основное левое боковое меню настроек
     showSectionSelectedFolder: false,
     showTopSettingsMenu: false,
@@ -25,6 +26,10 @@ export default createStore({
   mutations: {
     setErrors(state, data) {
       state.errors = data;
+    },
+
+    setUsers(state, data) {
+      state.users = data;
     },
 
     setShowSectionSelectedFolder(state, val) {
@@ -52,7 +57,13 @@ export default createStore({
     },
   },
 
-  actions: {},
+  actions: {
+    async sendRequestGetAllUsers({commit}) {
+      await instance.get(process.env.VUE_APP_API_URL + 'user/').then(response => {
+        commit('setUsers', response.data);
+      })
+    }
+  },
 
   modules: {
     auth: auth,

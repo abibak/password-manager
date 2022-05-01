@@ -20,7 +20,7 @@
           <hr>
 
           <ul>
-            <li @click="settingsClickEvent">Управление пользователями</li>
+            <li @click="settingsClickEvent('manageUsers')">Управление пользователями</li>
             <li @click="settingsClickEvent">Информация об организации</li>
             <li @click="settingsClickEvent">Настройки системы</li>
             <li @click="settingsClickEvent">Настройки системы</li>
@@ -58,8 +58,9 @@ export default {
 
   methods: {
     ...mapActions('auth', ['logout']),
+    ...mapActions('settings', ['closeSettings', 'openSettings']),
     ...mapMutations(['setOpenGeneralSettings', 'setShowTopSettingsMenu', 'setShowSectionSelectedFolder']),
-    ...mapMutations('settings', ['setShowSettingsAccount', 'setSelectedSetting']),
+    ...mapMutations('settings', ['setShowSettingsAccount', 'setSelectedSetting', 'setShowSettingsManageUsers']),
 
     logoutSystem() {
       router.push('/login');
@@ -72,14 +73,10 @@ export default {
       this.setOpenGeneralSettings(true);
       this.setShowSectionSelectedFolder(false);
 
-      this.setSelectedSetting(setting);
+      this.closeSettings();
 
-      switch (setting) {
-        case 'accountSettings':
-          this.setShowSettingsAccount(true);
-          break;
-      }
-
+      this.setSelectedSetting(setting); // установка типа настройки
+      this.openSettings(); // открыть установленную настройку
     }
   }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AccountController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\OrganizationLoginController;
 
@@ -25,6 +26,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 
     /* api resource routes */
+    Route::apiResource('user/', UserController::class);
     Route::apiResource('user/account', AccountController::class);
     Route::apiResource('organization/login', OrganizationLoginController::class);
     Route::apiResource('access/folder', 'App\Http\Controllers\Api\AccessOrganizationFolderController');

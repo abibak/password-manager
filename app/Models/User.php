@@ -34,6 +34,11 @@ class User extends Authenticatable
         'updated_at',
     ];
 
+    public function assigned_roles()
+    {
+        return $this->hasMany(AssignedRole::class);
+    }
+
     public function folders()
     {
         return $this->hasMany(UserFolder::class);

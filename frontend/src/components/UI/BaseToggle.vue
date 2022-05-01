@@ -11,13 +11,13 @@ export default {
   props: {
     active: {
       type: Boolean,
-      default: true,
+      default: false,
     }
   },
 
   data() {
     return {
-      right: '0',
+      right: 0,
       backgroundColor: '',
       position: '',
     }
