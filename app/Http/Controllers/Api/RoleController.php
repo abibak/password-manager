@@ -3,26 +3,26 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\AccountRequest;
-use App\Models\User;
-use App\Repositories\UserRepository;
-use App\Services\AccountService;
+use App\Repositories\RoleRepository;
 use Illuminate\Http\Request;
 
-class AccountController extends Controller
+class RoleController extends Controller
 {
-    private $accountService;
-    private $userRepository;
+    private $roleRepository;
 
     public function __construct()
     {
-        $this->accountService = new AccountService(new User);
-        $this->userRepository = new UserRepository();
+        $this->roleRepository = new RoleRepository;
     }
 
-    public function index(Request $request)
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
     {
-        return $request->all();
+        return $this->roleRepository->getAllRoles();
     }
 
     /**
@@ -37,16 +37,26 @@ class AccountController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
-    public function update(AccountRequest $request, $id = null)
+    public function update(Request $request, $id)
     {
-        $user = $this->userRepository->getUserEdit();
-        return $this->accountService->update($user, $request->all());
+        //
     }
 
     /**

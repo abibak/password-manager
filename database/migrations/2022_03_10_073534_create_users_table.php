@@ -22,6 +22,7 @@ return new class extends Migration
             $table->boolean('is_blocked');
             $table->string('token')->unique()->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

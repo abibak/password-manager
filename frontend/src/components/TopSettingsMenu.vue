@@ -23,7 +23,6 @@
             <li @click="settingsClickEvent('manageUsers')">Управление пользователями</li>
             <li @click="settingsClickEvent">Информация об организации</li>
             <li @click="settingsClickEvent">Настройки системы</li>
-            <li @click="settingsClickEvent">Настройки системы</li>
             <li @click="settingsClickEvent">Панель безопасности</li>
             <li @click="settingsClickEvent">История действий</li>
           </ul>

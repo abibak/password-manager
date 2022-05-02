@@ -4,14 +4,62 @@
 namespace App\Services;
 
 
+use App\Mail\CreatedUser;
 use App\Models\AccountSetting;
+use App\Models\AssignedRole;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Mockery\Exception;
 
 class AccountService extends Service
 {
+    public function generatePassword()
+    {
+        $characters = ['0123456789!,.[]{}()%?&*$#^<>~@|ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'];
+        $lengthPassword = rand(6, 20);
+        $generatedPassword = '';
+
+        for ($i = 0; $i < $lengthPassword; $i++) {
+            $generatedPassword .= $characters[0][rand(0, strlen($characters[0]) - 1)];
+        }
+
+        return $generatedPassword;
+    }
+
     public function store(array $request)
     {
-        // TODO: Implement store() method.
+        $password = $this->generatePassword();
+
+        $user = $this->startCondition()->create([
+            'login' => $request['login'],
+            'email' => $request['email'],
+            'password' => Hash::make($password),
+            'is_admin' => false,
+            'is_blocked' => false,
+        ]);
+
+        if ($user) {
+            AssignedRole::create([
+                'user_id' => $user->id,
+                'role_id' => 2,
+            ]);
+
+            AccountSetting::create([
+                'user_id' => $user->id,
+                'email_notification' => true,
+                'auto_logout' => false,
+            ]);
+
+            Mail::to('leosan.kiras@gmail.com')->send(new CreatedUser([
+                'email' => $user->email,
+                'password' => $password
+            ]));
+
+            return response()->json([
+                'data' => $user,
+                'message' => 'Created user'
+            ], 201);
+        }
     }
 
     public function show(int $id)
@@ -22,17 +70,20 @@ class AccountService extends Service
     public function update($dataModel, array $request)
     {
         try {
+            // настройки аккаунта
             $accountSettings = (new AccountSetting)->where('user_id', auth()->user()->id)->first();
 
             if ($accountSettings === null || $dataModel === null) {
                 throw new Exception('Error account update');
             }
 
+            // обновить модель пользователя
             $dataModel->update([
                 'login' => $request['login'],
                 'email' => $request['email'],
             ]);
 
+            // обновить настройки аккаунта
             $accountSettings->update([
                 'email_notification' => $request['email_notification'],
                 'auto_logout' => $request['auto_logout'],
@@ -47,6 +98,8 @@ class AccountService extends Service
 
     public function destroy($dataModel)
     {
-        // TODO: Implement destroy() method.
+        $this->startCondition()->destroy(explode(',', $dataModel));
+
+        return response()->json(['message' => 'User deleted'], 200);
     }
 }

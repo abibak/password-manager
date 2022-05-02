@@ -17,5 +17,4 @@ abstract class BaseRepository {
     {
         return clone $this->model;
     }
-
 }

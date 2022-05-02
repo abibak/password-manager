@@ -59,7 +59,7 @@
             управлять пользователями, настраивать доступ и применять роли</p>
 
           <div class="action-list">
-            <div class="item-action">
+            <div class="item-action" @click="deleteUser">
               <i class="bi bi-trash3"></i>
               <span>Удалить пользователя</span>
             </div>
@@ -79,7 +79,7 @@
     </div>
 
     <BaseModal v-model:show="showCreateUserForm">
-      <CreateUserForm v-model:show="showCreateUserForm"></CreateUserForm>
+      <CreateUserForm @closeCreateUserForm="closeCreateUserForm"></CreateUserForm>
     </BaseModal>
   </div>
 </template>
@@ -96,9 +96,9 @@ export default {
 
   data() {
     return {
-      search: '',
-      selectedUserIds: [],
-      selectedUserAll: false,
+      search: '', // поиск
+      selectedUserIds: [], // массив идентификаторов пользователей
+      //selectedUserAll: false,
       classActiveUsersManage: 'active-tab',
       classActiveRolesManage: '',
       showCreateUserForm: false,
@@ -119,6 +119,7 @@ export default {
         return this.users;
       }
 
+      // поиск по логину
       for (const item of this.users) {
         const userLogin = item.login;
 
@@ -132,8 +133,14 @@ export default {
   },
 
   methods: {
-    ...mapActions(['sendRequestGetAllUsers']),
+    ...mapActions(['sendRequestGetAllUsers', 'sendRequestDeleteUser']),
 
+    deleteUser() {
+      let stringIds = this.selectedUserIds.join(',');
+      this.sendRequestDeleteUser(stringIds);
+    },
+
+    // открыть вкладку управления
     openManageItem(el) {
       const currentElement = el.target.textContent.toLowerCase();
       this.classActiveUsersManage = '';
@@ -145,13 +152,17 @@ export default {
         this.classActiveRolesManage = 'active-tab';
       }
     },
+
+    closeCreateUserForm() {
+      this.showCreateUserForm = false;
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
 .manage-users {
-  padding: 40px 40px 0 40px;
+  padding: 40px;
 
   .container-manage-users {
     .name-action {

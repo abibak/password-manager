@@ -3,16 +3,23 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AccountRequest;
+use App\Mail\CreatedUser;
+use App\Models\User;
 use App\Repositories\UserRepository;
+use App\Services\AccountService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
     private $userRepository;
+    private $accountService;
 
     public function __construct()
     {
         $this->userRepository = new UserRepository;
+        $this->accountService = new AccountService(new User());
     }
 
     /**
@@ -29,11 +36,11 @@ class UserController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
-        //
+        return $this->accountService->store($request->all());
     }
 
     /**
@@ -52,21 +59,22 @@ class UserController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(AccountRequest $request, $id = null)
     {
-        //
+        $user = $this->userRepository->getUserEdit();
+        return $this->accountService->update($user, $request->all());
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function destroy(mixed $id)
     {
-        //
+        return $this->accountService->destroy($id);
     }
 }

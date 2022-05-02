@@ -13,6 +13,7 @@ export default createStore({
   state: () => ({
     errors: '',
     users: null,
+    roles: [],
     openGeneralSettings: false, // основное левое боковое меню настроек
     showSectionSelectedFolder: false,
     showTopSettingsMenu: false,
@@ -30,6 +31,10 @@ export default createStore({
 
     setUsers(state, data) {
       state.users = data;
+    },
+
+    setRoles(state, data) {
+      state.roles = data;
     },
 
     setShowSectionSelectedFolder(state, val) {
@@ -59,10 +64,33 @@ export default createStore({
 
   actions: {
     async sendRequestGetAllUsers({commit}) {
-      await instance.get(process.env.VUE_APP_API_URL + 'user/').then(response => {
+      await instance.get(process.env.VUE_APP_API_URL + 'user/account').then(response => {
         commit('setUsers', response.data);
+      });
+    },
+
+    // Создать пользователя
+    async sendRequestCreateUser({dispatch}, data) {
+      await instance.post(process.env.VUE_APP_API_URL + 'user/account', data).then(response => {
+        console.log(response);
+        dispatch('sendRequestGetAllUsers');
+      }).catch(error => {
+        console.log(error);
+      });
+    },
+
+    async sendRequestDeleteUser({dispatch}, id) {
+      await instance.delete(process.env.VUE_APP_API_URL + 'user/account/' + id).then(response => {
+        console.log(response);
+        dispatch('sendRequestGetAllUsers');
       })
-    }
+    },
+
+    async sendRequestGetRoles({commit}) {
+      await instance.get(process.env.VUE_APP_API_URL + 'role/').then(response => {
+        commit('setRoles', response.data);
+      });
+    },
   },
 
   modules: {
