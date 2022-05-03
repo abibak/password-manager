@@ -1,4 +1,8 @@
 <template>
+  <BaseNotification @closeBaseNotification="errorNotification = false"
+                    v-model:show="errorNotification">
+  </BaseNotification>
+
   <BaseModal :show="showTopSettingsMenu">
     <TopSettingsMenu></TopSettingsMenu>
   </BaseModal>
@@ -111,6 +115,7 @@ export default {
 
   data() {
     return {
+      errorNotification: false,
       showFormCreateOrgFolder: false,
       showFormCreateFolder: false,
       mainScale: 'scale(1)',
@@ -123,6 +128,12 @@ export default {
   },
 
   watch: {
+    errors() {
+      if (this.errors !== null) {
+        this.errorNotification = true;
+      }
+    },
+
     showTopSettingsMenu() {
       if (this.showTopSettingsMenu) {
         return this.mainScale = 'scale(.98)';
@@ -136,10 +147,11 @@ export default {
     ...mapState('folder', ['dataFolders', 'showSectionSelectedFolder', 'dataOrganizationFolders']),
     ...mapState('settings', ['showSettingsAccount', 'showSettingsManageUsers']),
     ...mapState([
+      'errors',
       'showSectionSelectedFolder',
       'showTopSettingsMenu',
       'openGeneralSettings',
-      'showModalAddingFolder'
+      'showModalAddingFolder',
     ]),
 
     getFirstLetterNameUser() {

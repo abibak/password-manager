@@ -11,7 +11,7 @@ export const instance = axios.create();
 
 export default createStore({
   state: () => ({
-    errors: '',
+    errors: null,
     users: null,
     roles: [],
     openGeneralSettings: false, // основное левое боковое меню настроек
@@ -70,12 +70,17 @@ export default createStore({
     },
 
     // Создать пользователя
-    async sendRequestCreateUser({dispatch}, data) {
-      await instance.post(process.env.VUE_APP_API_URL + 'user/account', data).then(response => {
-        console.log(response);
+    async sendRequestCreateUser({dispatch, commit}, data) {
+      const obj = {
+        login: data.login,
+        email: data.email,
+        'role_id': data.roleId,
+      }
+
+      await instance.post(process.env.VUE_APP_API_URL + 'user/account', obj).then(response => {
         dispatch('sendRequestGetAllUsers');
       }).catch(error => {
-        console.log(error);
+        commit('setErrors', error.response.data.errors);
       });
     },
 

@@ -8,12 +8,12 @@
       <form @submit.prevent>
         <div class="element-form">
           <label for="login">Логин</label>
-          <BaseInput id="login" :value="form.login" v-model.trim="form.login"></BaseInput>
+          <BaseInput :type="`text`" id="login" :value="form.login" v-model.trim="form.login"></BaseInput>
         </div>
 
         <div class="element-form">
           <label for="status">Статус</label>
-          <BaseInput id="status" value="Пользователь" disabled></BaseInput>
+          <BaseInput :type="`text`" id="status" value="Пользователь" disabled></BaseInput>
         </div>
 
         <div class="element-form">
@@ -26,7 +26,7 @@
 
         <div class="element-form">
           <label for="email">Email</label>
-          <BaseInput id="email" v-model.trim="form.email"></BaseInput>
+          <BaseInput :type="`email`" id="email" v-model.trim="form.email"></BaseInput>
         </div>
       </form>
 

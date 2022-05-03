@@ -29,6 +29,7 @@
             </div>
           </div>
 
+          <!--    Список всех пользователей    -->
           <div class="list-users">
             <div class="user" v-for="user of this.getUsers" :key="user.id">
               <input type="checkbox" v-model="selectedUserIds" :value="user.id">
@@ -79,6 +80,7 @@
     </div>
 
     <BaseModal v-model:show="showCreateUserForm">
+      <!--  Форма добавление нового пользователя    -->
       <CreateUserForm @closeCreateUserForm="closeCreateUserForm"></CreateUserForm>
     </BaseModal>
   </div>
@@ -136,8 +138,10 @@ export default {
     ...mapActions(['sendRequestGetAllUsers', 'sendRequestDeleteUser']),
 
     deleteUser() {
-      let stringIds = this.selectedUserIds.join(',');
-      this.sendRequestDeleteUser(stringIds);
+      if (this.selectedUserIds.length >= 1) {
+        let stringIds = this.selectedUserIds.join(',');
+        this.sendRequestDeleteUser(stringIds);
+      }
     },
 
     // открыть вкладку управления
