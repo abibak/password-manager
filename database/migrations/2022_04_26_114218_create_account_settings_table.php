@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('account_settings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->onDelete('CASCADE');
             $table->boolean('email_notification')->default(true);
             $table->boolean('auto_logout')->default(true);
             $table->timestamps();

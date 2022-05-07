@@ -7,12 +7,21 @@ namespace App\Services;
 use App\Mail\CreatedUser;
 use App\Models\AccountSetting;
 use App\Models\AssignedRole;
+use App\Models\User;
+use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Mockery\Exception;
 
 class AccountService extends Service
 {
+    private $userRepository;
+
+    public function __construct()
+    {
+        $this->userRepository = new UserRepository;
+    }
+
     public function generatePassword()
     {
         $characters = ['0123456789!,.[]{}()%?&*$#^<>~@|ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'];
@@ -30,12 +39,10 @@ class AccountService extends Service
     {
         $password = $this->generatePassword();
 
-        $user = $this->startCondition()->create([
+        $user = User::create([
             'login' => $request['login'],
             'email' => $request['email'],
             'password' => Hash::make($password),
-            'is_admin' => false,
-            'is_blocked' => false,
         ]);
 
         if ($user) {
@@ -98,8 +105,27 @@ class AccountService extends Service
 
     public function destroy($dataModel)
     {
-        $this->startCondition()->destroy(explode(',', $dataModel));
-
+        User::destroy(explode(',', $dataModel));
         return response()->json(['message' => 'User deleted'], 200);
+    }
+
+    public function changeStatusDeactivateAccount(int $id)
+    {
+        $user = $this->userRepository->getUserById($id);
+        $status = $user->is_deactivate;
+
+        if ($status) {
+            $status = false;
+            $message = 'User activated';
+        } else {
+            $status = true;
+            $message = 'User deactivated';
+        }
+
+        $user->update([
+            'is_deactivate' => $status,
+        ]);
+
+        return response()->json(['message' => $message], 200);
     }
 }

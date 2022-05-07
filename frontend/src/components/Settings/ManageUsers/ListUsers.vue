@@ -4,37 +4,37 @@
       <p class="name-action">Управление пользователями</p>
 
       <div class="tabs-list">
-        <div class="tab" :class="classActiveUsersManage" @click="openManageItem">
+        <div class="tab" :class="userManage.classActiveUsersManage" @click="openManageItem">
           <span>Пользователи</span>
         </div>
 
-        <div class="tab" :class="classActiveRolesManage" @click="openManageItem">
+        <div class="tab" :class="roleManage.classActiveRolesManage" @click="openManageItem">
           <span>Роли</span>
         </div>
       </div>
 
+      <SelectedUser @closeSelectedUser="closeSelectedUser" v-if="selectedUser" :user="selectedUser"></SelectedUser>
+
       <div class="block-manage">
         <div class="container-left-section">
-          <div class="block-search">
+          <div class="block-search" v-show="userManage.active">
             <BaseInput :type="`search`" v-model="search" placeholder="Поиск"></BaseInput>
           </div>
 
-          <div class="list-name-attributes">
-            <input type="checkbox">
-
-            <div class="name-attributes">
-              <span>Логин</span>
-              <span>Роли</span>
-              <span>Статус</span>
-            </div>
-          </div>
-
           <!--    Список всех пользователей    -->
-          <div class="list-users">
+          <div class="list-users" v-show="userManage.active">
+            <div class="list-name-attributes">
+              <div class="name-attributes">
+                <span>Логин</span>
+                <span>Роли</span>
+                <span>Статус</span>
+              </div>
+            </div>
+
             <div class="user" v-for="user of this.getUsers" :key="user.id">
               <input type="checkbox" v-model="selectedUserIds" :value="user.id">
 
-              <div class="attributes">
+              <div class="attributes" @click.stop="openUser(user)">
                 <span>{{ user.login }} <span class="text-admin" v-if="user.is_admin === 1">(Админ)</span></span>
 
                 <span class="roles">
@@ -51,9 +51,17 @@
               </div>
             </div>
           </div>
+
+          <div class="list-roles" v-show="roleManage.active">
+            <h3>Список ролей</h3>
+
+            <div class="role">
+              <div class="role-item" v-for="role of roles" :key="role.id">{{ role }}</div>
+            </div>
+          </div>
         </div>
 
-        <div class="container-right-section">
+        <div class="container-right-section" v-show="userManage.active">
           <BaseButton @click="showCreateUserForm = !showCreateUserForm">Создать пользователя</BaseButton>
 
           <p class="management-description">Вы можете создавать и
@@ -89,30 +97,40 @@
 <script>
 import {mapActions, mapState} from "vuex";
 import CreateUserForm from "@/components/Settings/ManageUsers/CreateUserForm";
+import SelectedUser from "@/components/Settings/ManageUsers/SelectedUser";
 
 export default {
   name: "ListUsers",
   components: {
     CreateUserForm,
+    SelectedUser
   },
 
   data() {
     return {
       search: '', // поиск
+      userManage: {
+        active: true,
+        classActiveUsersManage: 'active-tab',
+      },
+
+      roleManage: {
+        active: false,
+        classActiveRolesManage: '',
+      },
+      selectedUser: null,
       selectedUserIds: [], // массив идентификаторов пользователей
-      //selectedUserAll: false,
-      classActiveUsersManage: 'active-tab',
-      classActiveRolesManage: '',
       showCreateUserForm: false,
     }
   },
 
   created() {
     this.sendRequestGetAllUsers();
+    this.sendRequestGetRoles();
   },
 
   computed: {
-    ...mapState(['users']),
+    ...mapState(['users', 'roles']),
 
     getUsers() {
       let foundUsers = [];
@@ -135,7 +153,16 @@ export default {
   },
 
   methods: {
-    ...mapActions(['sendRequestGetAllUsers', 'sendRequestDeleteUser']),
+    ...mapActions(['sendRequestGetAllUsers', 'sendRequestDeleteUser', 'sendRequestGetRoles']),
+
+    openUser(user) {
+      if (user) {
+        this.selectedUser = user;
+
+        this.userManage.active = false;
+        this.roleManage.active = false;
+      }
+    },
 
     deleteUser() {
       if (this.selectedUserIds.length >= 1) {
@@ -147,14 +174,23 @@ export default {
     // открыть вкладку управления
     openManageItem(el) {
       const currentElement = el.target.textContent.toLowerCase();
-      this.classActiveUsersManage = '';
-      this.classActiveRolesManage = '';
+      this.userManage.classActiveUsersManage = '';
+      this.roleManage.classActiveRolesManage = '';
 
       if (currentElement === 'пользователи') {
-        this.classActiveUsersManage = 'active-tab';
+        this.userManage.classActiveUsersManage = 'active-tab';
+        this.userManage.active = true;
+        this.roleManage.active = false;
       } else if (currentElement === 'роли') {
-        this.classActiveRolesManage = 'active-tab';
+        this.roleManage.classActiveRolesManage = 'active-tab';
+        this.userManage.active = false;
+        this.roleManage.active = true;
       }
+    },
+
+    closeSelectedUser() {
+      this.selectedUser = false;
+      this.userManage.active = true;
     },
 
     closeCreateUserForm() {
@@ -207,34 +243,34 @@ export default {
           width: 70%;
         }
 
-        .list-name-attributes {
-          display: flex;
-          align-items: center;
-          margin-top: 25px;
-          text-transform: uppercase;
-          color: #000;
+        .list-users {
+          padding-right: 40px;
 
-          .name-attributes {
-            width: 100%;
+          .list-name-attributes {
             display: flex;
-            justify-content: space-between;
-            margin-left: 8px;
+            align-items: center;
+            margin-top: 25px;
+            text-transform: uppercase;
+            color: #000;
 
-            span {
-              width: 25%;
-              text-align: left;
+            .name-attributes {
+              width: 100%;
+              display: flex;
+              justify-content: space-between;
+
+              span {
+                width: 25%;
+                text-align: left;
+              }
             }
           }
-        }
-
-        .list-users {
-          margin-top: 20px;
 
           .user {
             width: 100%;
             display: flex;
             align-items: center;
             margin-top: 15px;
+            cursor: pointer;
 
             .attributes {
               width: 100%;
@@ -293,7 +329,7 @@ export default {
               color: $colorHover;
             }
 
-            &:first-child:hover, &:last-child:hover  {
+            &:first-child:hover, &:last-child:hover {
               color: $colorRemove;
             }
 

@@ -100,17 +100,17 @@ export default {
     },
 
     async getLogins() {
-      await instance.get(process.env.VUE_APP_API_URL + '/access/folder').then(response => {
-        const users = this.getOrgLogins[0].users;
+      await instance.get(process.env.VUE_APP_API_URL + 'access/folder').then(response => {
+        const users = this.getOrgLogins[0].users; // получить пользователей папки
 
         let usersAccess = this.passArrayToIterate(users, 'usersAccess'); // пользователи имеющие доступ
         let allUserIds = this.passArrayToIterate(response.data.data); // все пользователи
 
+        // отсортировать пользователей по id, не имеющих доступ
         for (let i = 0; i < response.data.data.length; i++) {
           const itemResponse = response.data.data[i];
-          let resultFindId = !usersAccess.includes(allUserIds[i]);
 
-          if (resultFindId) {
+          if (!usersAccess.includes(allUserIds[i])) {
             this.userLogins.push(itemResponse);
           }
         }

@@ -19,6 +19,11 @@ class UserRepository extends BaseRepository
         })->get();
     }
 
+    public function getUserById(int $id)
+    {
+        return $this->startCondition()->where('id', $id)->first();
+    }
+
     public function getLogins()
     {
         return $this->startCondition()->select('id', 'login')->orderBy('id')->get();

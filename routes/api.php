@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Api\AccountController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
@@ -21,10 +20,12 @@ Route::get('/login', ['App\Http\Controllers\Api\Auth\LoginController', 'login'])
 Route::post('/login', ['App\Http\Controllers\Api\Auth\LoginController', 'login']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/user/account/deactivate/{id}',
+        ['App\Http\Controllers\Api\UserController', 'changeStatusDeactivateAccount']);
+
     /* auth routes */
     Route::get('/getUser', ['App\Http\Controllers\Api\Auth\AuthController', 'getUser']);
     Route::get('/logout', ['App\Http\Controllers\Api\Auth\AuthController', 'logout']);
-
 
     /* api resource routes */
     Route::apiResource('role', RoleController::class);

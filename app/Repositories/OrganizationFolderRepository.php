@@ -16,11 +16,25 @@ class OrganizationFolderRepository extends BaseRepository
         return $this->startCondition()->where('user_id', auth()->user()->id);
     }
 
-    public function getDataFoldersWithLogins()
+    public function getDataAccessFolders(int $userId = null)
+    {
+        return $this->startCondition()
+            ->select('access_organization_folders.organization_folder_id as id',
+                'organization_folders.user_id',
+                'name',
+                'status',
+                'access'
+            )->join('access_organization_folders', function ($join) use ($userId) {
+                $join->on('access_organization_folders.organization_folder_id', '=', 'organization_folders.id')
+                    ->where('access_organization_folders.user_id', '=', $userId ?? auth()->user()->id);
+            })->get();
+    }
+
+    public function getDataFoldersWithLogins(int $userId = null)
     {
         // папки созданные пользователем
         $userOrg = $this->startCondition()
-            ->where('user_id', auth()->user()->id)
+            ->where('user_id', $userId ?? auth()->user()->id)
             ->with(['users', 'logins'])
             ->get();
 
@@ -33,7 +47,7 @@ class OrganizationFolderRepository extends BaseRepository
                 'access'
             )->join('access_organization_folders', function ($join) {
                 $join->on('access_organization_folders.organization_folder_id', '=', 'organization_folders.id')
-                    ->where('access_organization_folders.user_id', '=', auth()->user()->id);
+                    ->where('access_organization_folders.user_id', '=', $userId ?? auth()->user()->id);
             })->with(['logins', 'users'])->get();
 
         if (count($userOrg)) {

@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password', 300);
             $table->boolean('is_admin');
-            $table->boolean('is_blocked');
-            $table->string('token')->unique()->nullable();
+            $table->boolean('is_blocked')->default(false);
+            $table->boolean('is_deactivate')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

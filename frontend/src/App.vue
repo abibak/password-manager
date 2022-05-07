@@ -77,5 +77,4 @@ export default {
   font-size: 22px;
   color: #000;
 }
-
 </style>

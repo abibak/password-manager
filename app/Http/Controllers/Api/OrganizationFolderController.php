@@ -60,11 +60,13 @@ class OrganizationFolderController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function show($userId)
     {
-        //
+        return response()->json([
+            'data' => $this->organizationFolderRepository->getDataAccessFolders($userId),
+        ], 200);
     }
 
     /**

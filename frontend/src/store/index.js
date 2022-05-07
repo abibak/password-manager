@@ -84,6 +84,7 @@ export default createStore({
       });
     },
 
+    // maybe account store
     async sendRequestDeleteUser({dispatch}, id) {
       await instance.delete(process.env.VUE_APP_API_URL + 'user/account/' + id).then(response => {
         console.log(response);
@@ -92,7 +93,7 @@ export default createStore({
     },
 
     async sendRequestGetRoles({commit}) {
-      await instance.get(process.env.VUE_APP_API_URL + 'role/').then(response => {
+      await instance.get(process.env.VUE_APP_API_URL + 'role').then(response => {
         commit('setRoles', response.data);
       });
     },
