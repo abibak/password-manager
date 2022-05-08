@@ -41,22 +41,13 @@ export default {
     async sendRequestCreatePassword({state, dispatch, commit, getters}, data) {
       const link = await dispatch('folder/defineLink', null, {root: true});
 
-      let dataCreatePassword = {
-        name: data.name,
-        login: data.login,
-        password: data.password,
-        url: data.url,
-        note: data.note,
-        tag: data.tags,
-      };
-
       if (link === 'organization/') {
-        dataCreatePassword.organization_folder_id = store.state.folder.selectedOrgFolderId;
+        data.organization_folder_id = store.state.folder.selectedOrgFolderId;
       } else if (link === 'user/') {
-        dataCreatePassword.user_folder_id = store.state.folder.selectedFolderId;
+        data.user_folder_id = store.state.folder.selectedFolderId;
       }
 
-      await instance.post(process.env.VUE_APP_API_URL + link + 'login', dataCreatePassword).then(response => {
+      await instance.post(process.env.VUE_APP_API_URL + link + 'login', data).then(response => {
         if (response.status === 201) {
           //  поиск папки для установки пароля
           dispatch('folder/searchFolderById', null, {root: true}).then(data => {
@@ -104,8 +95,6 @@ export default {
         note: data.note,
         tag: data.tags,
       };
-
-      console.log('path: ' + link, ' id: ' + loginId);
 
       await instance.put(process.env.VUE_APP_API_URL + link + 'login/' + loginId, dataUpdatePassword).then(response => {
         console.log(response);

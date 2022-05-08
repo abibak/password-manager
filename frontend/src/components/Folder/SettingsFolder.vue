@@ -1,21 +1,23 @@
 <template>
-  <div class="settings-folder" v-if="show">
-    <div class="container-settings">
-      <p>Настройки папки</p>
+  <transition name="animation-settings-folder">
+    <div class="settings-folder" v-if="show">
+      <div class="container-settings">
+        <p>Настройки папки</p>
 
-      <div class="list-settings">
-        <div class="action" @click.stop="setShowModalRenameFolder(true)">
-          <i class="bi bi-pencil-square"></i>
-          <span>Переименовать</span>
-        </div>
+        <div class="list-settings">
+          <div class="action" @click.stop="setShowModalRenameFolder(true)">
+            <i class="bi bi-pencil-square"></i>
+            <span>Переименовать</span>
+          </div>
 
-        <div class="action" @click.stop="setShowModalConfirmDelete(true)">
-          <i class="bi bi-trash3"></i>
-          <span class="delete-folder">Удалить</span>
+          <div class="action" @click.stop="setShowModalConfirmDelete(true)">
+            <i class="bi bi-trash3"></i>
+            <span class="delete-folder">Удалить</span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -41,6 +43,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.animation-settings-folder-enter-active, .animation-settings-folder-leave-active {
+  opacity: 0;
+  transition: all $transTime;
+}
+
+.animation-settings-folder-enter-from {
+  transform: scale(.95);
+}
+
+.animation-settings-folder-enter-to {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.animation-settings-folder-leave-to {
+  opacity: 0;
+  transform: scale(.95);
+}
+
 .settings-folder {
   background-color: #fff;
   color: #000;

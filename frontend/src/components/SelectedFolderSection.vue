@@ -80,7 +80,6 @@ import InviteToFolder from "@/components/Folder/InviteToFolder";
 
 export default {
   name: "SelectedFolderSection",
-
   components: {
     LoginList,
     SettingsFolder,

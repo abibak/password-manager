@@ -47,24 +47,27 @@ class AccountService extends Service
         ]);
 
         if ($user) {
+            // Назначить роль
             AssignedRole::create([
                 'user_id' => $user->id,
-                'role_id' => 2,
+                'role_id' => $request['role_id'],
             ]);
 
+            // Определить базовые настройки аккаунта
             AccountSetting::create([
                 'user_id' => $user->id,
                 'email_notification' => true,
                 'auto_logout' => false,
             ]);
 
-            Mail::to('leosan.kiras@gmail.com')->send(new CreatedUser([
+            // Отправка уведомления на почту
+            Mail::to('leosan.kiras@gmail.com')->queue((new CreatedUser([
                 'email' => $user->email,
                 'password' => $password
-            ]));
+            ])));
 
             return response()->json([
-                'data' => $user,
+                'data' => $this->userRepository->getUserByEmail($user->email),
                 'message' => 'Created user'
             ], 201);
         }

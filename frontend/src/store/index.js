@@ -68,7 +68,11 @@ export default createStore({
           break;
         }
       }
-    }
+    },
+
+    setCreatedUser(state, data) {
+      state.users.push(data)
+    },
   },
 
   actions: {
@@ -88,7 +92,7 @@ export default createStore({
       }
 
       await instance.post(process.env.VUE_APP_API_URL + 'user/account', obj).then(response => {
-        dispatch('sendRequestGetAllUsers');
+        commit('setCreatedUser', response.data.data);
       }).catch(error => {
         commit('setErrors', error.response.data.errors);
       });

@@ -3,7 +3,7 @@
     <p><span class="short-name">{{ login.name[0] }}</span>{{ login.name }}</p>
     <p class="attribute-login" v-if="showAttributes">{{ login.login }}</p>
     <p class="attribute-login" v-if="showAttributes">{{ login.url }}</p>
-    <p class="attribute-login" v-if="showAttributes">{{ login.tag }}</p>
+    <p class="attribute-login" v-if="showAttributes">{{ login.tags }}</p>
   </div>
 </template>
 

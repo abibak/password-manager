@@ -1,21 +1,23 @@
 <template>
-  <div class="settings-login" v-if="show" @click.stop="closeSettings">
-    <div class="container-settings">
-      <p>Настройки пароля</p>
+  <transition name="animation-settings-login">
+    <div class="settings-login" v-if="show" @click="closeSettings">
+      <div class="container-settings">
+        <p>Настройки пароля</p>
 
-      <div class="list-settings">
-        <div class="action" @click.stop="closeSettings">
-          <i class="bi bi-pencil-square"></i>
-          <span>История</span>
-        </div>
+        <div class="list-settings">
+          <div class="action" @click.stop="closeSettings">
+            <i class="bi bi-pencil-square"></i>
+            <span>История</span>
+          </div>
 
-        <div class="action" @click.stop="sendRequestDeleteLogin(), closeSettings()">
-          <i class="bi bi-trash3"></i>
-          <span class="delete-folder">Удалить</span>
+          <div class="action" @click.stop="sendRequestDeleteLogin(), closeSettings()">
+            <i class="bi bi-trash3"></i>
+            <span class="delete-folder">Удалить</span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -33,12 +35,9 @@ export default {
 
   methods: {
     ...mapActions('login', ['sendRequestDeleteLogin']),
-    ...mapMutations('login', {
-      setShowSettingsLogin: 'setShowSettingsLogin',
-    }),
+    ...mapMutations('login', ['setShowSettingsLogin']),
 
     closeSettings() {
-      console.log('close');
       this.setShowSettingsLogin(false);
     },
   },
@@ -46,6 +45,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.animation-settings-login-enter-active, .animation-settings-login-leave-active {
+  opacity: 0;
+  transition: all $transTime;
+}
+
+.animation-settings-login-enter-from {
+  transform: scale(.95);
+}
+
+.animation-settings-login-enter-to {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.animation-settings-login-leave-to {
+  opacity: 0;
+  transform: scale(.95);
+}
+
 .settings-login {
   background-color: #fff;
   color: #000;

@@ -69,7 +69,6 @@ export default {
   data() {
     return {
       width: 'width: auto',
-
       form: {
         types: {
           password: 'password',

@@ -20,7 +20,7 @@ class OrganizationLoginResource extends JsonResource
             'name' => $this->name,
             'login' => $this->login,
             'url' => $this->url,
-            'tag' => $this->tag,
+            'tags' => $this->tags,
             'note' => Crypt::decryptString($this->note),
             'password' => Crypt::decryptString($this->password),
         ];

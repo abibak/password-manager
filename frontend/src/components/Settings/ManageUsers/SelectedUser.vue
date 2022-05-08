@@ -35,7 +35,8 @@
             <i class="bi bi-pencil-square"></i>
             <span>Редактировать</span>
           </div>
-          <div class="icon-control">
+
+          <div class="icon-control" @click="sendRequestDeleteUser(user.id)">
             <i class="bi bi-trash3"></i>
             <span>Удалить пользователя</span>
           </div>
@@ -83,7 +84,10 @@ export default {
   },
 
   methods: {
-    ...mapActions('account', ['changeStatusDeactivateAccount']),
+    ...mapActions({
+      changeStatusDeactivateAccount: 'account/changeStatusDeactivateAccount',
+      sendRequestDeleteUser: 'sendRequestDeleteUser'
+    }),
 
     getNameAccessFolder(access) {
       switch (parseInt(access)) {
