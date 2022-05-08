@@ -21,6 +21,8 @@
       <div class="block-manage">
         <div class="container-left-section">
           <div class="block-search" v-show="userManage.active">
+            <i class="bi bi-search"></i>
+
             <BaseInput :type="`search`" v-model="search" placeholder="Поиск"></BaseInput>
           </div>
 
@@ -151,9 +153,9 @@ export default {
 
       // поиск по логину
       for (const item of this.users) {
-        const userLogin = item.login;
+        const userLogin = item.login.toLowerCase();
 
-        if (userLogin.indexOf(this.search) !== -1) {
+        if (userLogin.indexOf(this.search.toLowerCase()) !== -1) {
           foundUsers.push(item);
         }
       }
@@ -244,13 +246,28 @@ export default {
     .block-manage {
       display: flex;
       justify-content: space-between;
-      margin-top: 30px;
+      margin-top: 25px;
 
       .container-left-section {
         width: 70%;
 
         .block-search .base-input {
           width: 70%;
+        }
+
+        .block-search {
+          display: flex;
+          align-items: center;
+
+
+          .base-input {
+            padding-left: 28px;
+          }
+
+          .bi-search {
+            color: #000;
+            position: absolute;
+          }
         }
 
         .list-users {

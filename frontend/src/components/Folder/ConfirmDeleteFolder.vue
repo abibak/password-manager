@@ -1,7 +1,7 @@
 <template>
   <div class="confirm-delete">
     <div class="container-confirm">
-      <BaseCloseModal @closeModal="closeConfirm"></BaseCloseModal>
+      <BaseCloseModal @click="closeConfirm"></BaseCloseModal>
 
       <div class="confirm">
         <i class="bi bi-trash3"></i>
