@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('login', 150);
             $table->string('password', 300);
             $table->string('url', 200);
-            $table->string('tag', 50);
+            $table->string('tags', 100);
             $table->string('note', 1000);
             $table->timestamps();
         });

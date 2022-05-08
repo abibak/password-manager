@@ -18,6 +18,12 @@ export default {
   },
 
   actions: {
+    async changeStatusDeactivateAccount({commit}, userId) {
+      await instance.get(process.env.VUE_APP_API_URL + 'user/account/deactivate/' + userId).then(response => {
+        commit('setUserStatusDeactivate', response.data, {root: true});
+      })
+    },
+
     async sendRequestUpdateSettingsAccount({dispatch}, data) {
       const userId = store.state.auth.userData.id;
 

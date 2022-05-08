@@ -43,6 +43,7 @@ class AccountService extends Service
             'login' => $request['login'],
             'email' => $request['email'],
             'password' => Hash::make($password),
+            'is_admin' => $request['is_admin'],
         ]);
 
         if ($user) {
@@ -126,6 +127,9 @@ class AccountService extends Service
             'is_deactivate' => $status,
         ]);
 
-        return response()->json(['message' => $message], 200);
+        return response()->json([
+            'data' => $user,
+            'message' => $message
+        ],200);
     }
 }

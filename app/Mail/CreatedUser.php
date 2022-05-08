@@ -30,7 +30,7 @@ class CreatedUser extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.created.user')
+        return $this->markdown('emails.user.create')
             ->subject('Регистрация в системе')
             ->with('data', $this->dataRegistered);
     }

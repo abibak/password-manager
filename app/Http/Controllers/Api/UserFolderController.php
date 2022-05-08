@@ -41,16 +41,11 @@ class UserFolderController extends Controller
      */
     public function store(FolderRequest $request)
     {
-        $folder = $this->folderService->store(array_merge(
+        return $this->folderService->store(array_merge(
                 $request->all(),
                 ['user_id' => auth()->user()->id]
             )
         );
-
-        return response()->json([
-            'data' => $folder,
-            'message' => 'Created folder'
-        ], 201);
     }
 
     /**
@@ -77,21 +72,10 @@ class UserFolderController extends Controller
      */
     public function update(FolderRequest $request, int $id)
     {
-        try {
-            // получить модель для редактирование
-            $folderEdit = $this->userFolderRepository->getFolderUpdate($id);
-            // отправка модели на редактирование
-            $result = $this->folderService->update($folderEdit, $request->all());
-
-            if ($result) {
-                return response()->json([
-                    'data' => $folderEdit,
-                    'message' => 'Updated folder'
-                ]);
-            }
-        } catch (Exception $e) {
-            return response()->json(['message' => $e->getMessage()]);
-        }
+        // получить модель для редактирование
+        $folderEdit = $this->userFolderRepository->getFolderUpdate($id);
+        // отправка модели на редактирование
+        return $this->folderService->update($folderEdit, $request->all());
     }
 
     /**

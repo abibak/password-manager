@@ -27,7 +27,7 @@ class OrganizationLoginSeeder extends Seeder
                 'login' => Str::random(6),
                 'password' => Crypt::encryptString(Str::random(10)),
                 'url' => 'example.com',
-                'tag' => collect($tags)->random(),
+                'tags' => collect($tags)->random(),
                 'note' => Crypt::encryptString('test_note' . $i),
             ]);
         }

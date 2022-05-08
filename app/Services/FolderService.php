@@ -15,7 +15,20 @@ class FolderService extends Service
 
     public function store(array $request)
     {
-        return $this->startCondition()::create($request);
+        try {
+            $folder = $this->startCondition()::create($request);
+
+            if (!$folder) {
+                throw new \Exception('Error create folder');
+            }
+
+            return response()->json([
+                'data' => $folder,
+                'message' => 'Created folder'
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()]);
+        }
     }
 
     public function show(int $id)
@@ -25,11 +38,18 @@ class FolderService extends Service
 
     public function update($dataModel, array $data)
     {
-        if ($dataModel === null) {
-            throw new Exception('Error updated');
-        }
+        try {
+            if ($dataModel === null || !$dataModel->update($data)) {
+                throw new Exception('Error updated');
+            }
 
-        return $dataModel->update($data);
+            return response()->json([
+                'message' => 'Updated folder'
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()]);
+        }
     }
 
     public function destroy($dataModel)

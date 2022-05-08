@@ -16,7 +16,7 @@ class UserLogin extends Model
         'login',
         'password',
         'url',
-        'tag',
+        'tags',
         'note',
     ];
 

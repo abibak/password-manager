@@ -16,7 +16,7 @@ class OrganizationLogin extends Model
         'login',
         'password',
         'url',
-        'tag',
+        'tags',
         'note',
     ];
 

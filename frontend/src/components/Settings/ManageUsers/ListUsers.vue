@@ -13,7 +13,10 @@
         </div>
       </div>
 
-      <SelectedUser @closeSelectedUser="closeSelectedUser" v-if="selectedUser" :user="selectedUser"></SelectedUser>
+      <SelectedUser @closeSelectedUser="closeSelectedUser"
+                    v-if="selectedUser"
+                    v-model:user="selectedUser">
+      </SelectedUser>
 
       <div class="block-manage">
         <div class="container-left-section">
@@ -113,7 +116,6 @@ export default {
         active: true,
         classActiveUsersManage: 'active-tab',
       },
-
       roleManage: {
         active: false,
         classActiveRolesManage: '',

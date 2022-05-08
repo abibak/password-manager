@@ -18,8 +18,6 @@ class UserLoginSeeder extends Seeder
      */
     public function run()
     {
-        $tags = ['socials', 'admins', 'work'];
-
         for ($i = 0; $i < 5; $i++) {
             UserLogin::insert([
                 'user_folder_id' => UserFolder::where('user_id', 1)->get()->random()->id,
@@ -27,7 +25,7 @@ class UserLoginSeeder extends Seeder
                 'login' => Str::random(6),
                 'password' => Crypt::encryptString(Str::random(10)),
                 'url' => 'example.com',
-                'tag' => collect($tags)->random(),
+                'tags' => 'work,git',
                 'note' => Crypt::encryptString('test_note' . $i),
             ]);
         }
@@ -39,7 +37,7 @@ class UserLoginSeeder extends Seeder
                 'login' => Str::random(6),
                 'password' => Crypt::encryptString(Str::random(10)),
                 'url' => 'example.com',
-                'tag' => collect($tags)->random(),
+                'tags' => 'social,IT,admin',
                 'note' => Crypt::encryptString('test_note' . $i),
             ]);
         }

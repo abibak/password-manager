@@ -1,7 +1,6 @@
 <template>
   <div class="selected-user">
     <div class="container-selected-user">
-
       <div class="header-content" @click="$emit('closeSelectedUser')">
         <div class="back">
           <div class="icon-control">
@@ -27,9 +26,9 @@
         </div>
 
         <div class="menu-settings">
-          <div class="icon-control">
+          <div class="icon-control" @click="changeStatusDeactivateAccount(user.id)">
             <i class="bi bi-slash-circle"></i>
-            <span>Деактивировать</span>
+            <span>{{ getTextStatusDeactivate }}</span>
           </div>
 
           <div class="icon-control">
@@ -48,6 +47,7 @@
 
 <script>
 import {instance} from "@/store";
+import {mapActions} from "vuex";
 
 export default {
   name: "SelectedUser",
@@ -75,7 +75,16 @@ export default {
     },
   },
 
+  computed: {
+    getTextStatusDeactivate() {
+      let status = this.user.is_deactivate;
+      return (status === 1 || status === true) ? 'Активировать' : 'Деактивировать';
+    },
+  },
+
   methods: {
+    ...mapActions('account', ['changeStatusDeactivateAccount']),
+
     getNameAccessFolder(access) {
       switch (parseInt(access)) {
         case 3:
@@ -89,7 +98,6 @@ export default {
 
     async getOrgFoldersUser() {
       instance.get(process.env.VUE_APP_API_URL + 'organization/folder/' + this.user.id).then(response => {
-        console.log(response);
         this.folders = response.data.data;
       });
     },

@@ -20,7 +20,7 @@ Route::get('/login', ['App\Http\Controllers\Api\Auth\LoginController', 'login'])
 Route::post('/login', ['App\Http\Controllers\Api\Auth\LoginController', 'login']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::get('/user/account/deactivate/{id}',
+    Route::get('user/account/deactivate/{id}',
         ['App\Http\Controllers\Api\UserController', 'changeStatusDeactivateAccount']);
 
     /* auth routes */

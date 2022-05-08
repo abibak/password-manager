@@ -60,6 +60,15 @@ export default createStore({
     setShowModalRenameFolder(state, val) {
       state.showModalRenameFolder = val;
     },
+
+    setUserStatusDeactivate(state, data) {
+      for (const user of state.users) {
+        if (user.id === data.data.id) {
+          user.is_deactivate = data.data.is_deactivate;
+          break;
+        }
+      }
+    }
   },
 
   actions: {
@@ -72,9 +81,10 @@ export default createStore({
     // Создать пользователя
     async sendRequestCreateUser({dispatch, commit}, data) {
       const obj = {
+        'role_id': data.roleId,
         login: data.login,
         email: data.email,
-        'role_id': data.roleId,
+        'is_admin': false,
       }
 
       await instance.post(process.env.VUE_APP_API_URL + 'user/account', obj).then(response => {
