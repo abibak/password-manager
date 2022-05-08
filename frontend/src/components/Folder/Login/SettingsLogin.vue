@@ -1,16 +1,16 @@
 <template>
   <transition name="animation-settings-login">
-    <div class="settings-login" v-if="show" @click="closeSettings">
+    <div class="settings-login" v-if="show" @click.stop="this.$emit('closeSettingsLogin')">
       <div class="container-settings">
         <p>Настройки пароля</p>
 
         <div class="list-settings">
-          <div class="action" @click.stop="closeSettings">
+          <div class="action" @click.stop="this.$emit('closeSettingsLogin')">
             <i class="bi bi-pencil-square"></i>
             <span>История</span>
           </div>
 
-          <div class="action" @click.stop="sendRequestDeleteLogin(), closeSettings()">
+          <div class="action" @click.stop="sendRequestDeleteLogin(), this.$emit('closeSettingsLogin')">
             <i class="bi bi-trash3"></i>
             <span class="delete-folder">Удалить</span>
           </div>
@@ -67,7 +67,7 @@ export default {
 .settings-login {
   background-color: #fff;
   color: #000;
-  z-index: 11;
+  z-index: 2;
   box-shadow: 0 0 6px 1px #a3a3a3;
   border-radius: 10px;
   position: absolute;

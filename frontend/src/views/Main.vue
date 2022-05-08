@@ -118,7 +118,7 @@ export default {
       errorNotification: false,
       showFormCreateOrgFolder: false,
       showFormCreateFolder: false,
-      mainScale: 'scale(1)',
+      mainScale: '',
     }
   },
 
@@ -138,7 +138,7 @@ export default {
       if (this.showTopSettingsMenu) {
         return this.mainScale = 'scale(.98)';
       }
-      return this.mainScale = 'scale(1)';
+      return this.mainScale = '';
     },
   },
 
@@ -178,6 +178,7 @@ export default {
   font-size: 18px;
   padding: 15px 15px;
   transition: transform .35s;
+  position: relative;
 
   .header-main {
     display: flex;

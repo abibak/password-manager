@@ -5,7 +5,7 @@
     </BaseModal>
 
     <div class="container-selected-login">
-      <BaseCloseModal @click="close"></BaseCloseModal>
+      <BaseCloseModal @click="closeBaseModal"></BaseCloseModal>
 
       <div class="info-login">
         <p class="name-login">
@@ -19,11 +19,11 @@
           <i class="bi bi-pencil-square"></i>
         </div>
 
-        <div class="icon-control settings-login-control" @click="setShowSettingsLogin(true)">
+        <div class="icon-control settings-login-control" @click="showSettingsLogin = !showSettingsLogin">
           <i class="bi bi-three-dots"></i>
 
           <!--    Настройки пароля      -->
-          <SettingsLogin v-model:show="showSettingsLogin"></SettingsLogin>
+          <SettingsLogin @closeSettingsLogin="showSettingsLogin = false" v-model:show="showSettingsLogin"></SettingsLogin>
         </div>
       </div>
 
@@ -98,6 +98,7 @@ export default {
       currentLogin: '',
       widthValue: 85,
       opacity: 0,
+      showSettingsLogin: false,
     }
   },
 
@@ -130,7 +131,7 @@ export default {
   },
 
   computed: {
-    ...mapState('login', ['showSettingsLogin', 'showHeadLines', 'showEditLogin']),
+    ...mapState('login', ['showHeadLines', 'showEditLogin']),
     ...mapState('folder', ['typeFolder']),
     ...mapGetters('folder', ['getDataOpenLogin', 'getDataOrgOpenLogin']),
   },
@@ -138,8 +139,9 @@ export default {
   methods: {
     ...mapMutations('login', ['setShowSettingsLogin', 'setShowHeadLines', 'setShowEditLogin']),
 
-    close() {
+    closeBaseModal() {
       this.opacity = 0;
+      this.showSettingsLogin = false;
 
       setTimeout(() => {
         this.setShowHeadLines(true);
@@ -153,6 +155,7 @@ export default {
 <style lang="scss" scoped>
 .selected-login {
   width: 65%;
+  z-index: 1;
   transition: opacity .6s;
 
   .container-selected-login {

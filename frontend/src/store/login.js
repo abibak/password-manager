@@ -5,7 +5,6 @@ export default {
   namespaced: true,
 
   state: () => ({
-    showSettingsLogin: false,
     confirmDeleteLogin: false,
     showEditLogin: false,
     showSelectedLogin: false,
@@ -15,10 +14,6 @@ export default {
   getters: {},
 
   mutations: {
-    setShowSettingsLogin(state, val) {
-      state.showSettingsLogin = val;
-    },
-
     // показать/скрыть подтверждение удаления пароля
     setConfirmDeleteLogin(state, val) {
       state.confirmDeleteLogin = val;
