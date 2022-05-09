@@ -1,6 +1,9 @@
 <template>
   <div class="login-item" @click="selectLogin()" :style="loginItemStyles">
-    <p><span class="short-name">{{ login.name[0] }}</span>{{ login.name }}</p>
+    <p>
+      <span class="short-name">{{ login.name[0] }}</span>
+      {{ login.name }}
+    </p>
     <p class="attribute-login" v-if="showAttributes">{{ login.login }}</p>
     <p class="attribute-login" v-if="showAttributes">{{ login.url }}</p>
     <p class="attribute-login" v-if="showAttributes">{{ login.tags }}</p>
@@ -44,10 +47,7 @@ export default {
   },
 
   methods: {
-    ...mapMutations('folder', {
-      setSelectedLoginId: 'setSelectedLoginId',
-      setSelectedOrgLoginId: 'setSelectedOrgLoginId',
-    }),
+    ...mapMutations('folder', ['setSelectedLoginId', 'setSelectedOrgLoginId']),
     // login namespace
     ...mapMutations('login', ['setShowSelectedLogin']),
 
@@ -101,6 +101,8 @@ export default {
 
   p {
     width: 100%;
+    margin-right: 15px;
+    word-break: break-all;
   }
 
   p:first-child {

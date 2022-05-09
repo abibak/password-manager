@@ -96,7 +96,6 @@ export default {
   data() {
     return {
       currentLogin: '',
-      widthValue: 85,
       opacity: 0,
       showSettingsLogin: false,
     }
@@ -166,8 +165,11 @@ export default {
 
     .info-login {
       .name-login {
+        max-width: 65%;
         font-size: 22px;
         color: #000;
+        line-height: 35px;
+        word-break: break-all;
       }
 
       .short-name {

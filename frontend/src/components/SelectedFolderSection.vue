@@ -195,7 +195,7 @@ export default {
 
     showOpenLogin() {
       this.setShowSelectedLogin(true)
-      this.loginListWidth = 40; // ширина при просмотре
+      this.loginListWidth = 45; // ширина при просмотре
     },
 
     closeLoginView() {

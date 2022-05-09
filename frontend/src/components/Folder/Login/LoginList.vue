@@ -8,12 +8,14 @@
     </div>
 
     <div class="login">
-      <LoginItem :login="item"
-                 :show-attributes="showHeadLines"
-                 v-for="(item) of folderData[0].logins"
-                 :key="item.login_id"
-                 @click="openLogin">
-      </LoginItem>
+      <transition-group name="animation-list-login">
+        <LoginItem :login="item"
+                   :show-attributes="showHeadLines"
+                   v-for="(item) of folderData[0].logins"
+                   :key="item"
+                   @click="openLogin">
+        </LoginItem>
+      </transition-group>
     </div>
   </div>
 </template>
@@ -34,11 +36,6 @@ export default {
     widthValue: {
       type: Number,
     },
-  },
-
-  data() {
-    return {
-    }
   },
 
   watch: {
@@ -69,11 +66,36 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.animation-list-login-enter-active, .animation-list-login-leave-active {
+  transition: all $transTime;
+}
+
+.animation-list-login-enter-from {
+  opacity: 0;
+  transform: scale(.98);
+}
+
+.animation-list-login-enter-to {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.animation-list-login-leave-from {
+  color: transparent;
+}
+
+.animation-list-login-leave-to {
+  opacity: 0;
+  transform: scale(.98);
+  position: absolute;
+}
+
 .list-login {
   padding: 25px 20px 0 20px;
   border-right: 1px solid #a3a3a3;
   font-size: 16px;
   transition: width .45s;
+  position: relative;
 
   .headlines, .login {
     width: 75%;
