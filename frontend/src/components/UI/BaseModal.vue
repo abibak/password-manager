@@ -1,6 +1,6 @@
 <template>
   <transition name="animationForm">
-    <div class="modal-shadow" v-if="show">
+    <div class="modal-shadow" v-if="show" @click.stop="this.$emit('closeModal')">
       <div class="modal">
         <slot></slot>
       </div>

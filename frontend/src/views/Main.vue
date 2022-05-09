@@ -45,7 +45,7 @@
                 <i class="bi bi-plus-circle" v-if="userData.is_admin"
                    @click="showFormCreateOrgFolder = true"></i>
 
-                <BaseModal v-bind:show="showFormCreateOrgFolder">
+                <BaseModal @closeModal="closeFormCreateFolder" v-bind:show="showFormCreateOrgFolder">
                   <CreateFolderForm @closeForm="closeFormCreateFolder" :type-folder="`orgFolder`"></CreateFolderForm>
                 </BaseModal>
               </div>
@@ -60,7 +60,7 @@
                 <p>Личный раздел</p>
                 <i class="bi bi-plus-circle" @click="showFormCreateFolder = true"></i>
 
-                <BaseModal v-bind:show="showFormCreateFolder">
+                <BaseModal @closeModal="closeFormCreateFolder" v-bind:show="showFormCreateFolder">
                   <CreateFolderForm @closeForm="closeFormCreateFolder" :type-folder="`userFolder`"></CreateFolderForm>
                 </BaseModal>
               </div>

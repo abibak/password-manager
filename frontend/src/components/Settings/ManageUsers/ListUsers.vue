@@ -18,6 +18,8 @@
                     v-model:user="selectedUser">
       </SelectedUser>
 
+      <ListRoles v-model:show="roleManage.active"></ListRoles>
+
       <div class="block-manage">
         <div class="container-left-section">
           <div class="block-search" v-show="userManage.active">
@@ -55,14 +57,6 @@
                 <span v-if="user.is_admin === 0">Пользователь</span>
                 <span v-if="user.is_admin === 1">Админ</span>
               </div>
-            </div>
-          </div>
-
-          <div class="list-roles" v-show="roleManage.active">
-            <h3>Список ролей</h3>
-
-            <div class="role">
-              <div class="role-item" v-for="role of roles" :key="role.id">{{ role }}</div>
             </div>
           </div>
         </div>
@@ -104,12 +98,14 @@
 import {mapActions, mapState} from "vuex";
 import CreateUserForm from "@/components/Settings/ManageUsers/CreateUserForm";
 import SelectedUser from "@/components/Settings/ManageUsers/SelectedUser";
+import ListRoles from "@/components/Settings/ListRoles";
 
 export default {
   name: "ListUsers",
   components: {
     CreateUserForm,
-    SelectedUser
+    SelectedUser,
+    ListRoles,
   },
 
   data() {

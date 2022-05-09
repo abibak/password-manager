@@ -45,7 +45,7 @@
       </BaseModal>
 
       <!--    Подтверждение удаления папки    -->
-      <BaseModal v-model:show="showModalConfirmDelete">
+      <BaseModal @closeModal="setShowModalConfirmDelete(false)" v-model:show="showModalConfirmDelete">
         <ConfirmDeleteFolder
           :name-folder="(this.typeFolder === 'orgFolder') ? getOrgLogins[0].name : getLogins[0].name">
         </ConfirmDeleteFolder>
@@ -157,11 +157,7 @@ export default {
   },
 
   methods: {
-    ...mapMutations({
-      setShowModalConfirmDelete: 'setShowModalConfirmDelete',
-      setShowModalRenameFolder: 'setShowModalRenameFolder',
-      setShowModalAddingPassword: 'setShowModalAddingPassword',
-    }),
+    ...mapMutations(['setShowModalConfirmDelete', 'setShowModalRenameFolder', 'setShowModalAddingPassword']),
     // login namespace
     ...mapMutations('login', ['setShowSelectedLogin']),
     // organization namespace

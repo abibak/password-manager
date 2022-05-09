@@ -1,5 +1,5 @@
 <template>
-  <div class="confirm-delete">
+  <div class="confirm-delete" @click.stop>
     <div class="container-confirm">
       <BaseCloseModal @click="closeConfirm"></BaseCloseModal>
 

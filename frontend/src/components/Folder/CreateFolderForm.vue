@@ -1,5 +1,5 @@
 <template>
-  <div class="create-folder">
+  <div class="create-folder" @click.stop>
     <BaseCloseModal @click="closeForm"></BaseCloseModal>
 
     <div class="container-create-folder">
@@ -74,6 +74,7 @@ export default {
   color: #000;
   background-color: #fff;
   border-radius: 10px;
+  z-index: 12;
   position: absolute;
   top: 50%;
   left: 50%;
