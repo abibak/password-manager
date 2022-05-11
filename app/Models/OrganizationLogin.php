@@ -25,6 +25,11 @@ class OrganizationLogin extends Model
         return $this->belongsTo(OrganizationFolder::class, 'organization_folder_id', 'id');
     }
 
+    public function histories()
+    {
+        return $this->hasMany(PasswordHistory::class, 'login_id');
+    }
+
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = Crypt::encryptString($value);

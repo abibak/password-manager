@@ -127,7 +127,7 @@ export default {
       this.form.fields.login = data.login;
       this.form.fields.password = data.password;
       this.form.fields.url = data.url;
-      this.form.fields.tags = data.tag;
+      this.form.fields.tags = data.tags;
       this.form.fields.note = data.note;
     },
 

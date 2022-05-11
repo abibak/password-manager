@@ -16,4 +16,9 @@ class RoleRepository extends BaseRepository
     {
         return $this->startCondition()->get();
     }
+
+    public function getRoleById(int $id)
+    {
+        return $this->startCondition()->where('id', $id)->first();
+    }
 }

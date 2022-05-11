@@ -13,11 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('folders_history', function (Blueprint $table) {
+        Schema::create('password_histories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('organization_folder_id')->constrained();
-            $table->string('user_login');
-            $table->string('action', 150);
+            $table->unsignedBigInteger('login_id');
+            $table->foreign('login_id')
+                ->references('id')
+                ->on('organization_logins')
+                ->onDelete('CASCADE');
+            $table->foreignId('user_id')->constrained()->onDelete('CASCADE');
+            $table->string('action_text', 50);
             $table->timestamps();
         });
     }
@@ -29,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('folders_history');
+        Schema::dropIfExists('password_histories');
     }
 };

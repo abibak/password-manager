@@ -47,6 +47,6 @@ export default {
           commit('setShowSettingsManageUsers', false);
           break;
       }
-    }
+    },
   },
 }

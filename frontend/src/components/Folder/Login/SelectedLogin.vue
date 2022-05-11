@@ -11,6 +11,7 @@
         <p class="name-login">
           <span class="short-name">{{ this.currentLogin.name.charAt(0) }}</span>
           {{ this.currentLogin.name }}
+          <i class="bi bi-star"></i>
         </p>
       </div>
 
@@ -28,12 +29,17 @@
       </div>
 
       <div class="list-actions-login">
-        <span class="action">Общие</span>
-        <span class="action" v-if="typeFolder === 'orgFolder'">История действий</span>
-        <span class="action">Файлы</span>
+        <span class="action" @click="openTab" v-bind:class="general.class" data-action="general">Общие</span>
+        <span class="action" @click="openTab"
+              v-if="typeFolder === 'orgFolder'"
+              v-bind:class="historyPassword.class" data-action="history">История действий
+        </span>
+        <span class="action" @click="openTab" v-bind:class="files.class" data-action="files">Файлы</span>
       </div>
 
-      <div class="form-login">
+      <ListHistories :history="currentLogin.histories" :show="historyPassword.active"></ListHistories>
+
+      <div class="form-login" v-show="general.active">
         <form>
           <div class="element-form">
             <label for="name">Название</label>
@@ -60,7 +66,7 @@
 
           <div class="element-form">
             <label for="tag">Теги</label>
-            <BaseInput id="tag" :value="currentLogin.tag" disabled></BaseInput>
+            <BaseInput id="tag" :value="currentLogin.tags" disabled></BaseInput>
             <i class="bi bi-clipboard"></i>
           </div>
 
@@ -78,12 +84,14 @@
 import {mapGetters, mapMutations, mapState} from "vuex";
 import SettingsLogin from "@/components/Folder/Login/SettingsLogin";
 import EditLoginForm from "@/components/Folder/Login/EditLoginForm";
+import ListHistories from "@/components/Folder/Login/ListHistories";
 
 export default {
   name: "SelectedLogin",
   components: {
     SettingsLogin,
     EditLoginForm,
+    ListHistories,
   },
 
   props: {
@@ -95,6 +103,21 @@ export default {
 
   data() {
     return {
+      general: {
+        active: true,
+        class: 'active-tab',
+      },
+
+      historyPassword: {
+        active: false,
+        class: '',
+      },
+
+      files: {
+        active: false,
+        class: '',
+      },
+
       currentLogin: '',
       opacity: 0,
       showSettingsLogin: false,
@@ -138,6 +161,37 @@ export default {
   methods: {
     ...mapMutations('login', ['setShowSettingsLogin', 'setShowHeadLines', 'setShowEditLogin']),
 
+    openTab(el) {
+      const tab = el.target.getAttribute('data-action');
+      this.general.class = '';
+      this.historyPassword.class = '';
+      this.files.class = '';
+
+      switch (tab) {
+        case 'general':
+          this.general.active = true;
+          this.general.class = 'active-tab'
+
+          this.historyPassword.active = false;
+          this.files.active = false;
+          break;
+        case 'history':
+          this.historyPassword.active = true;
+          this.historyPassword.class = 'active-tab';
+
+          this.general.active = false;
+          this.files.active = false;
+          break;
+        case 'files':
+          this.files.active = true;
+          this.files.class = 'active-tab';
+
+          this.general.active = false;
+          this.historyPassword.active = false;
+          break;
+      }
+    },
+
     closeBaseModal() {
       this.opacity = 0;
       this.showSettingsLogin = false;
@@ -152,6 +206,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.active-tab {
+  border-bottom-color: $baseColor!important;
+  transition: border-bottom-color $transTime;
+}
+
 .selected-login {
   width: 65%;
   z-index: 1;
@@ -231,14 +290,7 @@ export default {
         margin-right: 20px;
         padding-bottom: 8px;
         cursor: pointer;
-
-        &:hover {
-          background-color: #fff;
-        }
-      }
-
-      .action:first-child {
-        border-bottom: 2px solid $baseColor;
+        border-bottom: 2px solid transparent;
       }
     }
 

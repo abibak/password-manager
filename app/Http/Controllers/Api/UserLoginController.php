@@ -43,6 +43,7 @@ class UserLoginController extends Controller
      */
     public function store(UserLoginRequest $request)
     {
+        $this->action('create');
         return $this->loginService->store($request->all());
     }
 
@@ -84,5 +85,10 @@ class UserLoginController extends Controller
     {
         $loginDestroy = $this->userLoginRepository->getLoginByIdWithFolder($id) ?? null;
         return $this->loginService->destroy($loginDestroy);
+    }
+
+    public function action(string $action)
+    {
+        $this->loginService->writeAction($action);
     }
 }

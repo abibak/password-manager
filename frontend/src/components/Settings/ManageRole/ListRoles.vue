@@ -13,27 +13,32 @@
 
             <div class="elements">
               <BaseToggle></BaseToggle>
-              <i class="bi bi-trash3"></i>
+              <i class="bi bi-trash3" @click="sendRequestDeleteRole(role.id)"></i>
             </div>
           </div>
         </div>
       </div>
 
       <div class="container-right-section">
-        <BaseButton>Создать роль</BaseButton>
+        <BaseButton @click="showCreateRoleForm = true">Создать роль</BaseButton>
         <p class="management-description">Управляйте ролями. Создавайте и удаляйте роли. Назначайте роли пользователям, определеяя их возможности</p>
       </div>
     </div>
+
+    <BaseModal v-model:show="showCreateRoleForm">
+      <CreateRoleForm @closeCreateRoleForm="showCreateRoleForm = false"></CreateRoleForm>
+    </BaseModal>
   </div>
 </template>
 
 <script>
 import {mapState} from "vuex";
+import {instance} from "@/store";
+import CreateRoleForm from "@/components/Settings/ManageRole/CreateRoleForm";
 
 export default {
   name: "ListRoles",
-  components: {},
-
+  components: {CreateRoleForm},
 
   props: {
     show: {
@@ -43,9 +48,25 @@ export default {
     }
   },
 
+  data() {
+    return {
+      showCreateRoleForm: false,
+    }
+  },
+
   computed: {
     ...mapState(['roles']),
-  }
+  },
+
+  methods: {
+    async sendRequestDeleteRole(id) {
+      console.log('request/delete: ' + id);
+
+      instance.delete(process.env.VUE_APP_API_URL + 'role/' + id).then(response => {
+        console.log(response);
+      });
+    }
+  },
 }
 </script>
 

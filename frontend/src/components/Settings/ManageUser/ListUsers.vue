@@ -96,9 +96,9 @@
 
 <script>
 import {mapActions, mapState} from "vuex";
-import CreateUserForm from "@/components/Settings/ManageUsers/CreateUserForm";
-import SelectedUser from "@/components/Settings/ManageUsers/SelectedUser";
-import ListRoles from "@/components/Settings/ListRoles";
+import CreateUserForm from "@/components/Settings/ManageUser/CreateUserForm";
+import SelectedUser from "@/components/Settings/ManageUser/SelectedUser";
+import ListRoles from "@/components/Settings/ManageRole/ListRoles";
 
 export default {
   name: "ListUsers",

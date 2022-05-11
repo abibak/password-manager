@@ -98,7 +98,7 @@ import SelectedFolderSection from "@/components/SelectedFolderSection";
 import TopSettingsMenu from "@/components/TopSettingsMenu";
 import LeftSettingsMenu from "@/components/LeftSettingsMenu";
 import SettingsAccount from "@/components/Settings/SettingsAccount";
-import ListUsers from "@/components/Settings/ManageUsers/ListUsers";
+import ListUsers from "@/components/Settings/ManageUser/ListUsers";
 
 export default {
   name: "Main",

@@ -196,4 +196,9 @@ class LoginService extends Service
             }
         }
     }
+
+    public function writeAction(string $action)
+    {
+
+    }
 }

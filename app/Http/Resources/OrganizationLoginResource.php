@@ -2,6 +2,9 @@
 
 namespace App\Http\Resources;
 
+
+use App\Models\PasswordHistory;
+use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Crypt;
 
@@ -23,6 +26,11 @@ class OrganizationLoginResource extends JsonResource
             'tags' => $this->tags,
             'note' => Crypt::decryptString($this->note),
             'password' => Crypt::decryptString($this->password),
+            'histories' => User::select('users.id', 'users.login', 'password_histories.action_text')
+                ->join('password_histories', function ($join) {
+                $join->on('password_histories.user_id', '=', 'users.id')
+                    ->where('password_histories.login_id', $this->id);
+            })->get(),
         ];
     }
 }
