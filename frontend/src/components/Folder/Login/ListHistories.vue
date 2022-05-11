@@ -1,6 +1,21 @@
 <template>
 <div class="password-histories" v-show="show">
-  {{history}}
+  <div class="container-password-histories">
+
+    <div class="attributes">
+      <span>Дата</span>
+      <span>Пользователь</span>
+      <span>Действие</span>
+    </div>
+
+    <div class="list-history">
+      <div class="item-history" v-for="item of history" :key="item">
+        <span>{{ item.date }}</span>
+        <span>{{ item.login }}</span>
+        <span>{{ item.action_text }}</span>
+      </div>
+    </div>
+  </div>
 </div>
 </template>
 
@@ -25,5 +40,45 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.password-histories {
+  width: 75%;
 
+  .container-password-histories {
+    padding-top: 15px;
+
+    .attributes {
+      display: flex;
+      justify-content: space-between;
+      color: #000;
+
+      span {
+        width: 75%;
+
+        &:last-child {
+          text-align: right;
+        }
+      }
+    }
+
+    .list-history {
+      font-size: 16px;
+      font-weight: 400;
+      color: #000;
+
+      .item-history {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 10px;
+
+        span {
+          width: 75%;
+
+          &:last-child {
+            text-align: right;
+          }
+        }
+      }
+    }
+  }
+}
 </style>

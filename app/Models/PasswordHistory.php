@@ -13,13 +13,6 @@ class PasswordHistory extends Model
         'login_id',
         'user_id',
         'action_text',
-        'created_at',
-        'updated_at',
-    ];
-
-    protected $hidden = [
-        'created_at',
-        'updated_at',
     ];
 
     public function login()

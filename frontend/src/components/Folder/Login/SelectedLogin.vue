@@ -212,9 +212,9 @@ export default {
 }
 
 .selected-login {
-  width: 65%;
+  width: 75%;
   z-index: 1;
-  transition: opacity .6s;
+  transition: opacity .45s;
 
   .container-selected-login {
     width: 100%;
@@ -246,8 +246,8 @@ export default {
       }
     }
 
-    .icon-actions, .list-actions-login, .element-form {
-      width: 65%;
+    .list-actions-login, .element-form, .icon-actions  {
+      width: 75%;
     }
 
     .icon-actions {
