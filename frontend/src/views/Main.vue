@@ -1,13 +1,12 @@
 <template>
-  <BaseNotification @closeBaseNotification="errorNotification = false"
-                    v-model:show="errorNotification">
+  <BaseNotification @closeBaseNotification="errorNotification = false" v-model:show="errorNotification">
   </BaseNotification>
 
-  <BaseModal :show="showTopSettingsMenu">
+  <BaseModal @closeModal="setShowTopSettingsMenu(false)" :show="showTopSettingsMenu">
     <TopSettingsMenu></TopSettingsMenu>
   </BaseModal>
 
-  <div class="site-main" :style="{transform: this.mainScale}">
+  <div class="site-main" :style="{ transform: this.mainScale }">
     <div class="header-main">
       <div class="icon-menu" @click="setShowTopSettingsMenu(true)">
         <i class="bi bi-list"></i>
@@ -42,8 +41,7 @@
             <div class="section-organization">
               <div class="info-org-section">
                 <p>Раздел организации</p>
-                <i class="bi bi-plus-circle" v-if="userData.is_admin"
-                   @click="showFormCreateOrgFolder = true"></i>
+                <i class="bi bi-plus-circle" v-if="userData.is_admin" @click="showFormCreateOrgFolder = true"></i>
 
                 <BaseModal @closeModal="closeFormCreateFolder" v-bind:show="showFormCreateOrgFolder">
                   <CreateFolderForm @closeForm="closeFormCreateFolder" :type-folder="`orgFolder`"></CreateFolderForm>
@@ -90,7 +88,7 @@
 </template>
 
 <script>
-import {mapActions, mapMutations, mapState} from "vuex";
+import { mapActions, mapMutations, mapState } from "vuex";
 import FolderList from "@/components/Folder/FolderList";
 import CreateFolderForm from "@/components/Folder/CreateFolderForm";
 import BaseModal from "@/components/UI/BaseModal";
@@ -242,7 +240,8 @@ export default {
         }
       }
 
-      .avatar-user, .user-login {
+      .avatar-user,
+      .user-login {
         margin-left: 12px;
       }
 
@@ -319,13 +318,17 @@ export default {
           border-bottom: 1px solid #a3a3a3;
         }
 
-        .section-organization, .section-user {
-          .info-org-section, .info-section-user p:first-child {
+        .section-organization,
+        .section-user {
+
+          .info-org-section,
+          .info-section-user p:first-child {
             color: #000;
           }
         }
 
-        .section-user, .favorite-passwords {
+        .section-user,
+        .favorite-passwords {
           padding-top: 15px;
 
           .user-folders {
@@ -346,7 +349,8 @@ export default {
           }
         }
 
-        .info-org-section, .info-section-user {
+        .info-org-section,
+        .info-section-user {
           display: flex;
           justify-content: space-between;
 
