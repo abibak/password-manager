@@ -17,6 +17,14 @@ export default {
       type: Boolean,
     }
   },
+
+  created() {
+    window.addEventListener('keydown', (e) => {
+      if (e.key == 'Escape') {
+        this.$emit('closeModal');
+      }
+    });
+  },
 }
 </script>
 
@@ -37,7 +45,8 @@ export default {
   }
 }
 
-.animationForm-enter-active, .animationForm-leave-active {
+.animationForm-enter-active,
+.animationForm-leave-active {
   transition: all $transTime;
 }
 
