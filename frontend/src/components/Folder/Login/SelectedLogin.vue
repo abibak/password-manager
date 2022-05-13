@@ -37,7 +37,7 @@
         <span class="action" @click="openTab" v-bind:class="files.class" data-action="files">Файлы</span>
       </div>
 
-      <ListHistories :history="currentLogin.histories" :show="historyPassword.active"></ListHistories>
+      <ListHistories :history="currentLogin.histories" :show="historyPassword.active && typeFolder === 'orgFolder'"></ListHistories>
 
       <div class="form-login" v-show="general.active">
         <form>
@@ -229,6 +229,10 @@ export default {
         color: #000;
         line-height: 35px;
         word-break: break-all;
+
+        .bi-star {
+          padding-left: 6px;
+        }
       }
 
       .short-name {

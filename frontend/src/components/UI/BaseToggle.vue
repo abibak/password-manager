@@ -10,7 +10,7 @@ export default {
 
   props: {
     active: {
-      type: Boolean,
+      type: [Boolean, Number],
       default: false,
     }
   },

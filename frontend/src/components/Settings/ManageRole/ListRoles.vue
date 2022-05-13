@@ -12,7 +12,7 @@
             <span class="role-name">{{role.name}}</span>
 
             <div class="elements">
-              <BaseToggle></BaseToggle>
+              <BaseToggle @click="role.status = !role.status" v-model:active="role.status"></BaseToggle>
               <i class="bi bi-trash3" @click="sendRequestDeleteRole(role.id)"></i>
             </div>
           </div>
@@ -21,7 +21,8 @@
 
       <div class="container-right-section">
         <BaseButton @click="showCreateRoleForm = true">Создать роль</BaseButton>
-        <p class="management-description">Управляйте ролями. Создавайте и удаляйте роли. Назначайте роли пользователям, определеяя их возможности</p>
+        <p class="management-description">Управляйте ролями. Создавайте и удаляйте роли. Назначайте роли
+          пользователям, определеяя их возможности</p>
       </div>
     </div>
 
@@ -54,11 +55,19 @@ export default {
     }
   },
 
+  created() {
+    this.initData();
+  },
+
   computed: {
     ...mapState(['roles']),
   },
 
   methods: {
+    initData() {
+      console.log('init: roles');
+    },
+
     async sendRequestDeleteRole(id) {
       console.log('request/delete: ' + id);
 

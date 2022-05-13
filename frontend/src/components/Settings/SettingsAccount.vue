@@ -54,8 +54,8 @@ export default {
       form: {
         login: '',
         email: '',
-        emailNotification: false,
-        autoLogout: true,
+        emailNotification: null,
+        autoLogout: null,
         avatar: null,
       }
     }
