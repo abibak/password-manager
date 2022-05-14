@@ -12,6 +12,11 @@ class OrganizationLoginRepository extends BaseRepository
         return Model::class;
     }
 
+    public function getLoginById(int $id)
+    {
+        return $this->startCondition()->where('id', $id)->first();
+    }
+
     public function getUserIdFromFolder(int $idFolder)
     {
         return OrganizationFolder::select('user_id')->where('id', $idFolder)->first();

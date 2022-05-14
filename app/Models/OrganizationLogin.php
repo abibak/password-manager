@@ -18,6 +18,7 @@ class OrganizationLogin extends Model
         'url',
         'tags',
         'note',
+        'is_favorite',
     ];
 
     public function folder()

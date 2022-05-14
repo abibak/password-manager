@@ -24,7 +24,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
         ['App\Http\Controllers\Api\UserController', 'changeStatusDeactivateAccount']);
     Route::get('role/change/status/{status}', ['App\Http\Controllers\Api\RoleController', 'changeRoleStatus']);
 
+    // password history route
     Route::post('login/action', ['App\Http\Controllers\Api\OrganizationLoginController', 'action']);
+
+    // password favorite routes
+    Route::get('organization/login/favorite/change/{id}',
+        ['App\Http\Controllers\Api\OrganizationLoginController', 'changeStatusFavorite']);
+    Route::get('user/login/favorite/change/{id}',
+        ['App\Http\Controllers\Api\UserLoginController', 'changeStatusFavorite']);
 
     /* auth routes */
     Route::get('/getUser', ['App\Http\Controllers\Api\Auth\AuthController', 'getUser']);

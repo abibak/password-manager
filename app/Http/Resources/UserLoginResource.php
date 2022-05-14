@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Crypt;
 
@@ -24,6 +25,7 @@ class UserLoginResource extends JsonResource
             'tags' => $this->tags,
             'note' => Crypt::decryptString($this->note),
             'password' => Crypt::decryptString($this->password),
+            'is_favorite' => (bool)$this->is_favorite,
         ];
     }
 }

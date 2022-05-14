@@ -11,7 +11,11 @@
         <p class="name-login">
           <span class="short-name">{{ this.currentLogin.name.charAt(0) }}</span>
           {{ this.currentLogin.name }}
-          <i class="bi bi-star"></i>
+          <i class="bi bi-star" v-if="currentLogin.is_favorite === false"
+             @click="sendRequestAddPasswordFavorite(currentLogin.id)"></i>
+
+          <i class="bi bi-star-fill" v-if="currentLogin.is_favorite === true"
+             @click="sendRequestAddPasswordFavorite(currentLogin.id)"></i>
         </p>
       </div>
 
@@ -81,7 +85,7 @@
 </template>
 
 <script>
-import {mapGetters, mapMutations, mapState} from "vuex";
+import {mapActions, mapGetters, mapMutations, mapState} from "vuex";
 import SettingsLogin from "@/components/Folder/Login/SettingsLogin";
 import EditLoginForm from "@/components/Folder/Login/EditLoginForm";
 import ListHistories from "@/components/Folder/Login/ListHistories";
@@ -159,6 +163,7 @@ export default {
   },
 
   methods: {
+    ...mapActions('login', ['sendRequestAddPasswordFavorite']),
     ...mapMutations('login', ['setShowSettingsLogin', 'setShowHeadLines', 'setShowEditLogin']),
 
     openTab(el) {
@@ -230,8 +235,17 @@ export default {
         line-height: 35px;
         word-break: break-all;
 
-        .bi-star {
+        .bi-star, .bi-star-fill {
           padding-left: 6px;
+
+          &:hover {
+            color: #ffd93e;
+            cursor: pointer;
+          }
+        }
+
+        .bi-star-fill {
+          color: #ffd93e;
         }
       }
 

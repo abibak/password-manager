@@ -85,4 +85,9 @@ class UserLoginController extends Controller
         $loginDestroy = $this->userLoginRepository->getLoginByIdWithFolder($id) ?? null;
         return $this->loginService->destroy($loginDestroy);
     }
+
+    public function changeStatusFavorite(int $id)
+    {
+        return $this->loginService->changeStatusFavorite($id);
+    }
 }

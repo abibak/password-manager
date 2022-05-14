@@ -76,6 +76,26 @@ export default {
       state.showModalRenameFolder = val;
     },
 
+    changeLoginFavoriteStatus(state, data) {
+      let folder = null;
+      let loginId = null;
+
+      if (state.typeFolder === 'orgFolder') {
+        folder = state.dataOrganizationFolders.data[data.index_folder];
+        loginId = state.selectedOrgLoginId;
+      } else {
+        folder = state.dataFolders.data[data.index_folder];
+        loginId = state.selectedLoginId;
+      }
+
+      for (const login of folder.logins) {
+        if (login.id === loginId) {
+          login.is_favorite = login.is_favorite !== true;
+          break;
+        }
+      }
+    },
+
     // установка имени папки
     setNameFolderFromList(state, values) {
       if (state.typeFolder === 'orgFolder') {

@@ -18,7 +18,7 @@ class PasswordHistorySeeder extends Seeder
      */
     public function run()
     {
-        $actions = ['open password', 'change password', 'delete password'];
+        $actions = ['Открыл пароль', 'Изменил пароль'];
 
         for ($i = 0; $i < 10; $i++) {
             PasswordHistory::insert([

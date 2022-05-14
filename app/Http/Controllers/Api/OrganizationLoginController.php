@@ -81,4 +81,9 @@ class OrganizationLoginController extends Controller
     {
         return $this->loginService->writeAction($request->all());
     }
+
+    public function changeStatusFavorite(int $id)
+    {
+        return $this->loginService->changeStatusFavorite($id);
+    }
 }

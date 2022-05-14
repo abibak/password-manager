@@ -46,6 +46,7 @@ export default {
         if (response.status === 201) {
           //  поиск папки для установки пароля
           dispatch('folder/searchFolderById', null, {root: true}).then(data => {
+            console.log(response.data);
             return commit('folder/setPasswordInDataFolder', {
               id: data,
               login: response.data.data[0],
@@ -93,7 +94,6 @@ export default {
       };
 
       await instance.put(process.env.VUE_APP_API_URL + link + 'login/' + loginId, dataUpdatePassword).then(response => {
-        console.log(response);
         if (response.status === 200) {
           // обновить папки
           if (link === 'organization/') {
@@ -105,13 +105,19 @@ export default {
     },
 
     async sendRequestPasswordEvent({}, data) {
-      await instance.post(process.env.VUE_APP_API_URL + 'login/action', data).then(() => {
-        console.log('send action');
-      });
+      await instance.post(process.env.VUE_APP_API_URL + 'login/action', data);
     },
 
-    async sendRequestAddPasswordFavorite() {
+    async sendRequestAddPasswordFavorite({dispatch, commit}, loginId) {
+      const link = await dispatch('folder/defineLink', null, {root: true});
 
+      dispatch('folder/searchFolderById', null, {root: true}).then(index => {
+        commit('folder/changeLoginFavoriteStatus', {
+          index_folder: index,
+        }, {root: true});
+      });
+
+      await instance.get(process.env.VUE_APP_API_URL + link + 'login/favorite/change/' + loginId);
     },
   },
 }

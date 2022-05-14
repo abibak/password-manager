@@ -81,7 +81,7 @@ class LoginService extends Service
         $checkUpdate = false;
 
         try {
-            if (strtolower($this->modelName) === 'organizationlogin') {
+            if ($this->defineTypeLogin()) {
                 if ($dataModel['model'] === null) {
                     throw new Exception('Model not found');
                 }
@@ -148,7 +148,7 @@ class LoginService extends Service
 
         try {
             // обработка модели логина организации
-            if (strtolower($this->modelName) === 'organizationlogin') {
+            if ($this->defineTypeLogin()) {
                 if ($dataModel['model'] === null) {
                     throw new Exception('Model not found');
                 }
@@ -221,6 +221,37 @@ class LoginService extends Service
             }
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()]);
+        }
+    }
+
+    public function changeStatusFavorite(int $id)
+    {
+        if ($this->defineTypeLogin()) {
+            $login = $this->orgLoginRepository->getLoginById($id);
+        } else {
+            $login = $this->userLoginRepository->getLoginById($id);
+        }
+
+        try {
+            if ($login === null) {
+                throw new \Exception('Model not found');
+            }
+
+            $favorite = $login->is_favorite;
+
+            if ((bool)$favorite === true) {
+                $favorite = false;
+            } else {
+                $favorite = true;
+            }
+
+            $login->update([
+                'is_favorite' => $favorite,
+            ]);
+
+            return response()->json(['data' => $login, 'message' => 'Favorite updated'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 422);
         }
     }
 }
