@@ -80,7 +80,8 @@ export default {
 
     async sendRequestEditLogin({state, dispatch}, data) {
       const link = await dispatch('folder/defineLink', null, {root: true});
-      const loginId = (link === 'organization/') ? store.state.folder.selectedOrgLoginId : store.state.folder.selectedLoginId;
+      const loginId = (link === 'organization/')
+        ? store.state.folder.selectedOrgLoginId : store.state.folder.selectedLoginId;
 
       let dataUpdatePassword = {
         name: data.name,
@@ -101,6 +102,16 @@ export default {
           dispatch('folder/sendRequestGetFolders', null, {root: true});
         }
       });
-    }
+    },
+
+    async sendRequestPasswordEvent({}, data) {
+      await instance.post(process.env.VUE_APP_API_URL + 'login/action', data).then(() => {
+        console.log('send action');
+      });
+    },
+
+    async sendRequestAddPasswordFavorite() {
+
+    },
   },
 }

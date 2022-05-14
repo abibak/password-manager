@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import {mapMutations, mapState} from "vuex";
+import {mapActions, mapMutations, mapState} from "vuex";
 
 export default {
   name: "LoginItem",
@@ -49,6 +49,7 @@ export default {
   methods: {
     ...mapMutations('folder', ['setSelectedLoginId', 'setSelectedOrgLoginId']),
     // login namespace
+    ...mapActions('login', ['sendRequestPasswordEvent']),
     ...mapMutations('login', ['setShowSelectedLogin']),
 
     test() {
@@ -61,6 +62,10 @@ export default {
 
     selectLogin() {
       if (this.typeFolder === 'orgFolder') {
+        this.sendRequestPasswordEvent({
+          login_id: this.login.id,
+          action: 'Открыл пароль',
+        });
         this.setSelectedOrgLoginId(this.login.id);
       } else {
         this.setSelectedLoginId(this.login.id);

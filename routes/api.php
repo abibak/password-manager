@@ -24,6 +24,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
         ['App\Http\Controllers\Api\UserController', 'changeStatusDeactivateAccount']);
     Route::get('role/change/status/{status}', ['App\Http\Controllers\Api\RoleController', 'changeRoleStatus']);
 
+    Route::post('login/action', ['App\Http\Controllers\Api\OrganizationLoginController', 'action']);
+
     /* auth routes */
     Route::get('/getUser', ['App\Http\Controllers\Api\Auth\AuthController', 'getUser']);
     Route::get('/logout', ['App\Http\Controllers\Api\Auth\AuthController', 'logout']);

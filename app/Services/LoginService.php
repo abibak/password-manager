@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Http\Resources\OrganizationLoginResource;
 use App\Http\Resources\UserLoginResource;
+use App\Models\PasswordHistory;
 use App\Repositories\AccessOrganizationFolderRepository;
 use App\Repositories\OrganizationLoginRepository;
 use App\Repositories\UserLoginRepository;
@@ -16,6 +17,7 @@ class LoginService extends Service
     private $userLoginRepository;
     private $orgLoginRepository;
     private $accessOrgFolderRepository;
+    private $modelName;
 
     public function __construct($model)
     {
@@ -24,13 +26,21 @@ class LoginService extends Service
         $this->userLoginRepository = new UserLoginRepository;
         $this->orgLoginRepository = new OrganizationLoginRepository;
         $this->accessOrgFolderRepository = new AccessOrganizationFolderRepository;
+        $this->modelName = explode('\\', $this->startCondition()::class)[2];
+    }
+
+    public function defineTypeLogin(): bool
+    {
+        if (strtolower($this->modelName) === 'organizationlogin') {
+            return true;
+        }
+
+        return false;
     }
 
     public function store($request)
     {
-        $modelExplode = explode('\\', $this->startCondition()::class);
-
-        if (strtolower($modelExplode[2]) === 'organizationlogin') {
+        if ($this->defineTypeLogin()) {
             // получить id владельца папки
             $getOrgFolderOwnerId = $this->orgLoginRepository->getUserIdFromFolder($request['organization_folder_id']);
             // получить доступ пользователя к папке
@@ -71,9 +81,7 @@ class LoginService extends Service
         $checkUpdate = false;
 
         try {
-            $modelExplode = explode('\\', $this->startCondition()::class);
-
-            if (strtolower($modelExplode[2]) === 'organizationlogin') {
+            if (strtolower($this->modelName) === 'organizationlogin') {
                 if ($dataModel['model'] === null) {
                     throw new Exception('Model not found');
                 }
@@ -139,10 +147,8 @@ class LoginService extends Service
         $checkDelete = false;
 
         try {
-            $modelExplode = explode('\\', $this->startCondition()::class);
-
             // обработка модели логина организации
-            if (strtolower($modelExplode[2]) === 'organizationlogin') {
+            if (strtolower($this->modelName) === 'organizationlogin') {
                 if ($dataModel['model'] === null) {
                     throw new Exception('Model not found');
                 }
@@ -197,8 +203,24 @@ class LoginService extends Service
         }
     }
 
-    public function writeAction(string $action)
+    public function writeAction($action)
     {
+        try {
+            if ($this->defineTypeLogin()) {
+                $login = $this->startCondition()::where('id', $action['login_id'])->first();
 
+                if ($login !== null) {
+                    PasswordHistory::create([
+                        'login_id' => $action['login_id'],
+                        'user_id' => auth()->user()->id,
+                        'action_text' => $action['action'],
+                    ]);
+                }
+
+                throw new \Exception('Model not found', 422);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()]);
+        }
     }
 }

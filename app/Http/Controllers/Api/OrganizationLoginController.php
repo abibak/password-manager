@@ -76,4 +76,9 @@ class OrganizationLoginController extends Controller
         $loginDestroy = $this->organizationLoginRepository->getLoginWithAccess($id);
         return $this->loginService->destroy($loginDestroy);
     }
+
+    public function action(Request $request)
+    {
+        return $this->loginService->writeAction($request->all());
+    }
 }
