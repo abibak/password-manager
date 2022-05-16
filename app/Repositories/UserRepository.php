@@ -26,7 +26,11 @@ class UserRepository extends BaseRepository
 
     public function getLogins()
     {
-        return $this->startCondition()->select('id', 'login')->orderBy('id')->get();
+        return $this->startCondition()
+            ->select('id', 'login')
+            ->where('is_deactivate', '!=', true)->where('is_blocked', '!=', true)
+            ->orderBy('id')
+            ->get();
     }
 
     public function getUserByEmail(string $email)
