@@ -93,7 +93,7 @@ import { mapActions, mapMutations, mapState } from "vuex";
 import FolderList from "@/components/Folder/FolderList";
 import CreateFolderForm from "@/components/Folder/CreateFolderForm";
 import BaseModal from "@/components/UI/BaseModal";
-import SelectedFolderSection from "@/components/SelectedFolderSection";
+import SelectedFolderSection from "@/components/Folder/SelectedFolderSection";
 import TopSettingsMenu from "@/components/TopSettingsMenu";
 import LeftSettingsMenu from "@/components/LeftSettingsMenu";
 import SettingsAccount from "@/components/Settings/SettingsAccount";
@@ -119,7 +119,7 @@ export default {
       errorNotification: false,
       showFormCreateOrgFolder: false,
       showFormCreateFolder: false,
-      showFavoritesPassword: true,
+      showFavoritesPassword: false,
       mainScale: '',
     }
   },

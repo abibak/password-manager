@@ -82,6 +82,10 @@ export default {
       let ids = [];
 
       for (let item in arr) {
+        if (arr[item][key] === this.userData.id) {
+          continue;
+        }
+
         ids.push(arr[item][key]);
       }
 
@@ -100,7 +104,7 @@ export default {
     },
 
     async getLogins() {
-      await instance.get(process.env.VUE_APP_API_URL + 'access/folder').then(response => {
+      instance.get(process.env.VUE_APP_API_URL + 'access/folder').then(response => {
         const users = this.getOrgLogins[0].users; // получить пользователей папки
 
         let usersAccess = this.passArrayToIterate(users, 'usersAccess'); // пользователи имеющие доступ
@@ -110,7 +114,7 @@ export default {
         for (let i = 0; i < response.data.data.length; i++) {
           const itemResponse = response.data.data[i];
 
-          if (!usersAccess.includes(allUserIds[i])) {
+          if (itemResponse.id !== this.userData.id && !usersAccess.includes(allUserIds[i])) {
             this.userLogins.push(itemResponse);
           }
         }

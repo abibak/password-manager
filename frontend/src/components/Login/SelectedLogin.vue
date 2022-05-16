@@ -86,9 +86,9 @@
 
 <script>
 import {mapActions, mapGetters, mapMutations, mapState} from "vuex";
-import SettingsLogin from "@/components/Folder/Login/SettingsLogin";
-import EditLoginForm from "@/components/Folder/Login/EditLoginForm";
-import ListHistories from "@/components/Folder/Login/ListHistories";
+import SettingsLogin from "@/components/Login/SettingsLogin";
+import EditLoginForm from "@/components/Login/EditLoginForm";
+import ListHistories from "@/components/Login/ListHistories";
 
 export default {
   name: "SelectedLogin",

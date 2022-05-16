@@ -1,5 +1,5 @@
 <template>
-  <div class="favorites-password" v-if="true">
+  <div class="favorites-password" v-if="show">
     <div class="container-favorites-password">
       <div class="head">
         <p class="name-action">Избранные пароли</p>
@@ -12,7 +12,7 @@
 
 <script>
 import {mapMutations, mapState} from "vuex";
-import LoginList from "@/components/Folder/Login/LoginList";
+import LoginList from "@/components/Login/LoginList";
 
 export default {
   name: "FavoritesPassword",

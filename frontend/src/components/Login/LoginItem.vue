@@ -6,7 +6,9 @@
     </p>
     <p class="attribute-login" v-if="showAttributes">{{ login.login }}</p>
     <p class="attribute-login" v-if="showAttributes">{{ login.url }}</p>
-    <p class="attribute-login" v-if="showAttributes">{{ login.tags }}</p>
+    <p class="attribute-login tags" v-if="showAttributes">
+      {{login.tags}}
+    </p>
   </div>
 </template>
 
@@ -103,6 +105,7 @@ export default {
   font-weight: 400;
   cursor: pointer;
   transition: background-color .18s;
+  position: relative;
 
   &:first-child {
     margin-top: 0;

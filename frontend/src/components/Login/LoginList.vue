@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import LoginItem from "@/components/Folder/Login/LoginItem";
+import LoginItem from "@/components/Login/LoginItem";
 import {mapMutations, mapState} from "vuex";
 
 export default {

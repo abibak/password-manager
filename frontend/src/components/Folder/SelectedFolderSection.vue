@@ -70,12 +70,12 @@
 
 <script>
 import {mapGetters, mapMutations, mapState} from "vuex";
-import LoginList from "@/components/Folder/Login/LoginList";
+import LoginList from "@/components/Login/LoginList";
 import SettingsFolder from "@/components/Folder/SettingsFolder";
 import ConfirmDeleteFolder from "@/components/Folder/ConfirmDeleteFolder";
 import RenameFolderForm from "@/components/Folder/RenameFolderForm";
 import AddingPasswordForm from "@/components/Folder/AddingPasswordForm";
-import SelectedLogin from "@/components/Folder/Login/SelectedLogin";
+import SelectedLogin from "@/components/Login/SelectedLogin";
 import InviteToFolder from "@/components/Folder/InviteToFolder";
 
 export default {
