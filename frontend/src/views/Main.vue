@@ -77,10 +77,11 @@
         </div>
 
         <div class="right-folder-section">
+          <!-- Отображение секции с открытой папкой -->
+          <SelectedFolderSection v-if="showSectionSelectedFolder"></SelectedFolderSection>
           <SettingsAccount v-if="showSettingsAccount"></SettingsAccount>
           <ListUsers v-if="showSettingsManageUsers"></ListUsers>
-          <!-- Отображение секции с открытой папкой -->
-          <SelectedFolderSection v-if="this.showSectionSelectedFolder"></SelectedFolderSection>
+          <FavoritesPassword :show="showFavoritesPassword"></FavoritesPassword>
         </div>
       </div>
     </div>
@@ -97,6 +98,7 @@ import TopSettingsMenu from "@/components/TopSettingsMenu";
 import LeftSettingsMenu from "@/components/LeftSettingsMenu";
 import SettingsAccount from "@/components/Settings/SettingsAccount";
 import ListUsers from "@/components/Settings/ManageUser/ListUsers";
+import FavoritesPassword from "@/components/FavoritesPassword";
 
 export default {
   name: "Main",
@@ -109,6 +111,7 @@ export default {
     LeftSettingsMenu,
     SettingsAccount,
     ListUsers,
+    FavoritesPassword,
   },
 
   data() {
@@ -116,6 +119,7 @@ export default {
       errorNotification: false,
       showFormCreateOrgFolder: false,
       showFormCreateFolder: false,
+      showFavoritesPassword: true,
       mainScale: '',
     }
   },
@@ -123,6 +127,7 @@ export default {
   created() {
     this.sendRequestGetFolders();
     this.sendRequestGetOrganizationFolders();
+    this.sendRequestGetFavoritesPassword();
   },
 
   watch: {
@@ -158,6 +163,7 @@ export default {
   },
 
   methods: {
+    ...mapActions('login', ['sendRequestGetFavoritesPassword']),
     ...mapActions('folder', ['sendRequestGetFolders', 'sendRequestGetOrganizationFolders',]),
     ...mapMutations(['setShowTopSettingsMenu', 'setShowModalAddingFolder']),
 

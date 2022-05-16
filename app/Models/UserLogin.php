@@ -18,12 +18,16 @@ class UserLogin extends Model
         'url',
         'tags',
         'note',
-        'is_favorite',
     ];
 
     public function folder()
     {
         return $this->belongsTo(UserFolder::class, 'user_folder_id', 'id');
+    }
+
+    public function favorites()
+    {
+        return $this->hasMany(FavoritePassword::class, 'user_login_id');
     }
 
     public function setPasswordAttribute($value)

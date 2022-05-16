@@ -27,7 +27,6 @@ class UserLoginSeeder extends Seeder
                 'url' => 'example.com',
                 'tags' => 'social,IT,admin',
                 'note' => Crypt::encryptString('test_note' . $i),
-                'is_favorite' => false,
             ]);
         }
     }

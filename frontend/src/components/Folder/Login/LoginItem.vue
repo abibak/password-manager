@@ -47,7 +47,13 @@ export default {
   },
 
   methods: {
-    ...mapMutations('folder', ['setSelectedLoginId', 'setSelectedOrgLoginId']),
+    ...mapMutations(['setShowSectionSelectedFolder']),
+    ...mapMutations('folder', [
+      'setSelectedLoginId',
+      'setSelectedOrgLoginId',
+      'setSelectedOrgFolderId',
+      'setSelectedFolderId'
+    ]),
     // login namespace
     ...mapActions('login', ['sendRequestPasswordEvent']),
     ...mapMutations('login', ['setShowSelectedLogin']),
@@ -61,13 +67,19 @@ export default {
     },
 
     selectLogin() {
+      this.setShowSectionSelectedFolder(true);
+
       if (this.typeFolder === 'orgFolder') {
+        this.setSelectedOrgFolderId(this.login.organization_folder_id);
+
         this.sendRequestPasswordEvent({
           login_id: this.login.id,
           action: 'Открыл пароль',
         });
+
         this.setSelectedOrgLoginId(this.login.id);
       } else {
+        this.setSelectedFolderId(this.login.user_folder_id);
         this.setSelectedLoginId(this.login.id);
       }
 

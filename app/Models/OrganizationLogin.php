@@ -18,7 +18,6 @@ class OrganizationLogin extends Model
         'url',
         'tags',
         'note',
-        'is_favorite',
     ];
 
     public function folder()
@@ -29,6 +28,11 @@ class OrganizationLogin extends Model
     public function histories()
     {
         return $this->hasMany(PasswordHistory::class, 'login_id');
+    }
+
+    public function favorites()
+    {
+        return $this->hasMany(FavoritePassword::class, 'organization_login_id');
     }
 
     public function setPasswordAttribute($value)

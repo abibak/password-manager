@@ -22,7 +22,6 @@ return new class extends Migration
             $table->string('url', 200);
             $table->string('tags', 100);
             $table->string('note', 500);
-            $table->boolean('is_favorite')->default(false);
             $table->timestamps();
         });
     }

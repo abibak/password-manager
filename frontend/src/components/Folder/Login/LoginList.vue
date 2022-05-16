@@ -9,10 +9,10 @@
 
     <div class="login">
       <transition-group name="animation-list-login">
-        <LoginItem :login="item"
+        <LoginItem :login="login"
                    :show-attributes="showHeadLines"
-                   v-for="(item) of folderData[0].logins"
-                   :key="item"
+                   v-for="(login) of logins"
+                   :key="login"
                    @click="openLogin">
         </LoginItem>
       </transition-group>
@@ -29,7 +29,7 @@ export default {
   components: {LoginItem},
 
   props: {
-    folderData: {
+    logins: {
       required: true,
     },
 

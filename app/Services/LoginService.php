@@ -5,7 +5,9 @@ namespace App\Services;
 
 
 use App\Http\Resources\OrganizationLoginResource;
+use App\Http\Resources\UserLoginCollection;
 use App\Http\Resources\UserLoginResource;
+use App\Models\FavoritePassword;
 use App\Models\PasswordHistory;
 use App\Repositories\AccessOrganizationFolderRepository;
 use App\Repositories\OrganizationLoginRepository;
@@ -19,7 +21,7 @@ class LoginService extends Service
     private $accessOrgFolderRepository;
     private $modelName;
 
-    public function __construct($model)
+    public function __construct($model = null)
     {
         parent::__construct($model);
 
@@ -224,34 +226,35 @@ class LoginService extends Service
         }
     }
 
-    public function changeStatusFavorite(int $id)
+    public function changeStatusFavorite(int $loginId)
     {
-        if ($this->defineTypeLogin()) {
-            $login = $this->orgLoginRepository->getLoginById($id);
-        } else {
-            $login = $this->userLoginRepository->getLoginById($id);
-        }
-
         try {
-            if ($login === null) {
-                throw new \Exception('Model not found');
-            }
-
-            $favorite = $login->is_favorite;
-
-            if ((bool)$favorite === true) {
-                $favorite = false;
+            if ($this->defineTypeLogin()) {
+                $typeLogin = 'organization_login_id';
             } else {
-                $favorite = true;
+                $typeLogin = 'user_login_id';
             }
 
-            $login->update([
-                'is_favorite' => $favorite,
-            ]);
+            $loginFavorite = FavoritePassword::where($typeLogin, $loginId)->first();
 
-            return response()->json(['data' => $login, 'message' => 'Favorite updated'], 200);
+            if ($loginFavorite !== null) {
+                throw new \Exception('Model already exists');
+            }
+
+            FavoritePassword::create([
+                $typeLogin => $loginId,
+                'user_id' => auth()->user()->id,
+            ]);
         } catch (\Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 422);
+            return response()->json(['message' => $e->getMessage()]);
         }
+    }
+
+    public function getFavoritesPassword()
+    {
+        $user_logins = UserLoginResource::collection($this->userLoginRepository->getFavoritesPassword())->all();
+        $org_logins = OrganizationLoginResource::collection($this->orgLoginRepository->getFavoritesPassword())->all();
+
+        return array_merge($user_logins, $org_logins);
     }
 }

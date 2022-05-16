@@ -86,8 +86,13 @@ class UserLoginController extends Controller
         return $this->loginService->destroy($loginDestroy);
     }
 
-    public function changeStatusFavorite(int $id)
+    public function getFavoritesPassword()
     {
-        return $this->loginService->changeStatusFavorite($id);
+        return $this->loginService->getFavoritesPassword();
+    }
+
+    public function changeStatusFavorite(int $loginId)
+    {
+        return $this->loginService->changeStatusFavorite($loginId);
     }
 }

@@ -9,9 +9,9 @@
 
       <div class="info-login">
         <p class="name-login">
-          <span class="short-name">{{ this.currentLogin.name.charAt(0) }}</span>
-          {{ this.currentLogin.name }}
-          <i class="bi bi-star" v-if="currentLogin.is_favorite === false"
+          <span class="short-name">{{ currentLogin.name.charAt(0) }}</span>
+          {{ currentLogin.name }}
+          <i class="bi bi-star"
              @click="sendRequestAddPasswordFavorite(currentLogin.id)"></i>
 
           <i class="bi bi-star-fill" v-if="currentLogin.is_favorite === true"

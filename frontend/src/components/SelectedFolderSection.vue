@@ -54,7 +54,7 @@
       <!--    Список паролей    -->
       <div class="open-login-container">
         <!--    Список паролей текущей папки    -->
-        <LoginList @openLogin="showOpenLogin" v-model:folder-data="this.currentFolder"
+        <LoginList @openLogin="showOpenLogin" v-model:logins="this.currentFolder[0].logins"
                    :width-value="loginListWidth"></LoginList>
         <!--   Отобразить выбранный пароль   -->
         <SelectedLogin @close="closeLoginView" v-model:show="showSelectedLogin"></SelectedLogin>
@@ -92,7 +92,7 @@ export default {
 
   data() {
     return {
-      currentFolder: '',
+      currentFolder: null,
       showSettings: false,
       loginListWidth: 80,
     }
@@ -105,17 +105,17 @@ export default {
   watch: {
     selectedFolderId() {
       if (this.selectedFolderId !== null) {
+        this.currentFolder = this.getLogins;
         this.setStatusAccessFolder();
         this.closeLoginView();
-        this.currentFolder = this.getLogins;
       }
     },
 
     selectedOrgFolderId() {
       if (this.selectedOrgFolderId !== null) {
+        this.currentFolder = this.getOrgLogins;
         this.setStatusAccessFolder();
         this.closeLoginView();
-        this.currentFolder = this.getOrgLogins;
       }
     },
 
@@ -166,11 +166,11 @@ export default {
     // установить данные текущей папки
     setPasswordData() {
       if (this.typeFolder === 'orgFolder') {
-        this.setStatusAccessFolder();
         this.currentFolder = this.getOrgLogins;
-      } else if (this.typeFolder === 'userFolder') {
         this.setStatusAccessFolder();
+      } else if (this.typeFolder === 'userFolder') {
         this.currentFolder = this.getLogins;
+        this.setStatusAccessFolder();
       }
     },
 
@@ -181,7 +181,7 @@ export default {
       }
 
       // если пользователь владелец папки, установить "3" доступ
-      if (this.getOrgLogins[0].user_id === this.userData.id) {
+      if (this.currentFolder[0].user_id === this.userData.id) {
         this.setUserAccess(3);
       } else {
         // установка назначенного доступа

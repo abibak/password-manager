@@ -25,7 +25,6 @@ class UserLoginResource extends JsonResource
             'tags' => $this->tags,
             'note' => Crypt::decryptString($this->note),
             'password' => Crypt::decryptString($this->password),
-            'is_favorite' => (bool)$this->is_favorite,
         ];
     }
 }

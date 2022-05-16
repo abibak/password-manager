@@ -29,7 +29,6 @@ class OrganizationLoginSeeder extends Seeder
                 'url' => 'example.com',
                 'tags' => collect($tags)->random(),
                 'note' => Crypt::encryptString('test_note' . $i),
-                'is_favorite' => false,
             ]);
         }
     }

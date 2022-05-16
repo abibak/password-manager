@@ -19,13 +19,13 @@ class OrganizationLoginResource extends JsonResource
     {
         return [
             'id' => (int)$this->id,
+            'organization_folder_id' => (int)$this->organization_folder_id,
             'name' => $this->name,
             'login' => $this->login,
             'url' => $this->url,
             'tags' => $this->tags,
             'note' => Crypt::decryptString($this->note),
             'password' => Crypt::decryptString($this->password),
-            'is_favorite' => (bool)$this->is_favorite,
             'histories' => User::select('password_histories.id', 'users.id as user_id', 'users.login',
                 'password_histories.action_text', 'password_histories.created_at as date')
                 ->join('password_histories', function ($join) {

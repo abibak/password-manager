@@ -2,6 +2,8 @@
 
 namespace App\Repositories;
 
+
+use App\Models\FavoritePassword;
 use App\Models\OrganizationFolder;
 use App\Models\OrganizationLogin as Model;
 
@@ -15,6 +17,22 @@ class OrganizationLoginRepository extends BaseRepository
     public function getLoginById(int $id)
     {
         return $this->startCondition()->where('id', $id)->first();
+    }
+
+    public function getFavoritesPassword()
+    {
+        $favorites = [];
+        $logins = FavoritePassword::select('organization_login_id', 'user_id')
+            ->where('organization_login_id', '!=', null)
+            ->where('user_id', auth()->user()->id)
+            ->with('organization_login')
+            ->get();
+
+        foreach ($logins as $login) {
+            $favorites[] = $login->organization_login;
+        }
+
+        return $favorites;
     }
 
     public function getUserIdFromFolder(int $idFolder)

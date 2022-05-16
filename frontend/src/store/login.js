@@ -5,6 +5,7 @@ export default {
   namespaced: true,
 
   state: () => ({
+    favoritesPassword: [],
     confirmDeleteLogin: false,
     showEditLogin: false,
     showSelectedLogin: false,
@@ -14,6 +15,10 @@ export default {
   getters: {},
 
   mutations: {
+    setFavoritesPassword(state, data) {
+      state.favoritesPassword = data;
+    },
+
     // показать/скрыть подтверждение удаления пароля
     setConfirmDeleteLogin(state, val) {
       state.confirmDeleteLogin = val;
@@ -119,5 +124,11 @@ export default {
 
       await instance.get(process.env.VUE_APP_API_URL + link + 'login/favorite/change/' + loginId);
     },
+
+    async sendRequestGetFavoritesPassword({commit}) {
+      await instance.get(process.env.VUE_APP_API_URL + 'login/favorites').then(response => {
+        commit('setFavoritesPassword', response.data);
+      })
+    }
   },
 }

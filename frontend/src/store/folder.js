@@ -77,7 +77,8 @@ export default {
     },
 
     changeLoginFavoriteStatus(state, data) {
-      let folder = null;
+      console.log('add favorite function');
+     /* let folder = null;
       let loginId = null;
 
       if (state.typeFolder === 'orgFolder') {
@@ -93,7 +94,7 @@ export default {
           login.is_favorite = login.is_favorite !== true;
           break;
         }
-      }
+      }*/
     },
 
     // установка имени папки
