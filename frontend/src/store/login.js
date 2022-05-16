@@ -51,7 +51,6 @@ export default {
         if (response.status === 201) {
           //  поиск папки для установки пароля
           dispatch('folder/searchFolderById', null, {root: true}).then(data => {
-            console.log(response.data);
             return commit('folder/setPasswordInDataFolder', {
               id: data,
               login: response.data.data[0],

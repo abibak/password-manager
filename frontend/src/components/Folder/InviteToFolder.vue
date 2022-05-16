@@ -114,7 +114,9 @@ export default {
         for (let i = 0; i < response.data.data.length; i++) {
           const itemResponse = response.data.data[i];
 
-          if (itemResponse.id !== this.userData.id && !usersAccess.includes(allUserIds[i])) {
+          if (itemResponse.id !== this.getOrgLogins[0].user_id && itemResponse.id !== this.userData.id &&
+            !usersAccess.includes(allUserIds[i]))
+          {
             this.userLogins.push(itemResponse);
           }
         }

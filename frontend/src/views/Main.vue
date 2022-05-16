@@ -6,7 +6,7 @@
     <TopSettingsMenu></TopSettingsMenu>
   </BaseModal>
 
-  <div class="site-main" :style="{ transform: this.mainScale }">
+  <div class="site-main" :style="{ transform: this.mainScale }" v-if="isAuth">
     <div class="header-main">
       <div class="icon-menu" @click="setShowTopSettingsMenu(true)">
         <i class="bi bi-list"></i>
@@ -89,7 +89,7 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapState } from "vuex";
+import {mapActions, mapMutations, mapState} from "vuex";
 import FolderList from "@/components/Folder/FolderList";
 import CreateFolderForm from "@/components/Folder/CreateFolderForm";
 import BaseModal from "@/components/UI/BaseModal";
@@ -131,6 +131,12 @@ export default {
   },
 
   watch: {
+    isAuth() {
+      if (this.isAuth === false) {
+        this.setShowSectionSelectedFolder(false);
+      }
+    },
+
     errors() {
       if (this.errors !== null) {
         this.errorNotification = true;
@@ -146,7 +152,7 @@ export default {
   },
 
   computed: {
-    ...mapState('auth', ['userData']),
+    ...mapState('auth', ['userData', 'isAuth']),
     ...mapState('folder', ['dataFolders', 'showSectionSelectedFolder', 'dataOrganizationFolders']),
     ...mapState('settings', ['showSettingsAccount', 'showSettingsManageUsers']),
     ...mapState([
@@ -158,14 +164,14 @@ export default {
     ]),
 
     getFirstLetterNameUser() {
-      return typeof this.userData.login === 'string' ? this.userData.login.charAt(0).toUpperCase() : '';
+      return typeof this.userData?.login === 'string' ? this.userData?.login.charAt(0).toUpperCase() : '';
     }
   },
 
   methods: {
     ...mapActions('login', ['sendRequestGetFavoritesPassword']),
     ...mapActions('folder', ['sendRequestGetFolders', 'sendRequestGetOrganizationFolders',]),
-    ...mapMutations(['setShowTopSettingsMenu', 'setShowModalAddingFolder']),
+    ...mapMutations(['setShowTopSettingsMenu', 'setShowModalAddingFolder', 'setShowSectionSelectedFolder']),
 
     closeFormCreateFolder() {
       this.showFormCreateOrgFolder = false;

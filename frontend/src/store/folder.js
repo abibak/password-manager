@@ -18,16 +18,16 @@ export default {
   getters: {
     // optimize
     getLogins(state) {
-      return state.dataFolders.data.filter(folder => folder.id === state.selectedFolderId);
+      return state.dataFolders.data?.filter(folder => folder.id === state.selectedFolderId);
     },
     // optimize
     getOrgLogins(state) {
-      return state.dataOrganizationFolders.data.filter(folder => folder.id === state.selectedOrgFolderId);
+      return state.dataOrganizationFolders.data?.filter(folder => folder.id === state.selectedOrgFolderId);
     },
 
     // optimize
     getDataOpenLogin(state) {
-      const folder = state.dataFolders.data;
+      const folder = state.dataFolders.data ?? [];
 
       for (let i = 0; i < folder.length; i++) {
         if (folder[i].id === state.selectedFolderId) {

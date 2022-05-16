@@ -7,7 +7,7 @@ export default {
   state: () => ({
     userData: '',
     authToken: '',
-    isAuth: null,
+    isAuth: false,
   }),
 
   getters: {
@@ -55,6 +55,7 @@ export default {
           localStorage.setItem('authToken', response.data['access_token']);
           commit('setAuthToken', response.data['access_token']);
           commit('setUserData', response.data.user);
+          commit('setIsAuth', true);
           router.push('/');
         }
       }).catch(error => {
@@ -68,7 +69,9 @@ export default {
       await instance.get(process.env.VUE_APP_API_URL + 'logout').then(() => {
         commit('setUserData', null);
         commit('setAuthToken', '');
+        commit('setIsAuth', false);
         localStorage.setItem('authToken', '');
+        router.push('login');
       });
     },
   },

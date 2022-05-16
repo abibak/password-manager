@@ -11,7 +11,7 @@ import {instance} from "@/store";
 import router from "@/router";
 
 export default {
-  mounted() {
+  created() {
     const authToken = localStorage.getItem('authToken')
     this.initConfigInstance();
 
@@ -23,15 +23,11 @@ export default {
   },
 
   computed: {
-    ...mapGetters('auth', {
-      getAuthToken: 'getAuthToken',
-    }),
+    ...mapGetters('auth', ['getAuthToken']),
   },
 
   methods: {
-    ...mapActions({
-      'getUserData': 'auth/getUserData',
-    }),
+    ...mapActions('auth', ['getUserData']),
 
     initConfigInstance() {
       instance.interceptors.request.use((config) => {
