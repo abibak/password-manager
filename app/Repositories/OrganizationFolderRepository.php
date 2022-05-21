@@ -35,7 +35,6 @@ class OrganizationFolderRepository extends BaseRepository
         // папки созданные пользователем
         $userOrg = $this->startCondition()
             ->where('user_id', $userId ?? auth()->user()->id)
-            ->with(['users', 'logins'])
             ->get();
 
         // папки с доступом
@@ -44,11 +43,10 @@ class OrganizationFolderRepository extends BaseRepository
                 'organization_folders.user_id',
                 'name',
                 'status',
-                'access'
             )->join('access_organization_folders', function ($join) {
                 $join->on('access_organization_folders.organization_folder_id', '=', 'organization_folders.id')
                     ->where('access_organization_folders.user_id', '=', $userId ?? auth()->user()->id);
-            })->with(['logins', 'users'])->get();
+            })->get();
 
         if (count($userOrg)) {
             foreach ($userOrg as $folder) {

@@ -22,6 +22,7 @@ class UserLoginRepository extends BaseRepository
     {
         $favorites = [];
         $logins = FavoritePassword::select('user_id', 'user_login_id')
+            ->where('user_id', auth()->user()->id)
             ->where('user_login_id', '!=', null)
             ->with('user_login')
             ->get();

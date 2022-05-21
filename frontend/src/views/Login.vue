@@ -63,7 +63,7 @@ export default {
     return {
       form: {
         types: [
-          'email',
+          'text',
           'password',
         ],
 

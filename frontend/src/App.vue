@@ -6,23 +6,22 @@
 
 <script>
 import 'normalize.css';
-import {mapActions, mapGetters} from "vuex";
+import {mapActions, mapGetters, mapState} from "vuex";
 import {instance} from "@/store";
-import router from "@/router";
 
 export default {
   created() {
     const authToken = localStorage.getItem('authToken')
+
     this.initConfigInstance();
 
     if (authToken) {
       this.getUserData();
-    } else if (authToken === null || authToken === '') {
-      router.push('/login');
     }
   },
 
   computed: {
+    ...mapState('auth', ['isAuth']),
     ...mapGetters('auth', ['getAuthToken']),
   },
 
@@ -37,7 +36,7 @@ export default {
 
         return config;
       }, (error) => {
-        console.log(error);
+        //
       });
     }
   },

@@ -3,33 +3,33 @@
     <div class="container-folder-section">
       <div class="header-info-folder">
         <div class="container-header-info">
-          <p class="name-folder">{{ this.currentFolder[0].name }}</p>
+          <p class="name-folder">{{ currentFolder[0].name }}</p>
 
           <div class="unit-folder-control">
             <div class="icon-control icon-invite-user"
-                 v-if="this.typeFolder === 'orgFolder' && this.userAccess === 3"
+                 v-if="this.typeFolder === 'orgFolder' && userAccess === 3"
                  @click="setShowInviteFolder(true)">
               <i class="bi bi-person-plus"></i>
             </div>
 
-            <div class="icon-control icon-options" v-if="this.userAccess === 3" @click="showSettings = !showSettings">
+            <div class="icon-control icon-options" v-if="userAccess === 3" @click="showSettings = !showSettings">
               <i class="bi bi-three-dots"></i>
               <SettingsFolder v-model:show="showSettings"></SettingsFolder>
             </div>
 
-            <BaseButton @click="setShowModalAddingPassword(true)" v-if="this.userAccess === 3">
+            <BaseButton @click="setShowModalAddingPassword(true)" v-if="userAccess === 3">
               Добавить пароль
             </BaseButton>
           </div>
         </div>
 
         <div class="info-users" v-if="typeFolder === 'orgFolder'">
-          <span v-if="this.currentFolder[0].users.length !== 0">
-            Еще <span class="view-users">{{ this.currentFolder[0].users.length }} сотрудников</span>
-            могут просматривать папку
+          <span v-if="currentFolder[0].users.length !== 0">
+            Еще <span class="view-users" @click="showFolderUserAccessSettings = true">
+            {{ this.currentFolder[0].users.length }} сотрудников</span> могут просматривать папку
           </span>
 
-          <span v-if="this.currentFolder[0].users.length === 0">
+          <span v-if="currentFolder[0].users.length === 0">
             <span>В папке отсутствуют пользователи</span>
           </span>
         </div>
@@ -41,7 +41,7 @@
 
       <!--    Форма переименования папки    -->
       <BaseModal v-model:show="showModalRenameFolder">
-        <RenameFolderForm :name-folder="this.currentFolder[0].name"></RenameFolderForm>
+        <RenameFolderForm :name-folder="currentFolder[0].name"></RenameFolderForm>
       </BaseModal>
 
       <!--    Подтверждение удаления папки    -->
@@ -54,7 +54,7 @@
       <!--    Список паролей    -->
       <div class="open-login-container">
         <!--    Список паролей текущей папки    -->
-        <LoginList @openLogin="showOpenLogin" v-model:logins="this.currentFolder[0].logins"
+        <LoginList @openLogin="showOpenLogin" v-model:logins="currentFolder[0].logins"
                    :width-value="loginListWidth"></LoginList>
         <!--   Отобразить выбранный пароль   -->
         <SelectedLogin @close="closeLoginView" v-model:show="showSelectedLogin"></SelectedLogin>
@@ -62,7 +62,13 @@
 
       <BaseModal v-model:show="showInviteFolder">
         <!--    Пригласить в папку    -->
-        <InviteToFolder :name-folder="this.currentFolder[0].name"></InviteToFolder>
+        <InviteToFolder :name-folder="currentFolder[0].name"></InviteToFolder>
+      </BaseModal>
+
+      <BaseModal @closeModal="showFolderUserAccessSettings = false" :show="showFolderUserAccessSettings">
+        <FolderUserAccessSettings @closeModal="showFolderUserAccessSettings = false" :folder-name="currentFolder[0].name"
+                                  :users="currentFolder[0].user_data" :owner="currentFolder[0].owner">
+        </FolderUserAccessSettings>
       </BaseModal>
     </div>
   </div>
@@ -77,6 +83,7 @@ import RenameFolderForm from "@/components/Folder/RenameFolderForm";
 import AddingPasswordForm from "@/components/Folder/AddingPasswordForm";
 import SelectedLogin from "@/components/Login/SelectedLogin";
 import InviteToFolder from "@/components/Folder/InviteToFolder";
+import FolderUserAccessSettings from "@/components/Folder/FolderUserAccessSettings";
 
 export default {
   name: "SelectedFolderSection",
@@ -88,12 +95,14 @@ export default {
     AddingPasswordForm,
     SelectedLogin,
     InviteToFolder,
+    FolderUserAccessSettings,
   },
 
   data() {
     return {
       currentFolder: null,
       showSettings: false,
+      showFolderUserAccessSettings: false,
       loginListWidth: 80,
     }
   },

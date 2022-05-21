@@ -16,13 +16,18 @@ class AuthController extends Controller
 
     public function getUser()
     {
-        return $this->userRepository->getUserByEmail(auth()->user()->email);
-    }
+        try {
+            $user = $this->userRepository->getUserByEmail(auth()->user()->email);
 
-    /*public function getUserLogins()
-    {
-        return $this->userRepository->getLogins();
-    }*/
+            if ($user) {
+                return response()->json($user, 200);
+            }
+
+            throw new \Exception('User not found');
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 401);
+        }
+    }
 
     public function logout()
     {

@@ -35,6 +35,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('/login/favorites', ['App\Http\Controllers\Api\LoginController', 'getFavoritesPassword']);
 
+    Route::post('/folder/access/change', ['App\Http\Controllers\Api\AccessOrganizationFolderController', 'changeAccessStatus']);
+
     /* auth routes */
     Route::get('/getUser', ['App\Http\Controllers\Api\Auth\AuthController', 'getUser']);
     Route::get('/logout', ['App\Http\Controllers\Api\Auth\AuthController', 'logout']);

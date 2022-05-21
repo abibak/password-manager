@@ -21,7 +21,7 @@ class OrganizationFolder extends Model
         return $this->hasMany(OrganizationLogin::class);
     }
 
-    public function users()
+    public function access_users()
     {
         return $this->hasMany(AccessOrganizationFolder::class);
     }

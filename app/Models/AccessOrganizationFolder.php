@@ -18,7 +18,7 @@ class AccessOrganizationFolder extends Model
 
     public function user()
     {
-        return $this->belongsTo(OrganizationFolder::class);
+        return $this->belongsTo(User::class);
     }
 
     public function folder()

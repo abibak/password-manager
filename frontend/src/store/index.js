@@ -14,7 +14,7 @@ export default createStore({
     errors: null,
     users: null,
     roles: [],
-    openGeneralSettings: false, // основное левое боковое меню настроек
+    openGeneralSettings: false, // основное меню настроек
     showSectionSelectedFolder: false,
     showTopSettingsMenu: false,
     showModalConfirmDelete: false,

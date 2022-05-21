@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AccessOrganizationFolderRequest;
 use App\Models\AccessOrganizationFolder;
+use App\Repositories\AccessOrganizationFolderRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 
@@ -70,5 +71,10 @@ class AccessOrganizationFolderController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function changeAccessStatus(Request $request, AccessOrganizationFolderRepository $repository)
+    {
+        return $repository->changeAccess($request->all());
     }
 }

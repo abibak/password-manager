@@ -14,6 +14,10 @@ export default {
     getAuthToken(state) {
       return state.authToken;
     },
+
+    getIsAuth(state) {
+      return state.isAuth;
+    },
   },
 
   mutations: {
@@ -39,9 +43,9 @@ export default {
           if (state.isAuth === null || state.isAuth === false) {
             commit('setAuthToken', localStorage.getItem('authToken'));
             commit('setIsAuth', true);
-            router.push('/');
           }
         }).catch(() => {
+          localStorage.setItem('authToken', '');
           router.push('/login');
         });
     },

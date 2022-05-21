@@ -24,7 +24,9 @@
           <i class="bi bi-pencil-square"></i>
         </div>
 
-        <div class="icon-control settings-login-control" @click="showSettingsLogin = !showSettingsLogin">
+        <div class="icon-control settings-login-control"
+             v-if="userAccess === 3"
+             @click="showSettingsLogin = !showSettingsLogin">
           <i class="bi bi-three-dots"></i>
 
           <!--    Настройки пароля      -->
@@ -35,13 +37,16 @@
       <div class="list-actions-login">
         <span class="action" @click="openTab" v-bind:class="general.class" data-action="general">Общие</span>
         <span class="action" @click="openTab"
-              v-if="typeFolder === 'orgFolder'"
+              v-if="typeFolder === 'orgFolder' && userAccess === 3"
               v-bind:class="historyPassword.class" data-action="history">История действий
         </span>
         <span class="action" @click="openTab" v-bind:class="files.class" data-action="files">Файлы</span>
       </div>
 
-      <ListHistories :history="currentLogin.histories" :show="historyPassword.active && typeFolder === 'orgFolder'"></ListHistories>
+      <ListHistories v-if="userAccess === 3"
+                     :history="currentLogin.histories"
+                     :show="historyPassword.active && typeFolder === 'orgFolder'">
+      </ListHistories>
 
       <div class="form-login" v-show="general.active">
         <form>
@@ -159,6 +164,7 @@ export default {
   computed: {
     ...mapState('login', ['showHeadLines', 'showEditLogin']),
     ...mapState('folder', ['typeFolder']),
+    ...mapState('organizationFolder', ['userAccess']),
     ...mapGetters('folder', ['getDataOpenLogin', 'getDataOrgOpenLogin']),
   },
 

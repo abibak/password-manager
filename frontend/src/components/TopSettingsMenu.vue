@@ -1,5 +1,5 @@
 <template>
-  <div class="top-menu-settings" :style="{top: top + 'px'}">
+  <div class="top-menu-settings" :style="{top: top + 'px'}" @click.stop>
     <div class="container-settings">
       <BaseCloseModal @click="setShowTopSettingsMenu(false)"></BaseCloseModal>
 

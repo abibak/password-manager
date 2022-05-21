@@ -1,6 +1,8 @@
 <template>
   <div class="favorites-password" v-if="show">
     <div class="container-favorites-password">
+      <BaseCloseModal @click="this.$emit('closeModal')"></BaseCloseModal>
+
       <div class="head">
         <p class="name-action">Избранные пароли</p>
       </div>
@@ -37,16 +39,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .favorites-password {
-    .container-favorites-password {
-      .head {
-        padding: 25px 20px;
-        border-bottom: 1px solid $color;
+.favorites-password {
+  .container-favorites-password {
+    position: relative;
 
-        p {
-          font-size: 24px;
-        }
+    .head {
+      padding: 25px 20px;
+      border-bottom: 1px solid $color;
+
+      p {
+        font-size: 24px;
       }
     }
   }
+}
 </style>

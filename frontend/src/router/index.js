@@ -1,7 +1,7 @@
 import {createRouter, createWebHistory} from 'vue-router';
-import store from '@/store';
 import Login from "@/views/Login";
 import Main from "@/views/Main";
+import store from "@/store";
 
 //  routes
 const routes = [
@@ -25,11 +25,13 @@ const router = createRouter({
 });
 
 function getToken() {
-  return localStorage.getItem('authToken') || false;
+  return localStorage.getItem('authToken');
 }
 
 router.beforeEach(async (to, from, next) => {
-  if (to.name !== 'login' && !getToken()) {
+  console.log(store.getters["auth/getIsAuth"]);
+
+  if (to.name !== 'login' && !getToken() && store.getters["auth/getIsAuth"] === false) {
     return next('/login');
   }
 

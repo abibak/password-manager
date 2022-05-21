@@ -1,12 +1,12 @@
 <template>
-  <BaseNotification @closeBaseNotification="errorNotification = false" v-model:show="errorNotification">
+  <BaseNotification @closeBaseNotification="errorNotification = false" :show="errorNotification">
   </BaseNotification>
 
   <BaseModal @closeModal="setShowTopSettingsMenu(false)" :show="showTopSettingsMenu">
     <TopSettingsMenu></TopSettingsMenu>
   </BaseModal>
 
-  <div class="site-main" :style="{ transform: this.mainScale }" v-if="isAuth">
+  <div class="site-main" :style="{ transform: mainScale }" v-if="isAuth">
     <div class="header-main">
       <div class="icon-menu" @click="setShowTopSettingsMenu(true)">
         <i class="bi bi-list"></i>
@@ -49,7 +49,7 @@
               </div>
 
               <div class="organization-folders">
-                <FolderList :folders="this.dataOrganizationFolders.data" :type-folder="`orgFolder`"></FolderList>
+                <FolderList :folders="dataOrganizationFolders.data" :type-folder="`orgFolder`"></FolderList>
               </div>
             </div>
 
@@ -65,10 +65,10 @@
 
               <div class="user-folders">
                 <!-- Список пользовательских папок -->
-                <FolderList :folders="this.dataFolders.data" :type-folder="`userFolder`"></FolderList>
+                <FolderList :folders="dataFolders.data" :type-folder="`userFolder`"></FolderList>
               </div>
 
-              <div class="favorite-passwords">
+              <div class="favorite-passwords" @click="openFavoritesPassword">
                 <i class="bi bi-star"></i>
                 <span>Избранные пароли</span>
               </div>
@@ -81,7 +81,7 @@
           <SelectedFolderSection v-if="showSectionSelectedFolder"></SelectedFolderSection>
           <SettingsAccount v-if="showSettingsAccount"></SettingsAccount>
           <ListUsers v-if="showSettingsManageUsers"></ListUsers>
-          <FavoritesPassword :show="showFavoritesPassword"></FavoritesPassword>
+          <FavoritesPassword @closeModal="showFavoritesPassword = false" :show="showFavoritesPassword"></FavoritesPassword>
         </div>
       </div>
     </div>
@@ -131,6 +131,16 @@ export default {
   },
 
   watch: {
+    openGeneralSettings() {
+      this.showFavoritesPassword = false;
+    },
+
+    showSectionSelectedFolder() {
+      if (this.showSectionSelectedFolder === true) {
+        return this.showFavoritesPassword = false;
+      }
+    },
+
     isAuth() {
       if (this.isAuth === false) {
         this.setShowSectionSelectedFolder(false);
@@ -154,7 +164,7 @@ export default {
   computed: {
     ...mapState('auth', ['userData', 'isAuth']),
     ...mapState('folder', ['dataFolders', 'showSectionSelectedFolder', 'dataOrganizationFolders']),
-    ...mapState('settings', ['showSettingsAccount', 'showSettingsManageUsers']),
+    ...mapState('settings', ['openGeneralSettings', 'showSettingsAccount', 'showSettingsManageUsers']),
     ...mapState([
       'errors',
       'showSectionSelectedFolder',
@@ -172,6 +182,11 @@ export default {
     ...mapActions('login', ['sendRequestGetFavoritesPassword']),
     ...mapActions('folder', ['sendRequestGetFolders', 'sendRequestGetOrganizationFolders',]),
     ...mapMutations(['setShowTopSettingsMenu', 'setShowModalAddingFolder', 'setShowSectionSelectedFolder']),
+
+    openFavoritesPassword() {
+      this.setShowSectionSelectedFolder(false);
+      this.showFavoritesPassword = true;
+    },
 
     closeFormCreateFolder() {
       this.showFormCreateOrgFolder = false;
@@ -365,6 +380,7 @@ export default {
         .info-section-user {
           display: flex;
           justify-content: space-between;
+          align-items: center;
 
           .bi-plus-circle {
             color: #a3a3a3;
