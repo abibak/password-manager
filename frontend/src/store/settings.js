@@ -4,6 +4,7 @@ export default {
 
   state: () => ({
     showSettingsAccount: false,
+    showSettingsAuthorization: false,
     showSettingsManageUsers: false,
     selectedSetting: '',
   }),
@@ -21,7 +22,11 @@ export default {
 
     setShowSettingsManageUsers(state, val) {
       state.showSettingsManageUsers = val;
-    }
+    },
+
+    setShowSettingsAuthorization(state, val) {
+      state.showSettingsAuthorization = val;
+    },
   },
 
   actions: {

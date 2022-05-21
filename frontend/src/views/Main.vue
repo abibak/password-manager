@@ -77,10 +77,9 @@
         </div>
 
         <div class="right-folder-section">
+          <SettingsGroup></SettingsGroup>
           <!-- Отображение секции с открытой папкой -->
           <SelectedFolderSection v-if="showSectionSelectedFolder"></SelectedFolderSection>
-          <SettingsAccount v-if="showSettingsAccount"></SettingsAccount>
-          <ListUsers v-if="showSettingsManageUsers"></ListUsers>
           <FavoritesPassword @closeModal="showFavoritesPassword = false" :show="showFavoritesPassword"></FavoritesPassword>
         </div>
       </div>
@@ -96,9 +95,10 @@ import BaseModal from "@/components/UI/BaseModal";
 import SelectedFolderSection from "@/components/Folder/SelectedFolderSection";
 import TopSettingsMenu from "@/components/TopSettingsMenu";
 import LeftSettingsMenu from "@/components/LeftSettingsMenu";
-import SettingsAccount from "@/components/Settings/SettingsAccount";
 import ListUsers from "@/components/Settings/ManageUser/ListUsers";
 import FavoritesPassword from "@/components/FavoritesPassword";
+import SettingsGroup from "@/components/Settings/SettingsGroup";
+
 
 export default {
   name: "Main",
@@ -109,9 +109,8 @@ export default {
     SelectedFolderSection,
     TopSettingsMenu,
     LeftSettingsMenu,
-    SettingsAccount,
-    ListUsers,
     FavoritesPassword,
+    SettingsGroup,
   },
 
   data() {
@@ -164,7 +163,7 @@ export default {
   computed: {
     ...mapState('auth', ['userData', 'isAuth']),
     ...mapState('folder', ['dataFolders', 'showSectionSelectedFolder', 'dataOrganizationFolders']),
-    ...mapState('settings', ['openGeneralSettings', 'showSettingsAccount', 'showSettingsManageUsers']),
+    ...mapState('settings', ['openGeneralSettings']),
     ...mapState([
       'errors',
       'showSectionSelectedFolder',
