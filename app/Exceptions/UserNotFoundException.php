@@ -13,6 +13,6 @@ class UserNotFoundException extends Exception
 
     public function render()
     {
-        return response()->json(['message' => 'User Not Found.'], 401);
+        return response()->json(['message' => 'User not Found.'], 401);
     }
 }

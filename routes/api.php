@@ -37,6 +37,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::post('/folder/access/change', ['App\Http\Controllers\Api\AccessOrganizationFolderController', 'changeAccessStatus']);
 
+    Route::post('/password/verification', ['App\Http\Controllers\Api\Auth\AuthController', 'passwordVerification']);
+
     /* auth routes */
     Route::get('/getUser', ['App\Http\Controllers\Api\Auth\AuthController', 'getUser']);
     Route::get('/logout', ['App\Http\Controllers\Api\Auth\AuthController', 'logout']);

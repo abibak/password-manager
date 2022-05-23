@@ -89,10 +89,10 @@ export default {
 
 <style lang="scss" scoped>
 .settings-account {
-  padding: 40px 0 0 40px;
+  width: 50%;
 
   .container-settings-account {
-    width: 50%;
+    padding: 40px;
 
     .my-account {
       font-size: 26px;
@@ -100,13 +100,14 @@ export default {
     }
 
     form {
+      margin-top: 40px;
+
       .base-button {
         margin-top: 40px;
       }
 
       .block-avatar {
         display: inline-block;
-        margin-top: 40px;
 
         label:first-child {
           display: flex;

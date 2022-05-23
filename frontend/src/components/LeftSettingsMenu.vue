@@ -11,8 +11,8 @@
           <p class="header-settings">Мой аккаунт</p>
 
           <ul>
-            <li @click="settingsClickEvent('accountSettings')">Настройки аккаунта</li>
-            <li @click="settingsClickEvent('auth')">Авторизация</li>
+            <li @click="settingsClickEvent('SettingsAccount')">Настройки аккаунта</li>
+            <li @click="settingsClickEvent('SettingsAuthorization')">Авторизация</li>
           </ul>
         </div>
 
@@ -20,7 +20,7 @@
           <p class="header-settings">Управление</p>
 
           <ul>
-            <li @click="settingsClickEvent('manageUsers')">Управление пользователями</li>
+            <li @click="settingsClickEvent('SettingsManageUsers')">Управление пользователями</li>
             <li>Информация об организации</li>
             <li>Настройки системы</li>
             <li>Панель безопасности</li>
@@ -66,7 +66,13 @@ export default {
   methods: {
     ...mapActions('settings', ['closeSettings', 'openSettings']),
     ...mapMutations(['setOpenGeneralSettings']),
-    ...mapMutations('settings', ['setShowSettingsAccount', 'setShowSettingsManageUsers', 'setSelectedSetting']),
+    ...mapMutations('settings', [
+      'setShowSettingsAccount',
+      'setShowSettingsManageUsers',
+      'setSelectedSetting',
+      'setShowSettingsAuthorization',
+      'setShowSettingsAuthorization',
+    ]),
 
     settingsClickEvent(setting) {
       this.closeSettings();

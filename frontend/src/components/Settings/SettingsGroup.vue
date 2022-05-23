@@ -1,6 +1,6 @@
 <template>
   <SettingsAccount v-show="showSettingsAccount"></SettingsAccount>
-  <SettingsAuthorization v-show="setShowSettingsAuthorization"></SettingsAuthorization>
+  <SettingsAuthorization v-show="showSettingsAuthorization"></SettingsAuthorization>
   <ListUsers v-show="showSettingsManageUsers"></ListUsers>
 </template>
 
@@ -27,7 +27,11 @@ export default {
   },
 
   computed: {
-    ...mapState('settings', ['setShowSettingsAuthorization', 'showSettingsManageUsers', 'showSettingsAccount'])
+    ...mapState('settings', [
+      'showSettingsAuthorization',
+      'showSettingsManageUsers',
+      'showSettingsAccount'
+    ]),
   },
 }
 </script>

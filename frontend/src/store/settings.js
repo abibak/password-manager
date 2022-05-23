@@ -32,24 +32,41 @@ export default {
   actions: {
     openSettings({state, commit}) {
       switch (state.selectedSetting) {
-        case 'accountSettings':
+        case 'SettingsAccount':
           commit('setShowSettingsAccount', true);
           break;
 
-        case 'manageUsers':
+        case 'SettingsManageUsers':
           commit('setShowSettingsManageUsers', true);
+          break;
+
+        case 'SettingsAuthorization':
+          commit('setShowSettingsAuthorization', true);
           break;
       }
     },
 
     closeSettings({state, commit}) {
+
+     /* const ucFirst = state.selectedSetting.charAt(0).toUpperCase();
+
+      console.log(ucFirst);
+
+      let setting = state.selectedSetting.slice(1, state.selectedSetting.length);
+
+      console.log(setting);*/
+
       switch (state.selectedSetting) {
-        case 'accountSettings':
+        case 'SettingsAccount':
           commit('setShowSettingsAccount', false);
           break;
 
-        case 'manageUsers':
+        case 'SettingsManageUsers':
           commit('setShowSettingsManageUsers', false);
+          break;
+
+        case 'SettingsAuthorization':
+          commit('setShowSettingsAuthorization', false);
           break;
       }
     },

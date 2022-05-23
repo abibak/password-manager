@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\AccountSetting;
 use App\Models\User as Model;
+use Illuminate\Support\Facades\Hash;
 
 class UserRepository extends BaseRepository
 {
@@ -14,14 +15,29 @@ class UserRepository extends BaseRepository
 
     public function getAllUsers()
     {
-        return $this->startCondition()->select('*')->with('assigned_roles', function ($query) {
-            $query->select('id', 'user_id', 'role_id')->with('role');
-        })->get();
+        return $this->startCondition()->select('*')
+            ->with('assigned_roles', function ($query) {
+                $query->select('id', 'user_id', 'role_id')->with('role');
+            })->get();
     }
 
     public function getUserById(int $id)
     {
         return $this->startCondition()->where('id', $id)->first();
+    }
+
+    public function getPasswordCurrentUser()
+    {
+        return $this->startCondition()::select('password')
+            ->find(auth()->user()->id)
+            ->makeVisible('password');
+    }
+
+    public function updatePasswordCurrentUser(string $password)
+    {
+        return $this->startCondition()->where('id', auth()->user()->id)->update([
+           'password' => Hash::make($password),
+        ]);
     }
 
     public function getLogins()
@@ -35,9 +51,10 @@ class UserRepository extends BaseRepository
 
     public function getUserByEmail(string $email)
     {
-        return $this->startCondition()->where('email', $email)->with('settings', function ($query) {
-            $query->select('user_id', 'email_notification', 'auto_logout');
-        })->first();
+        return $this->startCondition()->where('email', $email)
+            ->with('settings', function ($query) {
+                $query->select('user_id', 'email_notification', 'auto_logout');
+            })->first();
     }
 
     public function getUserEdit()

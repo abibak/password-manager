@@ -9,8 +9,8 @@
           <hr>
 
           <ul>
-            <li @click="settingsClickEvent('accountSettings')">Настройки аккаунта</li>
-            <li @click="settingsClickEvent('auth')">Авторизация</li>
+            <li @click="settingsClickEvent('SettingsAccount')">Настройки аккаунта</li>
+            <li @click="settingsClickEvent('SettingsAuthorization')">Авторизация</li>
             <li @click="logoutSystem">Выход из системы</li>
           </ul>
         </div>
@@ -20,7 +20,7 @@
           <hr>
 
           <ul>
-            <li @click="settingsClickEvent('manageUsers')">Управление пользователями</li>
+            <li @click="settingsClickEvent('SettingsManageUsers')">Управление пользователями</li>
             <li @click="settingsClickEvent">Информация об организации</li>
             <li @click="settingsClickEvent">Настройки системы</li>
             <li @click="settingsClickEvent">Панель безопасности</li>
