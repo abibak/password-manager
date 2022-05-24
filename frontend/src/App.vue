@@ -6,27 +6,38 @@
 
 <script>
 import 'normalize.css';
-import {mapActions, mapGetters, mapState} from "vuex";
+import {mapActions, mapGetters, mapMutations, mapState} from "vuex";
 import {instance} from "@/store";
 
 export default {
   created() {
-    const authToken = localStorage.getItem('authToken')
+    const authToken = localStorage.getItem('authToken');
 
     this.initConfigInstance();
 
     if (authToken) {
       this.getUserData();
+      window.addEventListener('mousemove', this.mouseEventMove);
+      this.setLastTimeActive(new Date().getTime());
+
+      let checkSession = setInterval(() => {
+        this.checkTimeSession();
+
+        if (!this.isActive || this.userData.settings[0].auto_logout === false) {
+          clearInterval(checkSession);
+        }
+      }, 1000); // one sec
     }
   },
 
   computed: {
-    ...mapState('auth', ['isAuth']),
-    ...mapGetters('auth', ['getAuthToken']),
+    ...mapState('auth', ['userData', 'isAuth', 'timeout', 'isActive', 'lastTimeActive']),
+    ...mapGetters('auth', ['getAuthToken', 'getAuthSettings']),
   },
 
   methods: {
-    ...mapActions('auth', ['getUserData']),
+    ...mapActions('auth', ['getUserData', 'logout']),
+    ...mapMutations('auth', ['setIsActive', 'setLastTimeActive']),
 
     initConfigInstance() {
       instance.interceptors.request.use((config) => {
@@ -35,9 +46,22 @@ export default {
         }
 
         return config;
-      }, (error) => {
-        //
       });
+    },
+
+    checkTimeSession() {
+      if (new Date().getTime() - this.lastTimeActive > this.timeout) {
+        this.setIsActive(false);
+        this.deactivateSession();
+      }
+    },
+
+    mouseEventMove() {
+      this.setLastTimeActive(new Date().getTime())
+    },
+
+    deactivateSession() {
+      this.logout();
     }
   },
 }

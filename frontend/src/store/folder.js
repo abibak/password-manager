@@ -163,7 +163,6 @@ export default {
 
     async sendRequestGetOrganizationFolders({commit}) {
       await instance.get(process.env.VUE_APP_API_URL + 'organization/folder').then(response => {
-        console.log(response.data);
         commit('setDataOrganizationFolders', response.data);
       });
     },

@@ -29,8 +29,6 @@ function getToken() {
 }
 
 router.beforeEach(async (to, from, next) => {
-  console.log(store.getters["auth/getIsAuth"]);
-
   if (to.name !== 'login' && !getToken() && store.getters["auth/getIsAuth"] === false) {
     return next('/login');
   }

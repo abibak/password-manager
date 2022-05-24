@@ -14,4 +14,9 @@ class AccountSetting extends Model
         'email_notification',
         'auto_logout',
     ];
+
+    protected $casts = [
+        'email_notification' => 'boolean',
+        'auto_logout' => 'boolean',
+    ];
 }

@@ -8,6 +8,9 @@ export default {
     userData: '',
     authToken: '',
     isAuth: false,
+    isActive: true,
+    lastTimeActive: null,
+    timeout: 5000, // 600000 ms = 10 minutes
   }),
 
   getters: {
@@ -32,6 +35,14 @@ export default {
     setIsAuth(state, value) {
       state.isAuth = value;
     },
+
+    setLastTimeActive(state, value) {
+      state.lastTimeActive = value;
+    },
+
+    setIsActive(state, value) {
+      state.isActive = value;
+    }
   },
 
   actions: {
