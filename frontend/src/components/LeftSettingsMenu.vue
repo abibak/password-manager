@@ -21,10 +21,10 @@
 
           <ul>
             <li @click="settingsClickEvent('SettingsManageUsers')">Управление пользователями</li>
-            <li>Информация об организации</li>
-            <li>Настройки системы</li>
-            <li>Панель безопасности</li>
-            <li>История действий</li>
+            <li @click="settingsClickEvent">Информация об организации</li>
+            <li @click="settingsClickEvent">Настройки системы</li>
+            <li @click="settingsClickEvent">Панель безопасности</li>
+            <li @click="settingsClickEvent">История действий</li>
           </ul>
         </div>
       </div>

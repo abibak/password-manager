@@ -10,7 +10,7 @@ export default {
     isAuth: false,
     isActive: true,
     lastTimeActive: null,
-    timeout: 5000, // 600000 ms = 10 minutes
+    timeout: 600000, // 600000 ms = 10 minutes
   }),
 
   getters: {

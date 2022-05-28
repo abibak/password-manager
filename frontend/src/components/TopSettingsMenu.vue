@@ -15,7 +15,7 @@
           </ul>
         </div>
 
-        <div class="management">
+        <div class="management" v-if="userData.is_admin">
           <p class="header-settings">Управление</p>
           <hr>
 
@@ -53,6 +53,7 @@ export default {
 
   computed: {
     ...mapState(['showTopSettingsMenu']),
+    ...mapState('auth', ['userData']),
   },
 
   methods: {

@@ -32,21 +32,25 @@ class OrganizationFolderRepository extends BaseRepository
 
     public function getDataFoldersWithLogins(int $userId = null)
     {
+        $access = [];
+
         // папки созданные пользователем
         $userOrg = $this->startCondition()
             ->where('user_id', $userId ?? auth()->user()->id)
             ->get();
 
         // папки с доступом
-        $access = $this->startCondition()
-            ->select('access_organization_folders.organization_folder_id as id',
-                'organization_folders.user_id',
-                'name',
-                'status',
-            )->join('access_organization_folders', function ($join) {
-                $join->on('access_organization_folders.organization_folder_id', '=', 'organization_folders.id')
-                    ->where('access_organization_folders.user_id', '=', $userId ?? auth()->user()->id);
-            })->get();
+        if (!auth()->user()->is_deactivate) {
+            $access = $this->startCondition()
+                ->select('access_organization_folders.organization_folder_id as id',
+                    'organization_folders.user_id',
+                    'name',
+                    'status',
+                )->join('access_organization_folders', function ($join) {
+                    $join->on('access_organization_folders.organization_folder_id', '=', 'organization_folders.id')
+                        ->where('access_organization_folders.user_id', '=', $userId ?? auth()->user()->id);
+                })->get();
+        }
 
         if (count($userOrg)) {
             foreach ($userOrg as $folder) {

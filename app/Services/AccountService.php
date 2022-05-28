@@ -61,10 +61,10 @@ class AccountService extends Service
             ]);
 
             // Отправка уведомления на почту
-            /*Mail::to('leosan.kiras@gmail.com')->queue((new CreatedUser([
+            Mail::to('leosan.kiras@gmail.com')->queue((new CreatedUser([
                 'email' => $user->email,
                 'password' => $password
-            ])));*/
+            ])));
 
             return response()->json([
                 'data' => $this->userRepository->getUserByEmail($user->email),

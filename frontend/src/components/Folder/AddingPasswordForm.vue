@@ -19,7 +19,11 @@
 
         <div class="element-form">
           <label for="addPassword">Пароль <span class="generate-password" @click="generatePassword">Сгенерировать</span></label>
-          <BaseInput id="addPassword" :type="form.types.password" v-model.trim="form.fields.password"></BaseInput>
+          <BaseInput id="addPassword"
+                     :type="form.types.password"
+                     v-model:value="form.fields.password"
+                     @input="checkCharacters">
+          </BaseInput>
           <i :class="form.showPassClass" @click="showPassword"></i>
           <i class="bi bi-gear" @click="showGenerationPassword = true"></i>
           <i class="bi bi-clipboard"></i>
@@ -54,7 +58,8 @@
 
   <BaseModal v-model:show="showGenerationPassword">
     <PasswordGenerationSettings @closeGeneration="closeGeneration"
-                                @getPassword="setPassword"></PasswordGenerationSettings>
+                                @getPassword="setPassword">
+    </PasswordGenerationSettings>
   </BaseModal>
 </template>
 
@@ -123,6 +128,17 @@ export default {
 
       this.form.showPassClass = 'bi bi-eye';
       return this.form.types.password = 'password';
+    },
+
+    checkCharacters(e) {
+      const regExp = new RegExp("^[a-zA-Z]+$");
+
+      console.log(regExp.test(e.target.value));
+
+      if (regExp.test(e.target.value)) {
+        this.form.fields.password = e.target.value
+        console.log('da');
+      }
     },
 
     generatePassword() {
