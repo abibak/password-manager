@@ -12,6 +12,7 @@ use App\Models\PasswordHistory;
 use App\Repositories\AccessOrganizationFolderRepository;
 use App\Repositories\OrganizationLoginRepository;
 use App\Repositories\UserLoginRepository;
+use Illuminate\Support\Carbon;
 use Mockery\Exception;
 
 class LoginService extends Service
@@ -211,15 +212,25 @@ class LoginService extends Service
             if ($this->defineTypeLogin()) {
                 $login = $this->startCondition()::where('id', $action['login_id'])->first();
 
-                if ($login !== null) {
-                    PasswordHistory::create([
-                        'login_id' => $action['login_id'],
-                        'user_id' => auth()->user()->id,
-                        'action_text' => $action['action'],
-                    ]);
+                if ($login === null) {
+                    throw new \Exception('Model not found', 422);
                 }
 
-                throw new \Exception('Model not found', 422);
+                $createNewHistory = PasswordHistory::create([
+                    'login_id' => $action['login_id'],
+                    'user_id' => auth()->user()->id,
+                    'action_text' => $action['action'],
+                ]);
+
+                if ($createNewHistory) {
+                    return response()->json(['data' => [
+                        'action_text' => $action['action'],
+                        'date' => $createNewHistory->created_at,
+                        'id' => $createNewHistory->id,
+                        'login' => auth()->user()->login,
+                        'user_id' => auth()->user()->id,
+                    ]], 201);
+                }
             }
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()]);

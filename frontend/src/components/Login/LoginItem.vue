@@ -39,6 +39,7 @@ export default {
   },
 
   computed: {
+    ...mapState('login', ['dataCurrentSelectedLogin']),
     ...mapState('folder', ['typeFolder', 'selectedLoginId']),
   },
 
@@ -58,7 +59,7 @@ export default {
     ]),
     // login namespace
     ...mapActions('login', ['sendRequestPasswordEvent']),
-    ...mapMutations('login', ['setShowSelectedLogin']),
+    ...mapMutations('login', ['setShowSelectedLogin', 'setDataCurrentSelectedLogin']),
 
     test() {
       this.loginItemStyles.backgroundColor = '';
@@ -70,10 +71,13 @@ export default {
 
     selectLogin() {
       this.setShowSectionSelectedFolder(true);
+      this.setDataCurrentSelectedLogin(this.login);
 
+      // определение типа папки
       if (this.typeFolder === 'orgFolder') {
         this.setSelectedOrgFolderId(this.login.organization_folder_id);
 
+        // событие над паролем
         this.sendRequestPasswordEvent({
           login_id: this.login.id,
           action: 'Открыл пароль',

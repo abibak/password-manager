@@ -44,7 +44,11 @@ export default {
   width: 75%;
 
   .container-password-histories {
-    padding-top: 15px;
+    @include scrollbar(0.30em, $color, #d5d5d5);
+    max-width: 100%;
+    height: 560px;
+    padding: 15px 10px 0 0;
+    overflow-y: scroll;
 
     .attributes {
       display: flex;

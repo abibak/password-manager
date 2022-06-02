@@ -16,7 +16,7 @@
           </ul>
         </div>
 
-        <div class="management">
+        <div class="management" v-if="userData.is_admin">
           <p class="header-settings">Управление</p>
 
           <ul>
@@ -61,6 +61,7 @@ export default {
   computed: {
     ...mapState('folder', ['selectedOrgFolderId', 'selectedFolderId']),
     ...mapState('settings', ['selectedSetting']),
+    ...mapState('auth', ['userData']),
   },
 
   methods: {

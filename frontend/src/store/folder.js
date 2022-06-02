@@ -78,23 +78,23 @@ export default {
 
     changeLoginFavoriteStatus(state, data) {
       console.log('add favorite function');
-     /* let folder = null;
-      let loginId = null;
+      /* let folder = null;
+       let loginId = null;
 
-      if (state.typeFolder === 'orgFolder') {
-        folder = state.dataOrganizationFolders.data[data.index_folder];
-        loginId = state.selectedOrgLoginId;
-      } else {
-        folder = state.dataFolders.data[data.index_folder];
-        loginId = state.selectedLoginId;
-      }
+       if (state.typeFolder === 'orgFolder') {
+         folder = state.dataOrganizationFolders.data[data.index_folder];
+         loginId = state.selectedOrgLoginId;
+       } else {
+         folder = state.dataFolders.data[data.index_folder];
+         loginId = state.selectedLoginId;
+       }
 
-      for (const login of folder.logins) {
-        if (login.id === loginId) {
-          login.is_favorite = login.is_favorite !== true;
-          break;
-        }
-      }*/
+       for (const login of folder.logins) {
+         if (login.id === loginId) {
+           login.is_favorite = login.is_favorite !== true;
+           break;
+         }
+       }*/
     },
 
     // установка имени папки
@@ -150,7 +150,7 @@ export default {
       // поиск папки и получение идентификатора
       for (let i = 0; i < obj.length; i++) {
         if (obj[i].id === folderId) {
-          return i; // индекс по списку dataFolder
+          return i; // индекс массива по списку dataFolder
         }
       }
     },
@@ -171,7 +171,6 @@ export default {
       await instance.post(process.env.VUE_APP_API_URL + await dispatch('defineLink') + 'folder', {
         name: nameFolder,
       }).then(response => {
-        console.log(response);
         if (response.status === 201) {
           dispatch('sendRequestGetFolders');
           dispatch('sendRequestGetOrganizationFolders');
