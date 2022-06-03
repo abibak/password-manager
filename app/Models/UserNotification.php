@@ -12,5 +12,10 @@ class UserNotification extends Model
     protected $fillable = [
         'user_id',
         'text',
+        'created_at',
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d H:i:s',
     ];
 }

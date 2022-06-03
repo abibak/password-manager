@@ -86,8 +86,7 @@ export default {
         commit('setAuthToken', '');
         commit('setIsAuth', false);
         localStorage.setItem('authToken', '');
-        // сброс состояний
-        commit('folder/resetState', null, {root: true});
+        commit('folder/resetState', null, {root: true});  // сброс состояний
         router.push('login');
       });
     },

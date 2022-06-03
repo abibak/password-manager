@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\AccountSetting;
 use App\Models\User as Model;
+use App\Models\UserNotification;
 use Illuminate\Support\Facades\Hash;
 
 class UserRepository extends BaseRepository
@@ -68,5 +69,10 @@ class UserRepository extends BaseRepository
             ::select('email_notification', 'auto_logout')
             ->where('user_id', auth()->user()->id)
             ->first();
+    }
+
+    public function getUserNotifications()
+    {
+        return UserNotification::where('user_id', auth()->user()->id)->get();
     }
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\UserNotificationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\OrganizationLoginController;
 
@@ -34,11 +35,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
         ['App\Http\Controllers\Api\UserLoginController', 'changeStatusFavorite']);
 
     Route::get('/login/favorites', ['App\Http\Controllers\Api\LoginController', 'getFavoritesPassword']);
-
     Route::post('/folder/access/change', ['App\Http\Controllers\Api\AccessOrganizationFolderController', 'changeAccessStatus']);
 
     Route::post('/password/verification', ['App\Http\Controllers\Api\Auth\AuthController', 'passwordVerification']);
-
     Route::get('/user/blocked/{id}', ['App\Http\Controllers\Api\UserController', 'changeStatusBlockedAccount']);
 
     /* auth routes */
@@ -53,4 +52,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('user/folder', 'App\Http\Controllers\Api\UserFolderController');
     Route::apiResource('user/login', 'App\Http\Controllers\Api\UserLoginController');
     Route::apiResource('organization/folder', 'App\Http\Controllers\Api\OrganizationFolderController');
+    Route::apiResource('/user/notifications', UserNotificationController::class);
 });

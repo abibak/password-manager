@@ -15,7 +15,11 @@
       </div>
 
       <div class="block-info-user">
-        <i class="bi bi-bell"></i>
+        <div class="icon-control" @mouseenter="showUserNotifications = true" @mouseleave="showUserNotifications = false">
+          <i class="bi bi-bell"></i>
+          <BasicUserNotifications :show="showUserNotifications"></BasicUserNotifications>
+        </div>
+
         <span class="user-login">{{ userData.login }}</span>
         <span class="avatar-user">{{ getFirstLetterNameUser }}</span>
       </div>
@@ -94,6 +98,7 @@ import TopSettingsMenu from "@/components/TopSettingsMenu";
 import LeftSettingsMenu from "@/components/LeftSettingsMenu";
 import FavoritesPassword from "@/components/FavoritesPassword";
 import SettingsGroup from "@/components/Settings/SettingsGroup";
+import BasicUserNotifications from "@/components/BasicUserNotifications";
 
 
 export default {
@@ -107,6 +112,7 @@ export default {
     LeftSettingsMenu,
     FavoritesPassword,
     SettingsGroup,
+    BasicUserNotifications,
   },
 
   data() {
@@ -114,6 +120,7 @@ export default {
       showFormCreateOrgFolder: false,
       showFormCreateFolder: false,
       showFavoritesPassword: false,
+      showUserNotifications: false,
       mainScale: '',
     }
   },
@@ -214,7 +221,7 @@ export default {
       .vertical-line {
         width: 1px;
         height: 25px;
-        margin-left: 15px;
+        margin-left: 25px;
         opacity: 1;
         background-color: #fff;
         animation-name: animationLine;
@@ -245,13 +252,17 @@ export default {
       display: flex;
       align-items: center;
 
-      .bi-bell {
-        font-size: 26px;
-        cursor: pointer;
-        transition: color $transTime;
+      .icon-control:first-child {
+        position: relative;
 
-        &:hover {
-          color: #a3a3a3;
+        .bi-bell {
+          font-size: 26px;
+          cursor: pointer;
+          transition: color $transTime;
+
+          &:hover {
+            color: #a3a3a3;
+          }
         }
       }
 

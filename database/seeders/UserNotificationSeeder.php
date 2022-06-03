@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\UserNotification;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
 
 class UserNotificationSeeder extends Seeder
 {
@@ -23,9 +24,10 @@ class UserNotificationSeeder extends Seeder
         ];
 
         for ($i = 0; $i < 11; $i++) {
-            UserNotification::create([
+            UserNotification::insert([
                 'user_id' => User::get()->random()->id,
                 'notification_text' => $notificationText[rand(0, count($notificationText) - 1)],
+                'created_at' => Carbon::now(),
             ]);
         }
     }

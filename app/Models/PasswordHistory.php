@@ -13,6 +13,12 @@ class PasswordHistory extends Model
         'login_id',
         'user_id',
         'action_text',
+        'created_at',
+        'updated_at',
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d H:i:s',
     ];
 
     public function login()
