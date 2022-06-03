@@ -1,19 +1,21 @@
 import {instance} from "@/store/index";
 
+const initialState = () => ({
+  dataFolders: [],
+  selectedFolderId: null,
+  selectedLoginId: null,
+
+  dataOrganizationFolders: [],
+  selectedOrgFolderId: null,
+  selectedOrgLoginId: null,
+
+  typeFolder: null,
+})
+
 export default {
   namespaced: true,
 
-  state: () => ({
-    dataFolders: [],
-    selectedFolderId: null,
-    selectedLoginId: null,
-
-    dataOrganizationFolders: [],
-    selectedOrgFolderId: null,
-    selectedOrgLoginId: null,
-
-    typeFolder: null,
-  }),
+  state: initialState(),
 
   getters: {
     // optimize
@@ -48,6 +50,15 @@ export default {
   },
 
   mutations: {
+    // сброс состояния до первоначального
+    resetState(state) {
+      const initial = initialState();
+
+      Object.keys(initial).forEach(key => {
+        state[key] = initial[key];
+      });
+    },
+
     setTypeFolder(state, val) {
       state.typeFolder = val;
     },
