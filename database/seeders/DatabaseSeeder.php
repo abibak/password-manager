@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             OrganizationLoginSeeder::class,
             AccessOrganizationFolderSeeder::class,
             PasswordHistorySeeder::class,
+            UserNotificationSeeder::class,
         ]);
     }
 }

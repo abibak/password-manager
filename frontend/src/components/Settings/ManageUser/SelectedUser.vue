@@ -68,7 +68,6 @@ export default {
   data() {
     return {
       folders: null,
-      //iconClassLockUser: '',
     }
   },
 
