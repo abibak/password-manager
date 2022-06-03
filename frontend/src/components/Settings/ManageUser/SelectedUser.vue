@@ -31,13 +31,18 @@
             <span>{{ getTextStatusDeactivate }}</span>
           </div>
 
+          <div class="icon-control" @click="changeStatusBlockedUser">
+            <i :class="getIconStatusBlockedUser"></i>
+            <span>{{ getTextStatusBlocked }}</span>
+          </div>
+
           <div class="icon-control">
             <i class="bi bi-pencil-square"></i>
             <span>Редактировать</span>
           </div>
 
           <div class="icon-control" @click="sendRequestDeleteUser(user.id)">
-            <i class="bi bi-trash3"></i>
+            <i class="bi bi-person-x"></i>
             <span>Удалить пользователя</span>
           </div>
         </div>
@@ -63,6 +68,7 @@ export default {
   data() {
     return {
       folders: null,
+      //iconClassLockUser: '',
     }
   },
 
@@ -78,8 +84,15 @@ export default {
 
   computed: {
     getTextStatusDeactivate() {
-      let status = this.user.is_deactivate;
-      return (status === 1 || status === true) ? 'Активировать' : 'Деактивировать';
+      return (this.user.is_deactivate) ? 'Активировать' : 'Деактивировать';
+    },
+
+    getTextStatusBlocked() {
+      return (this.user.is_blocked) ? 'Разблокировать' : 'Заблокировать';
+    },
+
+    getIconStatusBlockedUser() {
+      return (this.user.is_blocked) ? 'bi bi-shield-plus' : 'bi bi-shield-minus';
     },
   },
 
@@ -104,6 +117,12 @@ export default {
       instance.get(process.env.VUE_APP_API_URL + 'organization/folder/' + this.user.id).then(response => {
         this.folders = response.data.data;
       });
+    },
+
+    async changeStatusBlockedUser() {
+      instance.get(process.env.VUE_APP_API_URL + 'user/blocked/' + this.user.id).then(response => {
+        console.log(response.data);
+      })
     },
   },
 }

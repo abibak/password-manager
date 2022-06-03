@@ -15,8 +15,8 @@ class LoginController extends Controller
     public function login(Request $request, UserRepository $userRepository)
     {
         $rules = [
-            'email' => 'required',
-            'password' => 'required',
+            'email' => 'bail|required|string',
+            'password' => 'bail|required|string',
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -27,6 +27,10 @@ class LoginController extends Controller
 
         $user = $userRepository->getUserByEmail($request->email);
 
+        if ($user && $user->is_blocked) {
+            return response()->json(['message' => ['error' => ['Ошибка входа']]], 401);
+        }
+
         if (Auth()->attempt(['email' => $request->email, 'password' => $request->password])) {
             return response()->json([
                 'user' => $user,
@@ -34,6 +38,6 @@ class LoginController extends Controller
             ], 200);
         }
 
-        throw new UserNotFoundException();
+        throw new UserNotFoundException('Введены неверные данные');
     }
 }

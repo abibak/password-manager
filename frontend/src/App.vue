@@ -1,5 +1,8 @@
 <template>
   <div class="app">
+    <BaseNotification @closeBaseNotification="errorNotification = false" :show="errorNotification">
+    </BaseNotification>
+
     <router-view></router-view>
   </div>
 </template>
@@ -10,9 +13,14 @@ import {mapActions, mapGetters, mapMutations, mapState} from "vuex";
 import {instance} from "@/store";
 
 export default {
+  data() {
+    return {
+      errorNotification: false,
+    }
+  },
+
   created() {
     const authToken = localStorage.getItem('authToken');
-
     this.initConfigInstance();
 
     if (authToken) {
@@ -31,8 +39,17 @@ export default {
   },
 
   computed: {
+    ...mapState(['errors']),
     ...mapState('auth', ['userData', 'isAuth', 'timeout', 'isActive', 'lastTimeActive']),
     ...mapGetters('auth', ['getAuthToken', 'getAuthSettings']),
+  },
+
+  watch: {
+    errors() {
+      if (this.errors !== null) {
+        this.errorNotification = true;
+      }
+    },
   },
 
   methods: {

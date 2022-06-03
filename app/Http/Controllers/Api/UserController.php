@@ -79,6 +79,11 @@ class UserController extends Controller
         return $this->accountService->destroy($id);
     }
 
+    public function changeStatusBlockedAccount(int $id)
+    {
+        return $this->accountService->changeStatusBlockedAccount($id);
+    }
+
     public function changeStatusDeactivateAccount(int $id)
     {
         return $this->accountService->changeStatusDeactivateAccount($id);

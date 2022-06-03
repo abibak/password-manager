@@ -38,6 +38,12 @@ class User extends Authenticatable
         'deleted_at',
     ];
 
+    protected $casts = [
+        'is_admin' => 'boolean',
+        'is_blocked' => 'boolean',
+        'is_deactivated' => 'boolean',
+    ];
+
     public function getPasswordAttribute()
     {
         return $this->attributes['password'];

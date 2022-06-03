@@ -1,7 +1,4 @@
 <template>
-  <BaseNotification @closeBaseNotification="errorNotification = false" :show="errorNotification">
-  </BaseNotification>
-
   <BaseModal @closeModal="setShowTopSettingsMenu(false)" :show="showTopSettingsMenu">
     <TopSettingsMenu></TopSettingsMenu>
   </BaseModal>
@@ -95,7 +92,6 @@ import BaseModal from "@/components/UI/BaseModal";
 import SelectedFolderSection from "@/components/Folder/SelectedFolderSection";
 import TopSettingsMenu from "@/components/TopSettingsMenu";
 import LeftSettingsMenu from "@/components/LeftSettingsMenu";
-import ListUsers from "@/components/Settings/ManageUser/ListUsers";
 import FavoritesPassword from "@/components/FavoritesPassword";
 import SettingsGroup from "@/components/Settings/SettingsGroup";
 
@@ -115,7 +111,6 @@ export default {
 
   data() {
     return {
-      errorNotification: false,
       showFormCreateOrgFolder: false,
       showFormCreateFolder: false,
       showFavoritesPassword: false,
@@ -143,12 +138,6 @@ export default {
     isAuth() {
       if (this.isAuth === false) {
         this.setShowSectionSelectedFolder(false);
-      }
-    },
-
-    errors() {
-      if (this.errors !== null) {
-        this.errorNotification = true;
       }
     },
 

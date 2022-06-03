@@ -116,18 +116,41 @@ class AccountService extends Service
     public function changeStatusDeactivateAccount(int $id)
     {
         $user = $this->userRepository->getUserById($id);
-        $status = $user->is_deactivate;
+        $statusDeactivate = $user->is_deactivate;
 
-        if ($status) {
-            $status = false;
+        if ($statusDeactivate) {
+            $statusDeactivate = false;
             $message = 'User activated';
         } else {
-            $status = true;
+            $statusDeactivate = true;
             $message = 'User deactivated';
         }
 
         $user->update([
-            'is_deactivate' => $status,
+            'is_deactivate' => $statusDeactivate,
+        ]);
+
+        return response()->json([
+            'data' => $user,
+            'message' => $message
+        ],200);
+    }
+
+    public function changeStatusBlockedAccount(int $id)
+    {
+        $user = $this->userRepository->getUserById($id);
+        $statusBlocked = $user->is_blocked;
+
+        if ($statusBlocked) {
+            $statusBlocked = false;
+            $message = 'User unblocked';
+        } else {
+            $statusBlocked = true;
+            $message = 'User blocked';
+        }
+
+        $user->update([
+            'is_blocked' => $statusBlocked,
         ]);
 
         return response()->json([

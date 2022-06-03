@@ -39,6 +39,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::post('/password/verification', ['App\Http\Controllers\Api\Auth\AuthController', 'passwordVerification']);
 
+    Route::get('/user/blocked/{id}', ['App\Http\Controllers\Api\UserController', 'changeStatusBlockedAccount']);
+
     /* auth routes */
     Route::get('/getUser', ['App\Http\Controllers\Api\Auth\AuthController', 'getUser']);
     Route::get('/logout', ['App\Http\Controllers\Api\Auth\AuthController', 'logout']);
