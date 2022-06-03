@@ -58,19 +58,19 @@
           <div class="element-form">
             <label for="login">Логин</label>
             <BaseInput id="login" :value="currentLogin.login" disabled></BaseInput>
-            <i class="bi bi-clipboard"></i>
+            <BaseClipboard :value="currentLogin.login"></BaseClipboard>
           </div>
 
           <div class="element-form">
             <label for="password">Пароль</label>
             <BaseInput id="password" :value="currentLogin.password" disabled></BaseInput>
-            <i class="bi bi-clipboard"></i>
+            <BaseClipboard :value="currentLogin.password"></BaseClipboard>
           </div>
 
           <div class="element-form">
             <label for="url">URL</label>
             <BaseInput id="url" :value="currentLogin.url" disabled></BaseInput>
-            <i class="bi bi-clipboard"></i>
+            <BaseClipboard :value="currentLogin.url"></BaseClipboard>
           </div>
 
           <div class="element-form">
@@ -94,6 +94,7 @@ import {mapActions, mapGetters, mapMutations, mapState} from "vuex";
 import SettingsLogin from "@/components/Login/SettingsLogin";
 import EditLoginForm from "@/components/Login/EditLoginForm";
 import ListHistories from "@/components/Login/ListHistories";
+import BaseClipboard from "@/components/BaseClipboard";
 
 export default {
   name: "SelectedLogin",
@@ -101,6 +102,7 @@ export default {
     SettingsLogin,
     EditLoginForm,
     ListHistories,
+    BaseClipboard,
   },
 
   props: {
