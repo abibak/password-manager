@@ -166,7 +166,7 @@ class LoginService extends Service
                         }
                     }
 
-                    throw new Exception('Error delete');
+                    throw new Exception('Ошибка удаления пароля');
                 } else {
                     // пользователи имеющие доступ к папке
                     $accessUser = $dataModel['access'];
@@ -178,12 +178,12 @@ class LoginService extends Service
                                 return $checkDelete = true;
                             }
                         }
-                        throw new Exception('Error delete');
+                        throw new Exception('Ошибка удаления пароля');
                     }
                 }
             } else {
                 if ($dataModel === null) {
-                    throw new Exception('Error delete');
+                    throw new Exception('Ошибка удаления пароля');
                 }
 
                 // если пользователь владелец папки
@@ -193,7 +193,7 @@ class LoginService extends Service
                     }
                 }
 
-                throw new Exception('Error delete');
+                throw new Exception('Ошибка удаления пароля');
             }
         } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage()], 400);

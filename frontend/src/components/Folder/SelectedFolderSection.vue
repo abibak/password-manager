@@ -3,11 +3,11 @@
     <div class="container-folder-section">
       <div class="header-info-folder">
         <div class="container-header-info">
-          <p class="name-folder">{{ currentFolder[0].name }}</p>
+          <p class="name-folder">{{ dataCurrentSelectedFolder.name }}</p>
 
           <div class="unit-folder-control">
             <div class="icon-control icon-invite-user"
-                 v-if="this.typeFolder === 'orgFolder' && userAccess === 3"
+                 v-if="typeFolder === 'orgFolder' && userAccess === 3"
                  @click="setShowInviteFolder(true)">
               <i class="bi bi-person-plus"></i>
             </div>
@@ -24,50 +24,51 @@
         </div>
 
         <div class="info-users" v-if="typeFolder === 'orgFolder'">
-          <span v-if="currentFolder[0].users.length !== 0">
+          <span v-if="dataCurrentSelectedFolder.users.length !== 0">
             Еще <span class="view-users" @click="showFolderUserAccessSettings = true">
-            {{ this.currentFolder[0].users.length }} сотрудников</span> могут просматривать папку
+            {{ dataCurrentSelectedFolder.users.length }} сотрудников</span> могут просматривать папку
           </span>
 
-          <span v-if="currentFolder[0].users.length === 0">
+          <span v-if="dataCurrentSelectedFolder.users.length === 0">
             <span>В папке отсутствуют пользователи</span>
           </span>
+
         </div>
       </div>
 
-      <BaseModal v-model:show="showModalAddingPassword">
+      <BaseModal :show="showModalAddingPassword">
         <AddingPasswordForm></AddingPasswordForm>
       </BaseModal>
 
       <!--    Форма переименования папки    -->
-      <BaseModal v-model:show="showModalRenameFolder">
-        <RenameFolderForm :name-folder="currentFolder[0].name"></RenameFolderForm>
+      <BaseModal :show="showModalRenameFolder">
+        <RenameFolderForm :name-folder="dataCurrentSelectedFolder.name"></RenameFolderForm>
       </BaseModal>
 
       <!--    Подтверждение удаления папки    -->
-      <BaseModal @closeModal="setShowModalConfirmDelete(false)" v-model:show="showModalConfirmDelete">
+      <BaseModal @closeModal="setShowModalConfirmDelete(false)" :show="showModalConfirmDelete">
         <ConfirmDeleteFolder
-          :name-folder="(this.typeFolder === 'orgFolder') ? getOrgLogins[0].name : getLogins[0].name">
+          :name-folder="dataCurrentSelectedFolder.name">
         </ConfirmDeleteFolder>
       </BaseModal>
 
       <!--    Список паролей    -->
       <div class="open-login-container">
         <!--    Список паролей текущей папки    -->
-        <LoginList @openLogin="showOpenLogin" v-model:logins="currentFolder[0].logins"
+        <LoginList @openLogin="showOpenLogin" :logins="dataCurrentSelectedFolder.logins"
                    :width-value="loginListWidth"></LoginList>
         <!--   Отобразить выбранный пароль   -->
-        <SelectedLogin @close="closeLoginView" v-model:show="showSelectedLogin"></SelectedLogin>
+        <SelectedLogin @close="closeLoginView" :show="showSelectedLogin"></SelectedLogin>
       </div>
 
       <BaseModal v-model:show="showInviteFolder">
         <!--    Пригласить в папку    -->
-        <InviteToFolder :name-folder="currentFolder[0].name"></InviteToFolder>
+        <InviteToFolder :name-folder="dataCurrentSelectedFolder.name"></InviteToFolder>
       </BaseModal>
 
       <BaseModal @closeModal="showFolderUserAccessSettings = false" :show="showFolderUserAccessSettings">
-        <FolderUserAccessSettings @closeModal="showFolderUserAccessSettings = false" :folder-name="currentFolder[0].name"
-                                  :users="currentFolder[0].user_data" :owner="currentFolder[0].owner">
+        <FolderUserAccessSettings @closeModal="showFolderUserAccessSettings = false" :folder-name="dataCurrentSelectedFolder.name"
+                                  :users="dataCurrentSelectedFolder.user_data" :owner="dataCurrentSelectedFolder.owner">
         </FolderUserAccessSettings>
       </BaseModal>
     </div>
@@ -100,7 +101,6 @@ export default {
 
   data() {
     return {
-      currentFolder: null,
       showSettings: false,
       showFolderUserAccessSettings: false,
       loginListWidth: 80,
@@ -114,7 +114,7 @@ export default {
   watch: {
     selectedFolderId() {
       if (this.selectedFolderId !== null) {
-        this.currentFolder = this.getLogins;
+        //this.currentFolder = this.getLogins;
         this.setStatusAccessFolder();
         this.closeLoginView();
       }
@@ -122,7 +122,7 @@ export default {
 
     selectedOrgFolderId() {
       if (this.selectedOrgFolderId !== null) {
-        this.currentFolder = this.getOrgLogins;
+        //this.currentFolder = this.getOrgLogins;
         this.setStatusAccessFolder();
         this.closeLoginView();
       }
@@ -151,18 +151,14 @@ export default {
     ...mapState('auth', ['userData']),
     // folder namespace
     ...mapState('folder', [
+      'dataCurrentSelectedFolder',
       'typeFolder',
       'selectedFolderId',
       'selectedOrgFolderId',
     ]),
-    ...mapGetters('folder', ['getLogins']),
-    ...mapGetters('folder', ['getOrgLogins']),
+    ...mapGetters('folder', ['getListFolderLogins']),
     // organization namespace
     ...mapState('organizationFolder', ['showInviteFolder', 'userAccess']),
-
-    currentFolderLogins() {
-      return (this.typeFolder === 'orgFolder') ? this.getOrgLogins : this.getLogins;
-    },
   },
 
   methods: {
@@ -175,10 +171,10 @@ export default {
     // установить данные текущей папки
     setPasswordData() {
       if (this.typeFolder === 'orgFolder') {
-        this.currentFolder = this.getOrgLogins;
+        //this.currentFolder = this.getOrgLogins;
         this.setStatusAccessFolder();
       } else if (this.typeFolder === 'userFolder') {
-        this.currentFolder = this.getLogins;
+        //this.currentFolder = this.getLogins;
         this.setStatusAccessFolder();
       }
     },
@@ -190,11 +186,11 @@ export default {
       }
 
       // если пользователь владелец папки, установить "3" доступ
-      if (this.currentFolder[0].user_id === this.userData.id) {
+      if (this.dataCurrentSelectedFolder.user_id === this.userData.id) {
         this.setUserAccess(3);
       } else {
         // установка назначенного доступа
-        this.setUserAccess(parseInt(this.getOrgLogins[0]?.access));
+        //this.setUserAccess(parseInt(this.getOrgLogins[0]?.access));
       }
     },
 

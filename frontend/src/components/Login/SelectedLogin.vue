@@ -9,13 +9,13 @@
 
       <div class="info-login">
         <p class="name-login">
-          <span class="short-name">{{ currentLogin.name.charAt(0) }}</span>
-          {{ currentLogin.name }}
+          <span class="short-name">{{ dataCurrentSelectedLogin.name.charAt(0) }}</span>
+          {{ dataCurrentSelectedLogin.name }}
           <i class="bi bi-star"
-             @click="sendRequestAddPasswordFavorite(currentLogin.id)"></i>
+             @click="sendRequestAddPasswordFavorite(dataCurrentSelectedLogin.id)"></i>
 
-          <i class="bi bi-star-fill" v-if="currentLogin.is_favorite === true"
-             @click="sendRequestAddPasswordFavorite(currentLogin.id)"></i>
+          <i class="bi bi-star-fill" v-if="dataCurrentSelectedLogin.is_favorite === true"
+             @click="sendRequestAddPasswordFavorite(dataCurrentSelectedLogin.id)"></i>
         </p>
       </div>
 
@@ -30,21 +30,21 @@
           <i class="bi bi-three-dots"></i>
 
           <!--    Настройки пароля      -->
-          <SettingsLogin @closeSettingsLogin="showSettingsLogin = false" v-model:show="showSettingsLogin"></SettingsLogin>
+          <SettingsLogin @closeSettingsLogin="showSettingsLogin = false" :show="showSettingsLogin"></SettingsLogin>
         </div>
       </div>
 
       <div class="list-actions-login">
-        <span class="action" @click="openTab" v-bind:class="general.class" data-action="general">Общие</span>
+        <span class="action" @click="openTab" :class="general.class" data-action="general">Общие</span>
         <span class="action" @click="openTab"
               v-if="typeFolder === 'orgFolder' && userAccess === 3"
-              v-bind:class="historyPassword.class" data-action="history">История действий
+              :class="historyPassword.class" data-action="history">История действий
         </span>
-        <span class="action" @click="openTab" v-bind:class="files.class" data-action="files">Файлы</span>
+        <span class="action" @click="openTab" :class="files.class" data-action="files">Файлы</span>
       </div>
 
       <ListHistories v-if="userAccess === 3"
-                     :history="currentLogin.histories"
+                     :history="dataCurrentSelectedLogin.histories"
                      :show="historyPassword.active && typeFolder === 'orgFolder'">
       </ListHistories>
 
@@ -52,36 +52,36 @@
         <form>
           <div class="element-form">
             <label for="name">Название</label>
-            <BaseInput id="name" :value="currentLogin.name" disabled></BaseInput>
+            <BaseInput id="name" :value="dataCurrentSelectedLogin.name" disabled></BaseInput>
           </div>
 
           <div class="element-form">
             <label for="login">Логин</label>
-            <BaseInput id="login" :value="currentLogin.login" disabled></BaseInput>
-            <BaseClipboard :value="currentLogin.login"></BaseClipboard>
+            <BaseInput id="login" :value="dataCurrentSelectedLogin.login" disabled></BaseInput>
+            <BaseClipboard :value="dataCurrentSelectedLogin.login"></BaseClipboard>
           </div>
 
           <div class="element-form">
             <label for="password">Пароль</label>
-            <BaseInput id="password" :value="currentLogin.password" disabled></BaseInput>
-            <BaseClipboard :value="currentLogin.password"></BaseClipboard>
+            <BaseInput id="password" :value="dataCurrentSelectedLogin.password" disabled></BaseInput>
+            <BaseClipboard :value="dataCurrentSelectedLogin.password"></BaseClipboard>
           </div>
 
           <div class="element-form">
             <label for="url">URL</label>
-            <BaseInput id="url" :value="currentLogin.url" disabled></BaseInput>
-            <BaseClipboard :value="currentLogin.url"></BaseClipboard>
+            <BaseInput id="url" :value="dataCurrentSelectedLogin.url" disabled></BaseInput>
+            <BaseClipboard :value="dataCurrentSelectedLogin.url"></BaseClipboard>
           </div>
 
           <div class="element-form">
             <label for="tag">Теги</label>
-            <BaseInput id="tag" :value="currentLogin.tags" disabled></BaseInput>
+            <BaseInput id="tag" :value="dataCurrentSelectedLogin.tags" disabled></BaseInput>
             <i class="bi bi-clipboard"></i>
           </div>
 
           <div class="element-form">
             <label for="note">Заметка</label>
-            <textarea id="note" :value="currentLogin.note" disabled></textarea>
+            <textarea id="note" :value="dataCurrentSelectedLogin.note" disabled></textarea>
           </div>
         </form>
       </div>
@@ -164,10 +164,9 @@ export default {
   },
 
   computed: {
-    ...mapState('login', ['showHeadLines', 'showEditLogin']),
+    ...mapState('login', ['showHeadLines', 'showEditLogin', 'dataCurrentSelectedLogin']),
     ...mapState('folder', ['typeFolder']),
     ...mapState('organizationFolder', ['userAccess']),
-    ...mapGetters('folder', ['getDataOpenLogin', 'getDataOrgOpenLogin']),
   },
 
   methods: {

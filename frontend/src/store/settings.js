@@ -47,15 +47,6 @@ export default {
     },
 
     closeSettings({state, commit}) {
-
-     /* const ucFirst = state.selectedSetting.charAt(0).toUpperCase();
-
-      console.log(ucFirst);
-
-      let setting = state.selectedSetting.slice(1, state.selectedSetting.length);
-
-      console.log(setting);*/
-
       switch (state.selectedSetting) {
         case 'SettingsAccount':
           commit('setShowSettingsAccount', false);

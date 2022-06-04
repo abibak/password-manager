@@ -85,10 +85,10 @@ export default createStore({
     // Создать пользователя
     async sendRequestCreateUser({dispatch, commit}, data) {
       const obj = {
-        'role_id': data.roleId,
+        role_id: data.roleId,
         login: data.login,
         email: data.email,
-        'is_admin': false,
+        is_admin: false,
       }
 
       await instance.post(process.env.VUE_APP_API_URL + 'user/account', obj).then(response => {
@@ -101,7 +101,6 @@ export default createStore({
     // maybe account store
     async sendRequestDeleteUser({dispatch}, id) {
       await instance.delete(process.env.VUE_APP_API_URL + 'user/account/' + id).then(response => {
-        console.log(response);
         dispatch('sendRequestGetAllUsers');
       })
     },

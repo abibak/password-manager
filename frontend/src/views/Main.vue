@@ -66,7 +66,7 @@
 
               <div class="user-folders">
                 <!-- Список пользовательских папок -->
-                <FolderList :folders="dataFolders.data" :type-folder="`userFolder`"></FolderList>
+                <FolderList :folders="dataUserFolders.data" :type-folder="`userFolder`"></FolderList>
               </div>
 
               <div class="favorite-passwords" @click="openFavoritesPassword">
@@ -126,7 +126,7 @@ export default {
   },
 
   created() {
-    this.sendRequestGetFolders();
+    this.sendRequestGetUserFolders();
     this.sendRequestGetOrganizationFolders();
     this.sendRequestGetFavoritesPassword();
   },
@@ -158,7 +158,7 @@ export default {
 
   computed: {
     ...mapState('auth', ['userData', 'isAuth']),
-    ...mapState('folder', ['dataFolders', 'showSectionSelectedFolder', 'dataOrganizationFolders']),
+    ...mapState('folder', ['dataUserFolders', 'showSectionSelectedFolder', 'dataOrganizationFolders']),
     ...mapState('settings', ['openGeneralSettings']),
     ...mapState([
       'errors',
@@ -175,7 +175,7 @@ export default {
 
   methods: {
     ...mapActions('login', ['sendRequestGetFavoritesPassword']),
-    ...mapActions('folder', ['sendRequestGetFolders', 'sendRequestGetOrganizationFolders',]),
+    ...mapActions('folder', ['sendRequestGetUserFolders', 'sendRequestGetOrganizationFolders',]),
     ...mapMutations(['setShowTopSettingsMenu', 'setShowModalAddingFolder', 'setShowSectionSelectedFolder']),
 
     openFavoritesPassword() {

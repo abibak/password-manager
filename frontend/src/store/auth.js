@@ -1,17 +1,19 @@
 import {instance} from "@/store";
 import router from "@/router";
 
+const initialState = () => ({
+  userData: '',
+  authToken: '',
+  isAuth: false,
+  isActive: true,
+  lastTimeActive: null,
+  timeout: 600000, // 600000 ms = 10 minutes
+});
+
 export default {
   namespaced: true,
 
-  state: () => ({
-    userData: '',
-    authToken: '',
-    isAuth: false,
-    isActive: true,
-    lastTimeActive: null,
-    timeout: 600000, // 600000 ms = 10 minutes
-  }),
+  state: initialState(),
 
   getters: {
     getAuthToken(state) {
@@ -24,6 +26,14 @@ export default {
   },
 
   mutations: {
+    resetState(state) {
+      const initial = initialState();
+
+      Object.keys(initial).forEach(key => {
+        state[key] = initial[key];
+      });
+    },
+
     setUserData(state, data) {
       state.userData = data;
     },
@@ -62,13 +72,10 @@ export default {
     },
 
     async sendLoginRequest({state, commit}, data) {
-      await instance.post(process.env.VUE_APP_API_URL + 'login', {
-        email: data.email,
-        password: data.password,
-      }).then(response => {
+      await instance.post(process.env.VUE_APP_API_URL + 'login', data).then(response => {
         if (state.userData !== null || state.userData !== {}) {
-          localStorage.setItem('authToken', response.data['access_token']);
-          commit('setAuthToken', response.data['access_token']);
+          localStorage.setItem('authToken', response.data.access_token);
+          commit('setAuthToken', response.data.access_token);
           commit('setUserData', response.data.user);
           commit('setIsAuth', true);
           router.push('/');
@@ -82,11 +89,9 @@ export default {
 
     async logout({commit}) {
       await instance.get(process.env.VUE_APP_API_URL + 'logout').then(() => {
-        commit('setUserData', null);
-        commit('setAuthToken', '');
-        commit('setIsAuth', false);
+        commit('resetState');
+        commit('folder/resetState', null, {root: true});  // сброс состояний store "folder"
         localStorage.setItem('authToken', '');
-        commit('folder/resetState', null, {root: true});  // сброс состояний
         router.push('login');
       });
     },

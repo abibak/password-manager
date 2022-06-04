@@ -8,18 +8,18 @@
       <form @submit.prevent>
         <div class="element-form">
           <label for="addName">Название</label>
-          <BaseInput id="addName" v-model.trim="form.fields.name" :value="form.fields.name"></BaseInput>
+          <BaseInput id="addName" v-model.trim="form.login.name" :value="form.login.name"></BaseInput>
         </div>
 
         <div class="element-form">
           <label for="addLogin">Логин</label>
-          <BaseInput id="addLogin" v-model.trim="form.fields.login"></BaseInput>
-          <i class="bi bi-clipboard"></i>
+          <BaseInput id="addLogin" v-model.trim="form.login.login"></BaseInput>
+          <BaseClipboard :value="form.login.login"></BaseClipboard>
         </div>
 
         <div class="element-form">
           <label for="addPassword">Пароль <span class="generate-password" @click="generatePassword">Сгенерировать</span></label>
-          <BaseInput id="addPassword" :type="form.types.password" v-model.trim="form.fields.password"></BaseInput>
+          <BaseInput id="addPassword" :type="form.types.password" v-model.trim="form.login.password"></BaseInput>
           <i :class="form.showPassClass" @click="showPassword"></i>
           <i class="bi bi-gear" @click="showGenerationPassword = true"></i>
           <i class="bi bi-clipboard"></i>
@@ -27,19 +27,19 @@
 
         <div class="element-form">
           <label for="addUrl">URL</label>
-          <BaseInput id="addUrl" v-model.trim="form.fields.url"></BaseInput>
+          <BaseInput id="addUrl" v-model.trim="form.login.url"></BaseInput>
           <i class="bi bi-clipboard"></i>
         </div>
 
         <div class="element-form">
           <label for="addTag">Теги</label>
-          <BaseInput id="addTag" placeholder="social, admin" v-model.trim="form.fields.tags"></BaseInput>
+          <BaseInput id="addTag" placeholder="social, admin" v-model.trim="form.login.tags"></BaseInput>
           <i class="bi bi-clipboard"></i>
         </div>
 
         <div class="element-form">
           <label for="addNote">Заметка</label>
-          <textarea id="addNote" v-model.trim="form.fields.note"></textarea>
+          <textarea id="addNote" v-model.trim="form.login.note"></textarea>
         </div>
 
         <div class="element-form input-file">
@@ -62,12 +62,13 @@
 <script>
 import {mapActions, mapGetters, mapMutations, mapState} from "vuex";
 import PasswordGenerationSettings from "@/components/Folder/PasswordGenerationSettings";
-import login from "@/store/login";
+import BaseClipboard from "@/components/BaseClipboard";
 
 export default {
   name: "EditLoginForm",
   components: {
     PasswordGenerationSettings,
+    BaseClipboard,
   },
 
   data() {
@@ -77,14 +78,8 @@ export default {
           password: 'password',
         },
 
-        fields: {
-          name: 'Новый пароль',
-          login: 'test-login',
-          password: 'test-pass',
-          url: 'example.com',
-          tags: 'tag',
-          note: 'test note',
-        },
+        login: {},
+
         showPassClass: 'bi bi-eye'
       },
       showGenerationPassword: false,
@@ -97,7 +92,7 @@ export default {
 
   computed: {
     ...mapState('folder', ['typeFolder', 'selectedLoginId', 'selectedOrgLoginId']),
-    ...mapGetters('folder', ['getDataOpenLogin', 'getDataOrgOpenLogin']),
+    ...mapState('login', ['dataCurrentSelectedLogin']),
   },
 
   watch: {
@@ -122,13 +117,10 @@ export default {
     ...mapActions('login', ['sendRequestEditLogin']),
     ...mapMutations('login', ['setShowEditLogin']),
 
-    setCurrentLoginData(data) {
-      this.form.fields.name = data.name;
-      this.form.fields.login = data.login;
-      this.form.fields.password = data.password;
-      this.form.fields.url = data.url;
-      this.form.fields.tags = data.tags;
-      this.form.fields.note = data.note;
+    setCurrentLoginData() {
+      for (const key in this.dataCurrentSelectedLogin) {
+        this.form.login[key] = this.dataCurrentSelectedLogin[key];
+      }
     },
 
     getDataSelectedLogin() {
@@ -147,7 +139,7 @@ export default {
         return this.sendRequestCreatePassword(this.form.fields);
       }*/
 
-      this.sendRequestEditLogin(this.form.fields);
+      this.sendRequestEditLogin(this.form.login);
     },
 
     showPassword() {

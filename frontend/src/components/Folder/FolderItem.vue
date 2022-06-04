@@ -35,6 +35,7 @@ export default {
       'setSelectedOrgLoginId',
       'setSelectedLoginId',
       'setTypeFolder',
+      'setFolder',
     ]),
 
     openFolder(id) {
@@ -51,6 +52,7 @@ export default {
         this.setTypeFolder(this.typeFolder);
       }
 
+      this.setFolder(this.folder);
       this.setShowHeadLines(true);
       this.setShowSelectedLogin(false);
       this.setShowSectionSelectedFolder(true);

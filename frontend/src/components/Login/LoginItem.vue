@@ -1,5 +1,5 @@
 <template>
-  <div class="login-item" @click="selectLogin()" :style="loginItemStyles">
+  <div class="login-item" @click="selectLogin" :style="loginItemStyles">
     <p>
       <span class="short-name">{{ login.name[0] }}</span>
       {{ login.name }}

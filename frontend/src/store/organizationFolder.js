@@ -1,5 +1,7 @@
 import {instance} from "@/store";
 
+// STORE IN QUESTION
+
 export default {
   namespaced: true,
 

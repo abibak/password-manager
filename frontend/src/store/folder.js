@@ -1,7 +1,9 @@
 import {instance} from "@/store/index";
 
 const initialState = () => ({
-  dataFolders: [],
+  dataUserFolders: [],
+  dataCurrentSelectedFolder: null,
+
   selectedFolderId: null,
   selectedLoginId: null,
 
@@ -18,34 +20,8 @@ export default {
   state: initialState(),
 
   getters: {
-    // optimize
-    getLogins(state) {
-      return state.dataFolders.data?.filter(folder => folder.id === state.selectedFolderId);
-    },
-    // optimize
-    getOrgLogins(state) {
-      return state.dataOrganizationFolders.data?.filter(folder => folder.id === state.selectedOrgFolderId);
-    },
-
-    // optimize
-    getDataOpenLogin(state) {
-      const folder = state.dataFolders.data ?? [];
-
-      for (let i = 0; i < folder.length; i++) {
-        if (folder[i].id === state.selectedFolderId) {
-          return folder[i].logins.filter(login => login.id === state.selectedLoginId)[0];
-        }
-      }
-    },
-    // optimize
-    getDataOrgOpenLogin(state) {
-      const folder = state.dataOrganizationFolders.data ?? [];
-
-      for (let i = 0; i < folder.length; i++) {
-        if (folder[i].id === state.selectedOrgFolderId) {
-          return folder[i].logins.filter(login => login.id === state.selectedOrgLoginId)[0];
-        }
-      }
+    getListFolderLogins(state) {
+      return state.dataCurrentSelectedFolder?.logins || [];
     },
   },
 
@@ -59,12 +35,21 @@ export default {
       });
     },
 
+    setFolder(state, folder) {
+      state.dataCurrentSelectedFolder = folder;
+    },
+
+    // изменение имени папки
+    setFolderName(state, name) {
+      state.dataCurrentSelectedFolder.name = name;
+    },
+
     setTypeFolder(state, val) {
       state.typeFolder = val;
     },
 
-    setDataFolders(state, data) {
-      state.dataFolders = data;
+    setDataUserFolders(state, data) {
+      state.dataUserFolders = data;
     },
 
     setSelectedFolderId(state, id) {
@@ -89,32 +74,6 @@ export default {
 
     changeLoginFavoriteStatus(state, data) {
       console.log('add favorite function');
-      /* let folder = null;
-       let loginId = null;
-
-       if (state.typeFolder === 'orgFolder') {
-         folder = state.dataOrganizationFolders.data[data.index_folder];
-         loginId = state.selectedOrgLoginId;
-       } else {
-         folder = state.dataFolders.data[data.index_folder];
-         loginId = state.selectedLoginId;
-       }
-
-       for (const login of folder.logins) {
-         if (login.id === loginId) {
-           login.is_favorite = login.is_favorite !== true;
-           break;
-         }
-       }*/
-    },
-
-    // установка имени папки
-    setNameFolderFromList(state, values) {
-      if (state.typeFolder === 'orgFolder') {
-        state.dataOrganizationFolders.data[values[0]].name = values[1];
-      } else {
-        state.dataFolders.data[values[0]].name = values[1];
-      }
     },
 
     setShowModalAddingPassword(state, val) {
@@ -122,12 +81,9 @@ export default {
     },
 
     // fix
-    setPasswordInDataFolder(state, values) {
-      if (state.typeFolder === 'orgFolder') {
-        state.dataOrganizationFolders.data[values.id].logins.push(values.login);
-      } else {
-        state.dataFolders.data[values.id].logins.push(values.login);
-      }
+    // обращаться напрямую к текущей папке, и пушить данные в список паролей
+    setPasswordInDataFolder(state, password) {
+      state.dataCurrentSelectedFolder.logins.push(password);
     },
 
     setDataOrganizationFolders(state, data) {
@@ -136,7 +92,7 @@ export default {
   },
 
   actions: {
-    // определелить путь для действий
+    // определение пути для работы с папкой
     defineLink({state}) {
       if (state.typeFolder === 'orgFolder') {
         return 'organization/';
@@ -146,7 +102,8 @@ export default {
     },
 
     // fix
-    searchFolderById({state}) {
+    // old
+    /*searchFolderById({state}) {
       let obj = '';
       let folderId = 0;
 
@@ -164,11 +121,11 @@ export default {
           return i; // индекс массива по списку dataFolder
         }
       }
-    },
+    },*/
 
-    async sendRequestGetFolders({commit}) {
+    async sendRequestGetUserFolders({commit}) {
       await instance.get(process.env.VUE_APP_API_URL + 'user/folder').then(response => {
-        commit('setDataFolders', response.data);
+        commit('setDataUserFolders', response.data);
       });
     },
 
@@ -181,11 +138,9 @@ export default {
     async sendRequestCreateFolder({state, dispatch}, nameFolder) {
       await instance.post(process.env.VUE_APP_API_URL + await dispatch('defineLink') + 'folder', {
         name: nameFolder,
-      }).then(response => {
-        if (response.status === 201) {
-          dispatch('sendRequestGetFolders');
-          dispatch('sendRequestGetOrganizationFolders');
-        }
+      }).then(() => {
+        dispatch('sendRequestGetFolders');
+        dispatch('sendRequestGetOrganizationFolders');
       });
     },
 
@@ -195,11 +150,7 @@ export default {
       await instance.put(process.env.VUE_APP_API_URL + await dispatch('defineLink') + 'folder/' + folderId, {
         name: val,
       }).then(response => {
-        if (response.status === 200) {
-          dispatch('searchFolderById').then(data => {
-            return commit('setNameFolderFromList', [data, val])
-          });
-        }
+        commit('setFolderName', val);
       });
     },
 
