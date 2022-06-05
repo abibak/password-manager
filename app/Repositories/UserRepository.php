@@ -37,7 +37,7 @@ class UserRepository extends BaseRepository
     public function updatePasswordCurrentUser(string $password)
     {
         return $this->startCondition()->where('id', auth()->user()->id)->update([
-           'password' => Hash::make($password),
+            'password' => Hash::make($password),
         ]);
     }
 

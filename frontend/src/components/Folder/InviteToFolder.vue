@@ -61,8 +61,7 @@ export default {
 
   computed: {
     ...mapState('auth', ['userData']),
-    ...mapState('folder', ['selectedOrgFolderId']),
-    ...mapGetters('folder', ['getOrgLogins']),
+    ...mapState('folder', ['selectedOrgFolderId', 'dataCurrentSelectedFolder']),
   },
 
   methods: {
@@ -105,7 +104,7 @@ export default {
 
     async getLogins() {
       instance.get(process.env.VUE_APP_API_URL + 'access/folder').then(response => {
-        const users = this.getOrgLogins[0].users; // получить пользователей папки
+        const users = this.dataCurrentSelectedFolder.users; // получить пользователей папки
 
         let usersAccess = this.passArrayToIterate(users, 'usersAccess'); // пользователи имеющие доступ
         let allUserIds = this.passArrayToIterate(response.data.data); // все пользователи
@@ -114,7 +113,7 @@ export default {
         for (let i = 0; i < response.data.data.length; i++) {
           const itemResponse = response.data.data[i];
 
-          if (itemResponse.id !== this.getOrgLogins[0].user_id && itemResponse.id !== this.userData.id &&
+          if (itemResponse.id !== this.dataCurrentSelectedFolder.user_id && itemResponse.id !== this.userData.id &&
             !usersAccess.includes(allUserIds[i]))
           {
             this.userLogins.push(itemResponse);
