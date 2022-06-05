@@ -25,14 +25,35 @@ class UserLoginRequest extends FormRequest
      */
     public function rules()
     {
+        switch ($this->method()) {
+            case 'PUT':
+                return [
+                    'name' => 'bail|required|max:100',
+                    'login' => 'bail|required|max:150',
+                    'password' => 'bail|required|min:6|max:60',
+                    'note' => 'bail|max:500',
+                    'tag' => 'bail|max:50',
+                    'url' => 'bail|max:200',
+                ];
+
+            case 'POST':
+                return [
+                    'user_folder_id' => 'bail|required|exists:App\Models\UserFolder,id',
+                    'name' => 'bail|required|max:100',
+                    'login' => 'bail|required|max:150',
+                    'password' => 'bail|required|min:6|max:60',
+                    'note' => 'bail|max:500',
+                    'tag' => 'bail|max:50',
+                    'url' => 'bail|max:200',
+                ];
+        }
+    }
+
+    public function messages()
+    {
         return [
-            'user_folder_id' => 'bail|required|exists:App\Models\UserFolder,id',
-            'name' => 'bail|required|max:100',
-            'login' => 'bail|required|max:150',
-            'password' => 'bail|required|min:6|max:60',
-            'note' => 'bail|max:500',
-            'tag' => 'bail|max:50',
-            'url' => 'bail|max:200',
+            'user_folder_id.required' => 'Ошибка идентификатора',
+            'user_folder_id.exists' => 'Папка не найдена',
         ];
     }
 

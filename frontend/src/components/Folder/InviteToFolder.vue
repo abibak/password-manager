@@ -3,7 +3,7 @@
     <div class="container-invite">
       <BaseCloseModal @click="setShowInviteFolder(false)"></BaseCloseModal>
 
-      <p class="name-action">Пригласить в папку "{{ this.nameFolder }}"</p>
+      <p class="name-action">Пригласить в папку "{{ dataCurrentSelectedFolder.name }}"</p>
 
       <form @submit.prevent>
         <div class="form-items">

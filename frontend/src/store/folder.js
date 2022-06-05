@@ -135,12 +135,14 @@ export default {
       });
     },
 
-    async sendRequestCreateFolder({state, dispatch}, nameFolder) {
+    async sendRequestCreateFolder({dispatch, commit}, nameFolder) {
       await instance.post(process.env.VUE_APP_API_URL + await dispatch('defineLink') + 'folder', {
         name: nameFolder,
       }).then(() => {
         dispatch('sendRequestGetFolders');
         dispatch('sendRequestGetOrganizationFolders');
+      }).catch(error => {
+        commit('setErrors', error.response.data.errors, {root: true});
       });
     },
 
@@ -149,7 +151,7 @@ export default {
 
       await instance.put(process.env.VUE_APP_API_URL + await dispatch('defineLink') + 'folder/' + folderId, {
         name: val,
-      }).then(response => {
+      }).then(() => {
         commit('setFolderName', val);
       });
     },

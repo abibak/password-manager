@@ -68,7 +68,7 @@ class UserLoginController extends Controller
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(UserLoginRequest $request, $id)
     {
         $loginEdit = $this->userLoginRepository->getLoginByIdWithFolder($id);
         return $this->loginService->update($loginEdit, $request->all());
@@ -77,10 +77,10 @@ class UserLoginController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param int|null $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id = null)
+    public function destroy(int $id = null)
     {
         $loginDestroy = $this->userLoginRepository->getLoginByIdWithFolder($id) ?? null;
         return $this->loginService->destroy($loginDestroy);

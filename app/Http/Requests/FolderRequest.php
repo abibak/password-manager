@@ -30,6 +30,14 @@ class FolderRequest extends FormRequest
         ];
     }
 
+    public function messages()
+    {
+        return [
+            'name.min' => 'Название папки не менее 3 символа',
+            'name.max' => 'Название папки не более 50 символов',
+        ];
+    }
+
     public function failedValidation(Validator $validator)
     {
         throw new ValidationException($validator);
