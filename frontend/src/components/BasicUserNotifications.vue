@@ -35,6 +35,11 @@ export default {
 
   created() {
     this.getNotifications();
+
+    setInterval(() => {
+      this.getNotifications();
+      console.log('update notifications')
+    }, 120000); // 300 000 ms = 5 minutes
   },
 
   methods: {

@@ -24,8 +24,9 @@ export default {
 
   actions: {
     async sendInviteToFolder({dispatch, commit}, data) {
-      await instance.post(process.env.VUE_APP_API_URL + 'access/folder', data).then(() => {
+      await instance.post(process.env.VUE_APP_API_URL + 'access/folder', data).then((response) => {
         dispatch('folder/sendRequestGetOrganizationFolders', null, {root: true});
+        commit('setMessages', {messages: response.data, typeMessage: 'success'}, {root: true});
       }).catch(error => {
         commit('setMessages', {messages: error.response.data, typeMessage: 'error'}, {root: true});
       });

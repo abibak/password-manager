@@ -33,7 +33,7 @@
 
 <script>
 import store, {instance} from "@/store";
-import {mapActions, mapState} from "vuex";
+import {mapActions, mapMutations, mapState} from "vuex";
 
 export default {
   name: "FolderUserAccessSettings",
@@ -74,6 +74,7 @@ export default {
 
   methods: {
     ...mapActions('folder', ['sendRequestGetOrganizationFolders']),
+    ...mapMutations(['setMessages']),
 
     async changeUserAccess(element, userId) {
       const access = element.value;
@@ -83,8 +84,8 @@ export default {
         user_id: userId,
         access: access,
       }).then(response => {
+        this.setMessages({messages: response.data, typeMessage: 'success'});
         this.sendRequestGetOrganizationFolders();
-        console.log('Доступ пользователю изменен', response.data);
       })
     },
   },
