@@ -47,10 +47,11 @@ class LoginService extends Service
             // получить id владельца папки
             $getOrgFolderOwnerId = $this->orgLoginRepository->getUserIdFromFolder($request['organization_folder_id']);
             // получить доступ пользователя к папке
-            $orgFolderAccessUser = $this->accessOrgFolderRepository->getAccessByUserId($request['organization_folder_id']);
+            $orgFolderAccessUser = $this->accessOrgFolderRepository
+                ->getAccessByFolderIdAndUserId($request['organization_folder_id'], auth()->user()->id);
 
             // проверить, является ли пользователь владельцем папки
-            if ($getOrgFolderOwnerId->user_id ?? '' === auth()->user()->id || (int)$orgFolderAccessUser->access === 3) {
+            if ($getOrgFolderOwnerId->user_id === auth()->user()->id || (int)$orgFolderAccessUser->access === 3) {
                 $create = $this->startCondition()::create($request);
 
                 return response()->json([
@@ -59,7 +60,7 @@ class LoginService extends Service
                 ], 201);
             }
 
-            return response()->json(['message' => 'No execute access'], 403);
+            return response()->json(['message' => ['Ошибка выполнения операции']], 403);
         }
 
         $getFolderOwnerId = $this->userLoginRepository->getUserIdFromFolder($request['user_folder_id']);

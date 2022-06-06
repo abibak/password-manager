@@ -28,9 +28,11 @@ class AccessOrganizationFolderController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(AccessOrganizationFolderRequest $request, AccessOrganizationFolderRepository $accessOrganizationFolderRepository, OrganizationFolderRepository $repository)
+    public function store(AccessOrganizationFolderRequest $request, AccessOrganizationFolderRepository
+    $accessOrganizationFolderRepository, OrganizationFolderRepository $repository)
     {
-        $getUserAccessFolder = $accessOrganizationFolderRepository->getUserAccessByUserId($request->organization_folder_id, $request->user_id);
+        $getUserAccessFolder = $accessOrganizationFolderRepository
+            ->getAccessByFolderIdAndUserId($request->organization_folder_id, $request->user_id);
 
         if ($getUserAccessFolder === null) {
             $createAccess = AccessOrganizationFolder::create([

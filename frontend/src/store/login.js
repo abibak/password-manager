@@ -63,6 +63,8 @@ export default {
       await instance.post(process.env.VUE_APP_API_URL + link + 'login', data).then(response => {
         //  добавить пароль
         commit('folder/setPasswordInDataFolder', response.data.data[0], {root: true});
+      }).catch(error => {
+        commit('setErrors', error.response.data, {root: true});
       });
     },
 

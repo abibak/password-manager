@@ -16,6 +16,10 @@ class AccessOrganizationFolder extends Model
         'access'
     ];
 
+    protected $casts = [
+      'access' => 'integer',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

@@ -108,7 +108,7 @@ export default {
           if (itemResponse.id !== this.dataCurrentSelectedFolder.user_id && itemResponse.id !== this.userData.id &&
             !usersAccess.includes(allUserIds[i]))
           {
-            this.userLogins.push(itemResponse);
+            this.userLogins.push(itemResponse);  // добавить пользователя в список доступных для приглашения
           }
         }
       });

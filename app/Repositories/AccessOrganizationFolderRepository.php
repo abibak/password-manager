@@ -14,9 +14,9 @@ class AccessOrganizationFolderRepository extends BaseRepository
         return Model::class;
     }
 
-    public function getUserAccessByUserId(int $idFolder, int $id)
+    public function getAccessByFolderIdAndUserId(int $folderId, int $userId)
     {
-        return $this->startCondition()->where('organization_folder_id', $idFolder)->where('user_id', $id)->first();
+        return $this->startCondition()->where('organization_folder_id', $folderId)->where('user_id', $userId)->first();
     }
 
     public function getAccessByUserId(int $idFolder)

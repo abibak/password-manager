@@ -31,8 +31,15 @@ class OrganizationLoginRequest extends FormRequest
             'login' => 'bail|required|max:150',
             'password' => 'bail|required|min:6|max:60',
             'note' => 'bail|max:500',
-            'tag' => 'bail|max:50',
+            'tags' => 'bail|max:50',
             'url' => 'bail|max:200',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+          'organization_folder_id.required' => 'Идентификатор не определен',
         ];
     }
 
