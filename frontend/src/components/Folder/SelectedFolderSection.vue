@@ -109,6 +109,12 @@ export default {
 
   created() {
     this.setPasswordData();
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        this.closeLoginView();
+      }
+    })
   },
 
   watch: {
@@ -212,6 +218,13 @@ export default {
   .container-folder-section {
     .open-login-container {
       display: flex;
+
+      .list-login {
+        @include scrollbar(.30em, $color, #d5d5d5);
+        max-height: 700px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+      }
     }
   }
 
