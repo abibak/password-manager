@@ -1,9 +1,8 @@
 <template>
   <div class="notification" v-if="show">
     <div class="container-notification">
-
-      <div class="list-errors">
-        <div class="error" v-for="(error) in errors">
+      <div class="list-messages">
+        <div class="message" :class="defineMessageStyle" v-for="(error) in messages.messages">
           <span>{{error[0]}}</span>
         </div>
       </div>
@@ -27,21 +26,42 @@ export default {
 
   watch: {
     show() {
-      if (this.show === true) {
+      /*if (this.show === true) {
         setTimeout(() => {
           this.$emit('closeBaseNotification');
         }, 6000);
-      }
+      }*/
     },
   },
 
   computed: {
-    ...mapState(['errors']),
+    ...mapState(['messages']),
+
+    defineMessageStyle() {
+      switch (this.messages.typeMessage) {
+        case 'error':
+          return 'error-notification'
+        case 'success':
+          return 'success-notification'
+      }
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
+.error-notification {
+  color: #842029;
+  background-color: #f8d7da;
+  border-color: #f5c2c7;
+}
+
+.success-notification {
+  color: #0f5132;
+  background-color: #d1e7dd;
+  border-color: #badbcc;
+}
+
 .notification {
   width: 280px;
   z-index: 11;
@@ -50,15 +70,13 @@ export default {
   top: 10px;
 
   .container-notification {
-    .list-errors {
+    .list-messages {
       color: #fff;
 
-      .error {
+      .message {
         border-radius: 12px;
         padding: 20px;
-        background-color: $colorRemove;
         margin-bottom: 20px;
-        opacity: .98;
       }
     }
   }

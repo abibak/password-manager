@@ -27,7 +27,7 @@ export default {
       await instance.post(process.env.VUE_APP_API_URL + 'access/folder', data).then(() => {
         dispatch('folder/sendRequestGetOrganizationFolders', null, {root: true});
       }).catch(error => {
-        commit('setErrors', error.response.data, {root: true});
+        commit('setMessages', {messages: error.response.data, typeMessage: 'error'}, {root: true});
       });
     },
   },

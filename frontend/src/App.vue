@@ -39,14 +39,14 @@ export default {
   },
 
   computed: {
-    ...mapState(['errors']),
+    ...mapState(['messages']),
     ...mapState('auth', ['userData', 'isAuth', 'timeout', 'isActive', 'lastTimeActive']),
     ...mapGetters('auth', ['getAuthToken', 'getAuthSettings']),
   },
 
   watch: {
-    errors() {
-      if (this.errors !== null) {
+    messages() {
+      if (this.messages !== null) {
         this.errorNotification = true;
       }
     },

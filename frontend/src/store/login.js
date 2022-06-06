@@ -64,7 +64,7 @@ export default {
         //  добавить пароль
         commit('folder/setPasswordInDataFolder', response.data.data[0], {root: true});
       }).catch(error => {
-        commit('setErrors', error.response.data, {root: true});
+        commit('setMessages', {messages: error.response.data, typeMessage: 'error'}, {root: true});
       });
     },
 
@@ -83,8 +83,9 @@ export default {
         }
         dispatch('folder/sendRequestGetUserFolders', null, {root: true});
       }).catch(error => {
-        commit('setErrors', {
-          error: [error.response.data.message],
+        commit('setMessages', {
+          messages: [error.response.data.message],
+          typeMessage: 'error',
         }, {root: true});
       });
     },

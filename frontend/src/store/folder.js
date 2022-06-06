@@ -101,28 +101,6 @@ export default {
       }
     },
 
-    // fix
-    // old
-    /*searchFolderById({state}) {
-      let obj = '';
-      let folderId = 0;
-
-      if (state.typeFolder === 'orgFolder') {
-        folderId = state.selectedOrgFolderId;
-        obj = state.dataOrganizationFolders.data
-      } else {
-        folderId = state.selectedFolderId;
-        obj = state.dataFolders.data;
-      }
-
-      // поиск папки и получение идентификатора
-      for (let i = 0; i < obj.length; i++) {
-        if (obj[i].id === folderId) {
-          return i; // индекс массива по списку dataFolder
-        }
-      }
-    },*/
-
     async sendRequestGetUserFolders({commit}) {
       await instance.get(process.env.VUE_APP_API_URL + 'user/folder').then(response => {
         commit('setDataUserFolders', response.data);
@@ -139,10 +117,14 @@ export default {
       await instance.post(process.env.VUE_APP_API_URL + await dispatch('defineLink') + 'folder', {
         name: nameFolder,
       }).then(() => {
-        dispatch('sendRequestGetFolders');
+        dispatch('sendRequestGetUserFolders');
         dispatch('sendRequestGetOrganizationFolders');
       }).catch(error => {
-        commit('setErrors', error.response.data.errors, {root: true});
+        // Установка сообщений
+        commit('setMessages', {
+          messages: error.response.data.errors,
+          typeMessage: 'error'
+        }, {root: true});
       });
     },
 

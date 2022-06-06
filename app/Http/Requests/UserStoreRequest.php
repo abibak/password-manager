@@ -32,6 +32,14 @@ class UserStoreRequest extends FormRequest
         ];
     }
 
+    public function messages()
+    {
+        return [
+          'login.unique' => 'Такой логин уже занят',
+          'email.unique' => 'Такой email уже занят',
+        ];
+    }
+
     public function failedValidation(Validator $validator)
     {
         return throw new ValidationException($validator);

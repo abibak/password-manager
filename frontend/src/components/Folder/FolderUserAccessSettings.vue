@@ -17,11 +17,13 @@
 
         <div class="item-user" v-for="user of users">
           <p>{{ user.login }}</p>
+
           <select @change="changeUserAccess($event.target, user.id)" v-if="checkOwnerFolder">
-            <option value="1" :selected="user.access === '1'">Просмотр</option>
-            <option value="2" :selected="user.access === '2'">Редактирование</option>
-            <option value="3" :selected="user.access === '3'">Полный доступ</option>
+            <option value="1" :selected="user.access === 1">Просмотр</option>
+            <option value="2" :selected="user.access === 2">Редактирование</option>
+            <option value="3" :selected="user.access === 3">Полный доступ</option>
           </select>
+
           <p v-if="!checkOwnerFolder">Участник</p>
         </div>
       </form>
@@ -30,8 +32,8 @@
 </template>
 
 <script>
-import {instance} from "@/store";
-import {mapState} from "vuex";
+import store, {instance} from "@/store";
+import {mapActions, mapState} from "vuex";
 
 export default {
   name: "FolderUserAccessSettings",
@@ -71,6 +73,8 @@ export default {
   },
 
   methods: {
+    ...mapActions('folder', ['sendRequestGetOrganizationFolders']),
+
     async changeUserAccess(element, userId) {
       const access = element.value;
 
@@ -79,7 +83,8 @@ export default {
         user_id: userId,
         access: access,
       }).then(response => {
-        console.log(response);
+        this.sendRequestGetOrganizationFolders();
+        console.log('Доступ пользователю изменен', response.data);
       })
     },
   },

@@ -41,7 +41,7 @@ class AccessOrganizationFolderRepository extends BaseRepository
                 throw new \Exception('Model not found');
             }
 
-            return response()->json(['message' => 'Access updated']);
+            return response()->json(['message' => 'Доступ изменен']);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()]);
         }
