@@ -46,6 +46,7 @@ class OrganizationFolderRepository extends BaseRepository
                     'organization_folders.user_id',
                     'name',
                     'status',
+                    'access'
                 )->join('access_organization_folders', function ($join) {
                     $join->on('access_organization_folders.organization_folder_id', '=', 'organization_folders.id')
                         ->where('access_organization_folders.user_id', '=', $userId ?? auth()->user()->id);
@@ -59,6 +60,11 @@ class OrganizationFolderRepository extends BaseRepository
         }
 
         return $access;
+    }
+
+    public function getFolderNameById(int $id)
+    {
+        return $this->startCondition()->select('name')->where('id', $id)->first();
     }
 
     public function getFolderUpdate(int $id)

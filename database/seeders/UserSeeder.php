@@ -30,10 +30,12 @@ class UserSeeder extends Seeder
             'is_blocked' => false,
         ]);
 
-        AccountSetting::insert([
-           'user_id' => User::where('email', 'admin@mail.ru')->get()->random()->id,
-           'email_notification' => true,
-           'auto_logout' => false,
-        ]);
+        for ($i = 1; $i <= 11; $i++) {
+            AccountSetting::insert([
+                'user_id' => $i,
+                'email_notification' => true,
+                'auto_logout' => false,
+            ]);
+        }
     }
 }

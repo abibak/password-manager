@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AccessOrganizationFolderRequest;
 use App\Models\AccessOrganizationFolder;
+use App\Models\UserNotification;
 use App\Repositories\AccessOrganizationFolderRepository;
+use App\Repositories\OrganizationFolderRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 
@@ -26,17 +28,38 @@ class AccessOrganizationFolderController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(AccessOrganizationFolderRequest $request)
+    public function store(AccessOrganizationFolderRequest $request, AccessOrganizationFolderRepository $accessOrganizationFolderRepository, OrganizationFolderRepository $repository)
     {
-        $createAccess = AccessOrganizationFolder::create([
-            'organization_folder_id' => $request->organization_folder_id,
-            'user_id' => $request->user_id,
-            'access' => $request->access,
-        ]);
+        $getUserAccessFolder = $accessOrganizationFolderRepository->getUserAccessByUserId($request->organization_folder_id, $request->user_id);
 
-        if ($createAccess) {
-            return response()->json(['message' => 'Created'], 201);
+        if ($getUserAccessFolder === null) {
+            $createAccess = AccessOrganizationFolder::create([
+                'organization_folder_id' => $request->organization_folder_id,
+                'user_id' => $request->user_id,
+                'access' => $request->access,
+            ]);
+
+            if ((int)$createAccess->access === 3) {
+                $accessText = 'с правами полного доступа';
+            } else if ((int)$createAccess->access === 2) {
+                $accessText = 'с правами редактирования';
+            } else {
+                $accessText = 'с правами просмотра содержимого';
+            }
+
+            if ($createAccess) {
+                UserNotification::create([
+                    'user_id' => $createAccess->user_id,
+                    'notification_text' => 'Вы были добавлены в папку `' .
+                        $repository->getFolderNameById($createAccess->organization_folder_id)->name . '` ' . $accessText,
+                ]);
+
+                return response()->json(['message' => 'Created'], 201);
+            }
+            return response()->json(['errors' => ['Ошибка добавления пользователя']], 422);
         }
+
+        return response()->json(['errors' => ['Пользователь уже добавлен в папку']], 422);
     }
 
     /**

@@ -1,5 +1,5 @@
 <template>
-  <div class="invite-folder">
+  <div class="invite-folder" @click.stop>
     <div class="container-invite">
       <BaseCloseModal @click="setShowInviteFolder(false)"></BaseCloseModal>
 
@@ -11,7 +11,7 @@
             <label for="login-user">Логин пользователя</label>
 
             <select id="login-user" name="login-user" v-model="selectUserId">
-              <option :value="item.id" v-for="(item) of this.userLogins">{{ item.login }} . {{ item.id }}</option>
+              <option :value="item.id" v-for="(item) of userLogins">{{ item.login }} . {{ item.id }}</option>
             </select>
           </div>
 
@@ -39,14 +39,6 @@ import {mapActions, mapGetters, mapMutations, mapState} from "vuex";
 export default {
   name: "InviteToFolder",
 
-  props: {
-    nameFolder: {
-      type: String,
-      required: true,
-      default: '',
-    }
-  },
-
   data() {
     return {
       userLogins: [],
@@ -71,7 +63,7 @@ export default {
     inviteToFolder() {
       this.setShowInviteFolder(false);
       this.sendInviteToFolder({
-        'organization_folder_id': this.selectedOrgFolderId,
+        organization_folder_id: this.selectedOrgFolderId,
         user_id: this.selectUserId,
         access: this.selectAccess,
       });

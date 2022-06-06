@@ -61,9 +61,9 @@
         <SelectedLogin @close="closeLoginView" :show="showSelectedLogin"></SelectedLogin>
       </div>
 
-      <BaseModal v-model:show="showInviteFolder">
+      <BaseModal @closeModal="setShowInviteFolder(false)" :show="showInviteFolder">
         <!--    Пригласить в папку    -->
-        <InviteToFolder :name-folder="dataCurrentSelectedFolder.name"></InviteToFolder>
+        <InviteToFolder></InviteToFolder>
       </BaseModal>
 
       <BaseModal @closeModal="showFolderUserAccessSettings = false" :show="showFolderUserAccessSettings">
@@ -114,7 +114,6 @@ export default {
   watch: {
     selectedFolderId() {
       if (this.selectedFolderId !== null) {
-        //this.currentFolder = this.getLogins;
         this.setStatusAccessFolder();
         this.closeLoginView();
       }
@@ -122,7 +121,6 @@ export default {
 
     selectedOrgFolderId() {
       if (this.selectedOrgFolderId !== null) {
-        //this.currentFolder = this.getOrgLogins;
         this.setStatusAccessFolder();
         this.closeLoginView();
       }
@@ -171,10 +169,8 @@ export default {
     // установить данные текущей папки
     setPasswordData() {
       if (this.typeFolder === 'orgFolder') {
-        //this.currentFolder = this.getOrgLogins;
         this.setStatusAccessFolder();
       } else if (this.typeFolder === 'userFolder') {
-        //this.currentFolder = this.getLogins;
         this.setStatusAccessFolder();
       }
     },
@@ -190,7 +186,7 @@ export default {
         this.setUserAccess(3);
       } else {
         // установка назначенного доступа
-        //this.setUserAccess(parseInt(this.getOrgLogins[0]?.access));
+        this.setUserAccess(parseInt(this.dataCurrentSelectedFolder?.access));
       }
     },
 
